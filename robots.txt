@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /xpanel/
+Disallow: /admin/
+Disallow: /storage/
+Disallow: /config/
+Disallow: /app/
+Disallow: /core/
+Disallow: /*?url=xpanel*
+

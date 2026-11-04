@@ -1,0 +1,57 @@
+/* ==========================================================================
+   BİKGRUP - Animasyonlar ve Mikro Etkileşimler
+   ========================================================================== */
+
+@keyframes floatSoft {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(var(--theme-primary-rgb), 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 14px rgba(var(--theme-primary-rgb), 0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anim-float {
+    animation: floatSoft 4s ease-in-out infinite;
+}
+
+.anim-pulse {
+    animation: pulseGlow 2.5s infinite;
+}
+
+/* Scroll Reveal Sınıfları */
+.reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }

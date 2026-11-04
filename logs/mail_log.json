@@ -1,0 +1,22 @@
+[
+    {
+        "time": "04.11.2026 13:15:07",
+        "recipients": [
+            "destek@bikgrup.com"
+        ],
+        "subject": "⚡ Yeni Teklif Talebi (#5): Washington Portakal - Ahmet Yılmaz",
+        "status": "LOGGED",
+        "message": "PHP mail() fonksiyonu yerel sunucuda iletim sağlayamadı. SMTP ayarlarını girmeniz önerilir.",
+        "preview": "\n            \n            \n            \n                \n                \n            \n            ..."
+    },
+    {
+        "time": "04.11.2026 13:14:46",
+        "recipients": [
+            "destek@bikgrup.com"
+        ],
+        "subject": "Test Teklif Talebi Konusu",
+        "status": "LOGGED",
+        "message": "PHP mail() fonksiyonu yerel sunucuda iletim sağlayamadı. SMTP ayarlarını girmeniz önerilir.",
+        "preview": "Test MailiTürkçe karakter testi: ığüşöç İĞÜŞÖÇ..."
+    }
+]
