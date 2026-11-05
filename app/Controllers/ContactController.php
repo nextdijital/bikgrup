@@ -25,19 +25,19 @@ class ContactController
     public function submit(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: " . BASE_URL . "/index.php?url=contact");
+            header("Location: " . BASE_URL . "/contact");
             exit;
         }
 
         // CSRF Doğrulaması
         if (!Security::validateCsrf($_POST['csrf_token'] ?? null)) {
-            header("Location: " . BASE_URL . "/index.php?url=contact&status=csrf_error");
+            header("Location: " . BASE_URL . "/contact?status=csrf_error");
             exit;
         }
 
         // Rate Limit (Dakikada en fazla 3 form gönderimi)
         if (!Security::checkRateLimit('contact_form', 3, 60)) {
-            header("Location: " . BASE_URL . "/index.php?url=contact&status=rate_limited");
+            header("Location: " . BASE_URL . "/contact?status=rate_limited");
             exit;
         }
 
@@ -49,7 +49,7 @@ class ContactController
 
         if (empty($name) || empty($email) || empty($message) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             Security::recordFailedAttempt('contact_form');
-            header("Location: " . BASE_URL . "/index.php?url=contact&status=invalid");
+            header("Location: " . BASE_URL . "/contact?status=invalid");
             exit;
         }
 
@@ -80,7 +80,7 @@ class ContactController
             $ownerEmail = Settings::get('site_email', 'destek@bikgrup.com');
         }
         $subMail = "✉️ Yeni İletişim Mesajı (#{$quoteId}): {$name} - " . ($subject ?: 'İletişim Formu');
-        $panelUrl = BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes";
+        $panelUrl = BASE_URL . "/" . PANEL_SLUG . "/quotes";
         $bodyMail = "
         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 14px; background: #ffffff;'>
             <div style='background: #15803d; padding: 18px 24px; border-radius: 10px; color: #ffffff; text-align: center;'>
@@ -102,7 +102,7 @@ class ContactController
         </div>";
         Mailer::send($ownerEmail, $subMail, $bodyMail, $email);
 
-        header("Location: " . BASE_URL . "/index.php?url=contact&status=success");
+        header("Location: " . BASE_URL . "/contact?status=success");
         exit;
     }
 }

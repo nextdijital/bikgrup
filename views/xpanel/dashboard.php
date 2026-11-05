@@ -63,10 +63,10 @@ declare(strict_types=1);
             </p>
         </div>
         <div style="display: flex; gap: 12px;">
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/theme" class="btn btn-outline" style="background: #ffffff !important; color: #15803d !important; font-weight: 800; border-color: #ffffff;">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/theme" class="btn btn-outline" style="background: #ffffff !important; color: #15803d !important; font-weight: 800; border-color: #ffffff;">
                 Tema & Renk Yöneticisi →
             </a>
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products" class="btn" style="background: rgba(255,255,255,0.2) !important; color: #ffffff !important; border: 1.5px solid rgba(255,255,255,0.4); font-weight: 700;">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="btn" style="background: rgba(255,255,255,0.2) !important; color: #ffffff !important; border: 1.5px solid rgba(255,255,255,0.4); font-weight: 700;">
                 + Yeni Ürün Ekle
             </a>
         </div>
@@ -80,7 +80,7 @@ declare(strict_types=1);
     <div class="panel-card">
         <div class="panel-card-header">
             <h3 class="panel-card-title">✉️ Son İletişim Mesajları</h3>
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/messages" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Tümünü Gör →</a>
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/messages" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Tümünü Gör →</a>
         </div>
 
         <?php if (empty($recentMessages)): ?>
@@ -118,7 +118,7 @@ declare(strict_types=1);
     <div class="panel-card">
         <div class="panel-card-header">
             <h3 class="panel-card-title">🍊 Yayındaki Ürünler</h3>
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Yönet →</a>
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Yönet →</a>
         </div>
 
         <table class="panel-table">
@@ -164,7 +164,7 @@ declare(strict_types=1);
             <h3 class="panel-card-title">⚡ Son Gelen Hızlı Teklif Talepleri</h3>
             <p style="color: var(--panel-text-muted); font-size: 13px; margin: 4px 0 0 0;">Müşterilerin web sitesi teklif modalından gönderdiği en son talepler</p>
         </div>
-        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quotes" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Tüm Teklifleri Yönet →</a>
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quotes" style="font-size: 13px; font-weight: 700; color: var(--panel-primary);">Tüm Teklifleri Yönet →</a>
     </div>
 
     <?php if (empty($recentQuotes)): ?>
@@ -213,7 +213,7 @@ declare(strict_types=1);
                             <?= date('d.m.Y H:i', strtotime($rq['created_at'])) ?>
                         </td>
                         <td style="text-align: right;">
-                            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quotes" class="btn btn-outline" style="padding: 5px 12px; font-size: 12px;">
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quotes" class="btn btn-outline" style="padding: 5px 12px; font-size: 12px;">
                                 İncele / Fiyat Ver →
                             </a>
                         </td>

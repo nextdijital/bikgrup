@@ -77,7 +77,7 @@ $smtpSecure = Settings::get('smtp_secure', 'tls');
         </div>
     </div>
 
-    <form id="quoteMailSettingsForm" action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quote-mail-settings" method="POST">
+    <form id="quoteMailSettingsForm" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quote-mail-settings" method="POST">
         <?= Security::csrfField() ?>
 
         <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: flex-end; margin-bottom: 16px;">
@@ -139,7 +139,7 @@ $smtpSecure = Settings::get('smtp_secure', 'tls');
     </form>
 
     <!-- Test Maili İçin Görünmez Form -->
-    <form id="testMailForm" action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quote-mail-test" method="POST" style="display: none;">
+    <form id="testMailForm" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quote-mail-test" method="POST" style="display: none;">
         <?= Security::csrfField() ?>
     </form>
 </div>
@@ -228,7 +228,7 @@ $smtpSecure = Settings::get('smtp_secure', 'tls');
 
                             <!-- İşlem: Sadece Silme Butonu -->
                             <td style="padding: 18px 20px; vertical-align: top; text-align: right;">
-                                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quote-delete&id=<?= $q['id'] ?>" 
+                                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quote-delete?id=<?= $q['id'] ?>" 
                                    class="btn" 
                                    style="background:#fee2e2; color:#b91c1c; font-weight:700; font-size:12.5px; padding:8px 14px; border-radius:10px; display:inline-flex; align-items:center; gap:6px; border:1px solid #fecaca; text-decoration:none; transition: all 0.15s;" 
                                    onclick="return confirm('#<?= $q['id'] ?> numaralı bu talebi ve mesaj kaydını silmek istediğinizden emin misiniz?');">

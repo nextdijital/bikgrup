@@ -49,6 +49,16 @@ if (str_starts_with($url, 'index.php')) {
     $url = trim(substr($url, 9), '/');
 }
 
+// Eğer doğrudan index.php?url=... şeklinde GET isteği yapılmışsa temiz SEO URL'ye yönlendir
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET' && isset($_GET['url']) && str_contains($_SERVER['REQUEST_URI'] ?? '', 'index.php')) {
+    $cleanPath = ltrim((string)$_GET['url'], '/');
+    $query = $_GET;
+    unset($query['url']);
+    $qs = !empty($query) ? '?' . http_build_query($query) : '';
+    header("Location: " . BASE_URL . "/" . $cleanPath . $qs, true, 301);
+    exit;
+}
+
 // Eğer temizlenmiş $url boşsa ve $_GET['url'] parametresi gönderilmişse onu kullan
 if (empty($url) && isset($_GET['url'])) {
     $url = trim((string)$_GET['url'], '/');
@@ -267,7 +277,7 @@ switch ($route) {
             case 'messages':
             case 'read-message':
             case 'delete-message':
-                header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+                header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
                 exit;
             case 'delete-reference':
                 $panel->deleteReference();

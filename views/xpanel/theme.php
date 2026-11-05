@@ -54,11 +54,11 @@ foreach ($themeSettings as $s) {
     </div>
 
     <!-- Fabrika Ayarlarına Sıfırlama Formu -->
-    <form id="theme-reset-form" action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/reset-theme" method="POST" style="display: none;">
+    <form id="theme-reset-form" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/reset-theme" method="POST" style="display: none;">
         <?= Security::csrfField() ?>
     </form>
 
-    <form id="theme-form" action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-theme" method="POST">
+    <form id="theme-form" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-theme" method="POST">
         <?= Security::csrfField() ?>
 
         <div class="theme-color-grid">

@@ -120,22 +120,22 @@ if (!function_exists('renderLinkSelector')) {
 
     <!-- SAYFA SEÇİM SEKMELERİ (TABS) -->
     <div style="display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 24px;">
-        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/pages&page=home" 
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages?page=home" 
            style="padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 13.5px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.2s; <?= $activePage === 'home' ? 'background: #15803d; color: #ffffff; box-shadow: 0 4px 12px rgba(21,128,61,0.25);' : 'background: #f1f5f9; color: #475569;' ?>">
             <span>🏠</span> Anasayfa Yönetimi
         </a>
 
-        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/pages&page=about" 
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages?page=about" 
            style="padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 13.5px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.2s; <?= $activePage === 'about' ? 'background: #15803d; color: #ffffff; box-shadow: 0 4px 12px rgba(21,128,61,0.25);' : 'background: #f1f5f9; color: #475569;' ?>">
             <span>🏢</span> Kurumsal / Hakkımızda
         </a>
 
-        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/pages&page=contact" 
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages?page=contact" 
            style="padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 13.5px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.2s; <?= $activePage === 'contact' ? 'background: #15803d; color: #ffffff; box-shadow: 0 4px 12px rgba(21,128,61,0.25);' : 'background: #f1f5f9; color: #475569;' ?>">
             <span>📞</span> İletişim Sayfası
         </a>
 
-        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/pages&page=policy" 
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages?page=policy" 
            style="padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 13.5px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: all 0.2s; <?= $activePage === 'policy' ? 'background: #15803d; color: #ffffff; box-shadow: 0 4px 12px rgba(21,128,61,0.25);' : 'background: #f1f5f9; color: #475569;' ?>">
             <span>⚖️</span> Politikalar (KVKK & Gizlilik)
         </a>
@@ -158,7 +158,7 @@ if (!function_exists('renderLinkSelector')) {
                 </h3>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_hero">
                 <input type="hidden" name="page_key" value="home">
@@ -288,7 +288,7 @@ if (!function_exists('renderLinkSelector')) {
                 </h3>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_featured">
                 <input type="hidden" name="page_key" value="home">
@@ -375,7 +375,7 @@ if (!function_exists('renderLinkSelector')) {
                 </h3>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_map">
                 <input type="hidden" name="page_key" value="home">
@@ -459,7 +459,7 @@ if (!function_exists('renderLinkSelector')) {
                 </p>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_brands">
                 <input type="hidden" name="page_key" value="home">
@@ -595,7 +595,7 @@ if (!function_exists('renderLinkSelector')) {
                 </h3>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_facility">
                 <input type="hidden" name="page_key" value="home">
@@ -643,7 +643,7 @@ if (!function_exists('renderLinkSelector')) {
                 </h3>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_blog">
                 <input type="hidden" name="page_key" value="home">
@@ -691,7 +691,7 @@ if (!function_exists('renderLinkSelector')) {
                 </p>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="home_references">
                 <input type="hidden" name="page_key" value="home">
@@ -731,7 +731,7 @@ if (!function_exists('renderLinkSelector')) {
                                 <input type="file" name="ref_logo_<?= $idx ?>" accept="image/*" class="form-control" style="font-size: 11px; padding: 4px;">
                             </div>
                             <div style="width: 100%; margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 8px;">
-                                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-reference&idx=<?= $idx ?>" 
+                                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-reference?idx=<?= $idx ?>" 
                                    onclick="return confirm('<?= htmlspecialchars(addslashes($item['name'])) ?> referans logosunu silmek istediğinizden emin misiniz?');" 
                                    class="btn" 
                                    style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 8px; width: 100%; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-sizing: border-box; transition: background 0.15s;">
@@ -781,7 +781,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>🌄</span> 1. Kurumsal Hero Giriş Alanı & Arka Plan Afişi
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="about_hero">
                 <input type="hidden" name="page_key" value="about">
@@ -831,7 +831,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>📜</span> 2. Kurumsal Hikaye & Tarihçe Alanı
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="about_story">
                 <input type="hidden" name="page_key" value="about">
@@ -863,7 +863,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>🎯</span> 3. Misyonumuz & Vizyonumuz (Ön Yüzdeki 2 Büyük Yeşil Kart)
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="mission_vision">
                 <input type="hidden" name="page_key" value="about">
@@ -917,7 +917,7 @@ if (!function_exists('renderLinkSelector')) {
                 </p>
             </div>
 
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="about_certs">
                 <input type="hidden" name="page_key" value="about">
@@ -1063,7 +1063,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>📞</span> İletişim Sayfası Giriş & Açıklama Metinleri
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="contact_hero">
                 <input type="hidden" name="page_key" value="contact">
@@ -1130,7 +1130,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>🔒</span> 1. Gizlilik Politikası Metni
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="policy_privacy">
                 <input type="hidden" name="page_key" value="policy">
@@ -1153,7 +1153,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>📑</span> 2. KVKK Aydınlatma Metni
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="policy_kvkk">
                 <input type="hidden" name="page_key" value="policy">
@@ -1176,7 +1176,7 @@ if (!function_exists('renderLinkSelector')) {
             <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
                 <span>🍪</span> 3. Çerez (Cookie) Politikası Metni
             </h3>
-            <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST">
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST">
                 <?= Security::csrfField() ?>
                 <input type="hidden" name="section_key" value="policy_cookie">
                 <input type="hidden" name="page_key" value="policy">

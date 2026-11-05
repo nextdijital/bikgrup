@@ -28,55 +28,55 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
         </div>
 
         <nav class="panel-nav">
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>" class="panel-nav-link <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>" class="panel-nav-link <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>">
                 <span class="nav-icon">📊</span>
                 <span>Genel Bakış</span>
             </a>
 
             <!-- Dinamik Tema ve Canlı Renk Yönetimi -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/theme" class="panel-nav-link <?= ($activeMenu ?? '') === 'theme' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/theme" class="panel-nav-link <?= ($activeMenu ?? '') === 'theme' ? 'active' : '' ?>">
                 <span class="nav-icon">🎨</span>
                 <span>Dinamik Tema & Renkler</span>
             </a>
 
             <!-- Genel Site Ayarları & Logo & İletişim -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/settings" class="panel-nav-link <?= ($activeMenu ?? '') === 'settings' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/settings" class="panel-nav-link <?= ($activeMenu ?? '') === 'settings' ? 'active' : '' ?>">
                 <span class="nav-icon">⚙️</span>
                 <span>Genel Ayarlar & Logo</span>
             </a>
 
             <!-- Dinamik Sayfa Bölümleri -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/pages" class="panel-nav-link <?= ($activeMenu ?? '') === 'pages' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages" class="panel-nav-link <?= ($activeMenu ?? '') === 'pages' ? 'active' : '' ?>">
                 <span class="nav-icon">📄</span>
                 <span>Sayfa ve Alan Yönetimi</span>
             </a>
 
             <!-- Footer Yönetimi -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/footer" class="panel-nav-link <?= ($activeMenu ?? '') === 'footer' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/footer" class="panel-nav-link <?= ($activeMenu ?? '') === 'footer' ? 'active' : '' ?>">
                 <span class="nav-icon">📑</span>
                 <span>Footer Yönetimi</span>
             </a>
 
             <!-- Ürünler -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products" class="panel-nav-link <?= ($activeMenu ?? '') === 'products' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="panel-nav-link <?= ($activeMenu ?? '') === 'products' ? 'active' : '' ?>">
                 <span class="nav-icon">🍊</span>
                 <span>Ürünler & Hasat</span>
             </a>
 
             <!-- Blog -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/blog" class="panel-nav-link <?= ($activeMenu ?? '') === 'blog' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/blog" class="panel-nav-link <?= ($activeMenu ?? '') === 'blog' ? 'active' : '' ?>">
                 <span class="nav-icon">📰</span>
                 <span>Blog & Haberler</span>
             </a>
 
             <!-- Medya & Galeri -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/gallery" class="panel-nav-link <?= ($activeMenu ?? '') === 'gallery' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/gallery" class="panel-nav-link <?= ($activeMenu ?? '') === 'gallery' ? 'active' : '' ?>">
                 <span class="nav-icon">🖼️</span>
                 <span>Medya & Galeri</span>
             </a>
 
             <!-- KULLANICI TALEBİ: Hızlı Teklif Talepleri & Gelen Mesajlar -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/quotes" class="panel-nav-link <?= ($activeMenu ?? '') === 'quotes' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quotes" class="panel-nav-link <?= ($activeMenu ?? '') === 'quotes' ? 'active' : '' ?>">
                 <span class="nav-icon">⚡</span>
                 <span>Hızlı Teklifler</span>
                 <?php if ($pendingQuoteCount > 0): ?>
@@ -87,7 +87,7 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
             </a>
 
             <!-- Yöneticiler & Yetkiler -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/users" class="panel-nav-link <?= ($activeMenu ?? '') === 'users' ? 'active' : '' ?>">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/users" class="panel-nav-link <?= ($activeMenu ?? '') === 'users' ? 'active' : '' ?>">
                 <span class="nav-icon">👥</span>
                 <span>Yöneticiler & Yetki</span>
             </a>
@@ -101,7 +101,7 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
             </a>
 
             <!-- Çıkış -->
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/logout" class="panel-nav-link" style="color: #f87171;">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/logout" class="panel-nav-link" style="color: #f87171;">
                 <span class="nav-icon">🚪</span>
                 <span>Güvenli Çıkış</span>
             </a>

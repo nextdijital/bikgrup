@@ -22,7 +22,7 @@ foreach ($generalSettings as $s) {
         </div>
     </div>
 
-    <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-settings" method="POST" enctype="multipart/form-data">
+    <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-settings" method="POST" enctype="multipart/form-data">
         <?= Security::csrfField() ?>
 
         <!-- 1. LOGO VE GÖRSEL ALANLARI -->
@@ -234,7 +234,7 @@ foreach ($generalSettings as $s) {
         <p style="font-size: 13px; color: #15803d; margin: 0 0 16px 0;">
             Yukarıdaki SMTP ayarlarınızı kaydettikten sonra, sistemin e-posta gönderip gönderemediğini anında test edebilirsiniz.
         </p>
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/test-email" method="POST" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/test-email" method="POST" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
             <?= Security::csrfField() ?>
             <input type="email" name="test_email" value="<?= htmlspecialchars($settingsMap['quote_notification_email'] ?? 'destek@bikgrup.com') ?>" required class="form-control" style="max-width: 340px; background: #ffffff;" placeholder="Test alıcı e-postası">
             <button type="submit" class="btn" style="background: #15803d; color: #ffffff; padding: 10px 24px; font-weight: 700; border-radius: 10px; cursor: pointer;">

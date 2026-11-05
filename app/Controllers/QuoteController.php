@@ -67,7 +67,7 @@ class QuoteController
             }
 
             $subject = "⚡ Yeni Teklif Talebi (#{$quoteId}): {$category} - {$fullName}";
-            $panelUrl = BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes";
+            $panelUrl = BASE_URL . "/" . PANEL_SLUG . "/quotes";
             $siteLogo = Settings::get('site_logo') ? BASE_URL . '/public/images/' . Settings::get('site_logo') : '';
             $dateNow = date('d.m.Y H:i');
 

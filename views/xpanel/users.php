@@ -91,7 +91,7 @@ $currentUserId = Auth::id();
                                 Düzenle ✏️
                             </button>
                             <?php if (!$isSelf): ?>
-                                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-user&id=<?= $u['id'] ?>" 
+                                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-user?id=<?= $u['id'] ?>" 
                                    data-confirm-delete="<?= htmlspecialchars($u['name']) ?> isimli yöneticiyi silmek istediğinize emin misiniz?" 
                                    class="btn btn-sm btn-danger" style="margin-left: 6px;">
                                     Sil 🗑️
@@ -114,7 +114,7 @@ $currentUserId = Auth::id();
             <button type="button" onclick="closeModal('userModal')" style="background:none; border:none; font-size: 20px; cursor: pointer; color:#94a3b8;">✕</button>
         </div>
 
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-user" method="POST">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-user" method="POST">
             <?= Security::csrfField() ?>
             <input type="hidden" name="id" id="user_id">
             <input type="hidden" name="role" id="user_role" value="admin">

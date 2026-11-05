@@ -16,7 +16,7 @@ declare(strict_types=1);
         </div>
     </div>
 
-    <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-footer" method="POST">
+    <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-footer" method="POST">
         <?= Security::csrfField() ?>
 
         <div style="background: #f8fafc; border: 1.5px solid var(--panel-border); border-radius: 16px; padding: 24px; margin-bottom: 24px;">

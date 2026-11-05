@@ -27,7 +27,7 @@ class PanelController
     private function requireAuth(): void
     {
         if (!Auth::check()) {
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/login");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/login");
             exit;
         }
     }
@@ -38,7 +38,7 @@ class PanelController
     public function login(): void
     {
         if (Auth::check()) {
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG);
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG);
             exit;
         }
 
@@ -53,13 +53,13 @@ class PanelController
     public function doLogin(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/login");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/login");
             exit;
         }
 
         if (!Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması (CSRF) başarısız oldu!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/login");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/login");
             exit;
         }
 
@@ -70,11 +70,11 @@ class PanelController
 
         if ($result['success']) {
             $_SESSION['panel_success'] = 'Hoş geldiniz, ' . htmlspecialchars(Auth::user()['name']);
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG);
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG);
             exit;
         } else {
             $_SESSION['panel_error'] = $result['message'];
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/login");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/login");
             exit;
         }
     }
@@ -85,7 +85,7 @@ class PanelController
     public function logout(): void
     {
         Auth::logout();
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/login");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/login");
         exit;
     }
 
@@ -146,7 +146,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/theme");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/theme");
             exit;
         }
 
@@ -160,7 +160,7 @@ class PanelController
         }
 
         $_SESSION['panel_success'] = 'Site renkleri ve tema ayarları başarıyla güncellendi! Değişiklikler anında sitede aktif.';
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/theme");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/theme");
         exit;
     }
 
@@ -173,7 +173,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/theme");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/theme");
             exit;
         }
 
@@ -199,7 +199,7 @@ class PanelController
         }
 
         $_SESSION['panel_success'] = 'Tüm tema renkleri ve ölçüleri başarıyla sitenin orijinal varsayılan tonlarına sıfırlandı!';
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/theme");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/theme");
         exit;
     }
 
@@ -229,7 +229,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/settings");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/settings");
             exit;
         }
 
@@ -272,7 +272,7 @@ class PanelController
         }
 
         $_SESSION['panel_success'] = 'Genel site ayarları ve görseller başarıyla güncellendi.';
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/settings");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/settings");
         exit;
     }
 
@@ -285,14 +285,14 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/settings");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/settings");
             exit;
         }
 
         $testRecipient = trim($_POST['test_email'] ?? Settings::get('quote_notification_email', 'destek@bikgrup.com'));
         if (!filter_var($testRecipient, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['panel_error'] = 'Lütfen geçerli bir test e-posta adresi giriniz.';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/settings");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/settings");
             exit;
         }
 
@@ -322,7 +322,7 @@ class PanelController
             $_SESSION['panel_error'] = 'E-Posta gönderilemedi: ' . htmlspecialchars($res['message']);
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/settings");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/settings");
         exit;
     }
 
@@ -353,7 +353,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/footer");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/footer");
             exit;
         }
 
@@ -393,7 +393,7 @@ class PanelController
         PageSection::set('footer', 'footer_main', $data);
 
         $_SESSION['panel_success'] = 'Footer (Altbilgi) içerikleri başarıyla güncellendi.';
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/footer");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/footer");
         exit;
     }
 
@@ -430,7 +430,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/pages&page=" . urlencode($pageKey));
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/pages?page=" . urlencode($pageKey));
             exit;
         }
 
@@ -511,8 +511,8 @@ class PanelController
         PageSection::set($pageKey, $sectionKey, $data);
 
         $_SESSION['panel_success'] = 'Bölüm içeriği ve görseller başarıyla güncellendi.';
-        $redirectTo = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : (PANEL_SLUG . "/pages&page=" . urlencode($pageKey));
-        header("Location: " . BASE_URL . "/index.php?url=" . $redirectTo);
+        $redirectTo = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : (PANEL_SLUG . "/pages?page=" . urlencode($pageKey));
+        header("Location: " . BASE_URL . "/" . ltrim($redirectTo, "/"));
         exit;
     }
 
@@ -531,7 +531,7 @@ class PanelController
             $editingProduct = Product::find($editId);
             if (!$editingProduct) {
                 $_SESSION['panel_error'] = 'Düzenlenmek istenen ürün bulunamadı.';
-                header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+                header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
                 exit;
             }
         }
@@ -565,7 +565,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
             exit;
         }
 
@@ -677,10 +677,10 @@ class PanelController
 
         $redirectTo = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : (PANEL_SLUG . "/products");
         if ($redirectTo === 'stay' && $targetId) {
-            $redirectTo = PANEL_SLUG . "/products&action=edit&id=" . $targetId;
+            $redirectTo = PANEL_SLUG . "/products?action=edit&id=" . $targetId;
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . $redirectTo);
+        header("Location: " . BASE_URL . "/" . ltrim($redirectTo, "/"));
         exit;
     }
 
@@ -695,7 +695,7 @@ class PanelController
             Product::delete($id);
             $_SESSION['panel_success'] = 'Ürün silindi.';
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
         exit;
     }
 
@@ -708,7 +708,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması başarısız!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
             exit;
         }
 
@@ -748,7 +748,7 @@ class PanelController
 
         if (empty($nameTr)) {
             $_SESSION['panel_error'] = 'Kategori adı boş bırakılamaz!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
             exit;
         }
 
@@ -782,7 +782,7 @@ class PanelController
             $_SESSION['panel_success'] = 'Yeni kategori ("' . $nameTr . '") başarıyla oluşturuldu.';
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
         exit;
     }
 
@@ -807,7 +807,7 @@ class PanelController
                 $_SESSION['panel_success'] = 'Kategori başarıyla silindi.';
             }
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/products");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/products");
         exit;
     }
 
@@ -836,7 +836,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/blog");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/blog");
             exit;
         }
 
@@ -886,7 +886,7 @@ class PanelController
         }
 
         $redirect = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : PANEL_SLUG . "/blog";
-        header("Location: " . BASE_URL . "/index.php?url=" . $redirect);
+        header("Location: " . BASE_URL . "/" . ltrim($redirect, "/"));
         exit;
     }
 
@@ -902,7 +902,7 @@ class PanelController
             $_SESSION['panel_success'] = 'Blog yazısı silindi.';
         }
         $redirect = !empty($_GET['redirect_to']) ? trim($_GET['redirect_to']) : PANEL_SLUG . "/blog";
-        header("Location: " . BASE_URL . "/index.php?url=" . $redirect);
+        header("Location: " . BASE_URL . "/" . ltrim($redirect, "/"));
         exit;
     }
 
@@ -932,7 +932,7 @@ class PanelController
         if ($id > 0) {
             Message::markAsRead($id);
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/messages");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/messages");
         exit;
     }
 
@@ -947,7 +947,7 @@ class PanelController
             Message::delete($id);
             $_SESSION['panel_success'] = 'Mesaj silindi.';
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/messages");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/messages");
         exit;
     }
 
@@ -976,7 +976,7 @@ class PanelController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/users");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/users");
             exit;
         }
 
@@ -988,7 +988,7 @@ class PanelController
 
         if (empty($name) || empty($email)) {
             $_SESSION['panel_error'] = 'Lütfen ad soyad ve geçerli bir e-posta adresi giriniz!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/users");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/users");
             exit;
         }
 
@@ -998,7 +998,7 @@ class PanelController
             if ($targetUser && ((int)$targetUser['is_immutable'] === 1 || strtolower($targetUser['email']) === 'suleymannozer0@gmail.com')) {
                 if (Auth::id() !== $id) {
                     $_SESSION['panel_error'] = 'Süleyman Özer hesabını yalnızca Süleyman Özer düzenleyebilir!';
-                    header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/users");
+                    header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/users");
                     exit;
                 }
             }
@@ -1029,7 +1029,7 @@ class PanelController
             $_SESSION['panel_error'] = $e->getMessage();
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/users");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/users");
         exit;
     }
 
@@ -1048,7 +1048,7 @@ class PanelController
             $_SESSION['panel_error'] = $e->getMessage();
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/users");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/users");
         exit;
     }
 
@@ -1078,7 +1078,7 @@ class PanelController
     {
         $this->requireAuth();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
             exit;
         }
 
@@ -1092,7 +1092,7 @@ class PanelController
             $_SESSION['panel_success'] = "Teklif talebi (#{$id}) başarıyla güncellendi.";
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
         exit;
     }
 
@@ -1103,7 +1103,7 @@ class PanelController
     {
         $this->requireAuth();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
             exit;
         }
 
@@ -1132,7 +1132,7 @@ class PanelController
             $_SESSION['panel_error'] = "Lütfen müşteri adı, e-posta ve ürün alanlarını doldurunuz.";
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
         exit;
     }
 
@@ -1149,7 +1149,7 @@ class PanelController
             $_SESSION['panel_success'] = "Teklif kaydı silindi.";
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
         exit;
     }
 
@@ -1161,7 +1161,7 @@ class PanelController
         $this->requireAuth();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
             exit;
         }
 
@@ -1195,7 +1195,7 @@ class PanelController
         }
 
         $_SESSION['panel_success'] = 'Teklif bildirim e-posta entegrasyonu başarıyla kaydedildi!';
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
         exit;
     }
 
@@ -1207,7 +1207,7 @@ class PanelController
         $this->requireAuth();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !Security::validateCsrf($_POST['csrf_token'] ?? null)) {
             $_SESSION['panel_error'] = 'Güvenlik doğrulaması hatası!';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
             exit;
         }
 
@@ -1220,7 +1220,7 @@ class PanelController
 
         if (empty($targetEmail) || !filter_var($targetEmail, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['panel_error'] = 'Lütfen geçerli bir bildirim e-posta adresi kaydediniz.';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
             exit;
         }
 
@@ -1251,7 +1251,7 @@ class PanelController
             $_SESSION['panel_error'] = "Test e-postası gönderilemedi: " . htmlspecialchars($result['message']) . " (Yerel XAMPP ortamında harici SMTP bilgisi girmeniz gerekebilir).";
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/quotes");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/quotes");
         exit;
     }
 
@@ -1276,7 +1276,7 @@ class PanelController
                 $_SESSION['panel_success'] = "{$deletedName} referans logosu başarıyla silindi.";
             }
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/pages#section-home_references");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/pages#section-home_references");
         exit;
     }
 
@@ -1314,7 +1314,7 @@ class PanelController
 
         if (empty($titleTr)) {
             $_SESSION['panel_error'] = 'Lütfen başlık giriniz.';
-            header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/gallery");
+            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");
             exit;
         }
 
@@ -1369,7 +1369,7 @@ class PanelController
             $_SESSION['panel_success'] = 'Yeni medya öğesi galeriye eklendi.';
         }
 
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/gallery");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");
         exit;
     }
 
@@ -1385,7 +1385,7 @@ class PanelController
             GalleryItem::delete($id);
             $_SESSION['panel_success'] = 'Medya öğesi galeriden silindi.';
         }
-        header("Location: " . BASE_URL . "/index.php?url=" . PANEL_SLUG . "/gallery");
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");
         exit;
     }
 }

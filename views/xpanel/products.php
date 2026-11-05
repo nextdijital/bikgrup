@@ -97,7 +97,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
     </div>
 
     <div id="prodHeroCardBody" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1.5px solid #f1f5f9;">
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
             <?= Security::csrfField() ?>
             <input type="hidden" name="section_key" value="products_hero">
             <input type="hidden" name="page_key" value="products">
@@ -157,7 +157,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
             <button onclick="openNewCategoryModal()" class="btn btn-secondary" style="padding: 10px 18px; display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; border: 1.5px solid #cbd5e1; color: #1e293b; font-weight: 700; border-radius: 10px; cursor: pointer;">
                 <span>📁</span> <span>+ Yeni Kategori Ekle</span>
             </button>
-            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products&action=new" class="btn btn-primary" style="padding: 10px 22px; display: inline-flex; align-items: center; gap: 6px; background: #16a34a; border-color: #16a34a; font-weight: 700; border-radius: 10px; text-decoration: none;">
+            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products?action=new" class="btn btn-primary" style="padding: 10px 22px; display: inline-flex; align-items: center; gap: 6px; background: #16a34a; border-color: #16a34a; font-weight: 700; border-radius: 10px; text-decoration: none;">
                 <span>➕</span> <span>+ Yeni Ürün Ekle</span>
             </a>
         </div>
@@ -207,13 +207,13 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                             <?= $pItem['is_active'] ? '<span style="background:#f0fdf4; color:#166534; font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; border:1px solid #bbf7d0;">🟢 Yayında</span>' : '<span style="background:#fef2f2; color:#991b1b; font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; border:1px solid #fecaca;">🔴 Pasif</span>' ?>
                         </td>
                         <td style="text-align: right; white-space: nowrap;">
-                            <a href="<?= BASE_URL ?>/index.php?url=products/<?= urlencode($pItem['slug']) ?>" target="_blank" class="btn btn-sm btn-outline" style="margin-right: 4px; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12.5px;" title="Ön yüzde canlı incele">
+                            <a href="<?= BASE_URL ?>/products/<?= urlencode($pItem['slug']) ?>" target="_blank" class="btn btn-sm btn-outline" style="margin-right: 4px; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 12.5px;" title="Ön yüzde canlı incele">
                                 Canlı Gör ↗
                             </a>
-                            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products&action=edit&id=<?= $pItem['id'] ?>" class="btn btn-sm btn-primary" style="margin-right: 4px; background: #15803d; border-color: #15803d; padding: 6px 14px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 12.5px;">
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products?action=edit&id=<?= $pItem['id'] ?>" class="btn btn-sm btn-primary" style="margin-right: 4px; background: #15803d; border-color: #15803d; padding: 6px 14px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 12.5px;">
                                 Düzenle ✏️
                             </a>
-                            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-product&id=<?= $pItem['id'] ?>" 
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-product?id=<?= $pItem['id'] ?>" 
                                data-confirm-delete="<?= htmlspecialchars($pItem['name_tr']) ?> ürününü silmek istediğinize emin misiniz?" 
                                class="btn btn-sm btn-danger" style="padding: 6px 12px; border-radius: 8px; font-size: 12.5px;">
                                 Sil 🗑️
@@ -279,7 +279,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                             <button type="button" class="btn btn-sm btn-outline" style="margin-right: 4px; padding: 5px 12px; border-radius: 8px;" onclick='openEditCategoryModal(<?= json_encode($cat, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)'>
                                 Düzenle ✏️
                             </button>
-                            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-category&id=<?= $cat['id'] ?>" 
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-category?id=<?= $cat['id'] ?>" 
                                data-confirm-delete="<?= htmlspecialchars($cat['name_tr']) ?> kategorisini silmek istediğinize emin misiniz? (Bu kategorideki ürünler genel kategoriye aktarılacaktır)" 
                                class="btn btn-sm btn-danger" style="padding: 5px 12px; border-radius: 8px;">
                                 Sil 🗑️
@@ -302,7 +302,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
             <button type="button" onclick="closeModal('categoryModal')" style="background:none; border:none; font-size: 22px; cursor: pointer; color:#94a3b8;">✕</button>
         </div>
 
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-category" method="POST">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-category" method="POST">
             <?= Security::csrfField() ?>
             <input type="hidden" name="id" id="cat_id">
 
@@ -360,7 +360,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
         <div>
             <div style="margin-bottom: 6px;">
-                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; font-size: 13px; font-weight: 700; border-radius: 10px; text-decoration: none;">
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; font-size: 13px; font-weight: 700; border-radius: 10px; text-decoration: none;">
                     <span>←</span> <span>Tüm Ürünler Listesine Dön</span>
                 </a>
             </div>
@@ -375,7 +375,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <?php if (!$isNew && !empty($prodSlug)): ?>
-                <a href="<?= BASE_URL ?>/index.php?url=products/<?= urlencode($prodSlug) ?>" target="_blank" class="btn btn-outline" style="padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <a href="<?= BASE_URL ?>/products/<?= urlencode($prodSlug) ?>" target="_blank" class="btn btn-outline" style="padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                     <span>🌐</span> <span>Canlı Sayfayı Gör ↗</span>
                 </a>
             <?php endif; ?>
@@ -390,7 +390,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 </div>
 
 <!-- Ana Form -->
-<form id="productMainForm" action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-product" method="POST" enctype="multipart/form-data">
+<form id="productMainForm" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-product" method="POST" enctype="multipart/form-data">
     <?= Security::csrfField() ?>
     <input type="hidden" name="id" value="<?= $isNew ? '' : (int)$prodId ?>">
     <input type="hidden" name="redirect_to" id="redirect_to_field" value="stay">
@@ -712,7 +712,7 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                     <button type="button" onclick="submitProductForm('list')" class="btn btn-secondary" style="width: 100%; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 13.5px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: #f8fafc; border: 1.5px solid #cbd5e1;">
                         <span>✅</span> <span>Kaydet & Listeye Dön</span>
                     </button>
-                    <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/products" class="btn btn-outline" style="width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; font-size: 13px; text-align: center; text-decoration: none; color: #64748b;">
+                    <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="btn btn-outline" style="width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; font-size: 13px; text-align: center; text-decoration: none; color: #64748b;">
                         Vazgeç / Listeye Dön
                     </a>
                 </div>

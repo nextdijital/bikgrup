@@ -193,7 +193,7 @@ declare(strict_types=1);
             <?php unset($_SESSION['panel_error']); ?>
         <?php endif; ?>
 
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/do-login" method="POST">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/do-login" method="POST">
             <?= Security::csrfField() ?>
 
             <div class="login-form-group">

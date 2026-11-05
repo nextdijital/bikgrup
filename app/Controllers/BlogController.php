@@ -25,7 +25,7 @@ class BlogController
     {
         $post = BlogPost::findBySlug($slug);
         if (!$post) {
-            header("Location: " . BASE_URL . "/index.php?url=blog");
+            header("Location: " . BASE_URL . "/blog");
             exit;
         }
 

@@ -43,7 +43,7 @@ class ProductsController
     {
         $product = Product::findBySlug($slug);
         if (!$product) {
-            header("Location: " . BASE_URL . "/index.php?url=products");
+            header("Location: " . BASE_URL . "/products");
             exit;
         }
 

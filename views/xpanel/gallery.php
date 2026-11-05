@@ -37,7 +37,7 @@ $categoryLabelsTr = [
     </div>
 
     <div id="galleryHeroCardBody" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1.5px solid #f1f5f9;">
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
             <?= Security::csrfField() ?>
             <input type="hidden" name="section_key" value="gallery_page_hero">
             <input type="hidden" name="page_key" value="gallery">
@@ -212,7 +212,7 @@ $categoryLabelsTr = [
                                         style="padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; margin-right: 6px;">
                                     Düzenle
                                 </button>
-                                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-gallery&id=<?= $item['id'] ?>" 
+                                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-gallery?id=<?= $item['id'] ?>" 
                                    onclick="return confirm('Bu medya öğesini silmek istediğinize emin misiniz?')"
                                    class="btn btn-danger" 
                                    style="padding: 6px 10px; font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; background: #ef4444; color: #fff;">
@@ -242,7 +242,7 @@ $categoryLabelsTr = [
         </div>
 
         <!-- Modal Formu -->
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-gallery" method="POST" enctype="multipart/form-data" style="padding: 24px;">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-gallery" method="POST" enctype="multipart/form-data" style="padding: 24px;">
             <?= Security::csrfField() ?>
             <input type="hidden" name="id" id="form_id" value="0">
 

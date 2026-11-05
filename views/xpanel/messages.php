@@ -66,11 +66,11 @@ declare(strict_types=1);
                         </td>
                         <td style="text-align: right; white-space: nowrap;">
                             <?php if (empty($msg['is_read'])): ?>
-                                <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/read-message&id=<?= $msg['id'] ?>" class="btn btn-sm btn-outline">
+                                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/read-message?id=<?= $msg['id'] ?>" class="btn btn-sm btn-outline">
                                     ✓ Okundu Yap
                                 </a>
                             <?php endif; ?>
-                            <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-message&id=<?= $msg['id'] ?>" 
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-message?id=<?= $msg['id'] ?>" 
                                data-confirm-delete="Bu mesajı silmek istediğinize emin misiniz?" 
                                class="btn btn-sm btn-danger">
                                 Sil 🗑️

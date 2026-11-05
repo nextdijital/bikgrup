@@ -26,7 +26,7 @@ $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_d
     </div>
 
     <div id="blogHeroCardBody" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1.5px solid #f1f5f9;">
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-page" method="POST" enctype="multipart/form-data">
             <?= Security::csrfField() ?>
             <input type="hidden" name="section_key" value="blog_page_hero">
             <input type="hidden" name="page_key" value="blog">
@@ -113,13 +113,13 @@ $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_d
                         <?= date('d.m.Y', strtotime($post['created_at'])) ?>
                     </td>
                     <td style="text-align: right; white-space: nowrap;">
-                        <a href="<?= BASE_URL ?>/index.php?url=blog/<?= urlencode($post['slug']) ?>" target="_blank" class="btn btn-sm btn-outline" style="margin-right: 4px;">
+                        <a href="<?= BASE_URL ?>/blog/<?= urlencode($post['slug']) ?>" target="_blank" class="btn btn-sm btn-outline" style="margin-right: 4px;">
                             Gör ↗
                         </a>
                         <button type="button" class="btn btn-sm btn-outline" style="color: #15803d !important; border-color: #86efac; margin-right: 4px;" onclick='openEditBlogModal(<?= json_encode($post, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)'>
                             Düzenle ✏️
                         </button>
-                        <a href="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/delete-blog&id=<?= $post['id'] ?>" 
+                        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-blog?id=<?= $post['id'] ?>" 
                            data-confirm-delete="<?= htmlspecialchars($post['title_tr']) ?> başlıklı yazıyı silmek istediğinize emin misiniz?" 
                            class="btn btn-sm btn-danger">
                             Sil 🗑️
@@ -142,7 +142,7 @@ $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_d
             <button type="button" onclick="closeModal('blogModal')" style="background:none; border:none; font-size: 22px; cursor: pointer; color:#94a3b8;">✕</button>
         </div>
 
-        <form action="<?= BASE_URL ?>/index.php?url=<?= PANEL_SLUG ?>/save-blog" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-blog" method="POST" enctype="multipart/form-data">
             <?= Security::csrfField() ?>
             <input type="hidden" name="id" id="blog_id">
 
