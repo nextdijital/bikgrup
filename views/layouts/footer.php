@@ -76,7 +76,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                         <?php endif; ?>
                     </a>
                     <p style="color: #64748b; font-size: 15px; line-height: 1.8; margin-bottom: 26px; max-width: 360px;">
-                        <?= !empty($footerSec['body_tr']) ? nl2br(htmlspecialchars($footerSec['body_tr'])) : __('footer_about_text') ?>
+                        <?= !empty($footerSec['body_' . $currentLang]) ? nl2br(htmlspecialchars($footerSec['body_' . $currentLang])) : ($currentLang === 'en' ? __('footer_about_text') : (!empty($footerSec['body_tr']) ? nl2br(htmlspecialchars($footerSec['body_tr'])) : __('footer_about_text'))) ?>
                     </p>
                     
                     <!-- Sosyal Medya İkonları (Panele Bağlantı Girildiyse Görünür, Boşsa Pasif Kalır) -->

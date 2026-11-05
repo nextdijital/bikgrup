@@ -120,8 +120,8 @@ $GLOBALS['hasHero'] = true;
         <div id="products-dynamic-container" style="transition: opacity 0.22s ease; min-height: 280px;">
             <?php if (empty($products)): ?>
                 <div style="text-align:center; padding: 60px 20px; background:#ffffff; border-radius: 20px; border:1px solid #e2e8f0;">
-                    <p style="font-size: 18px; color: var(--theme-text-muted); margin: 0 0 16px 0;">Bu kategoride henüz yayınlanmış ürün bulunamadı.</p>
-                    <a href="<?= BASE_URL ?>/urunler#urunler-vitrini" class="btn btn-primary" style="border-radius: 9999px;">Tüm Ürünlere Dön</a>
+                    <p style="font-size: 18px; color: var(--theme-text-muted); margin: 0 0 16px 0;"><?= $currentLang === 'en' ? 'No published products found in this category yet.' : 'Bu kategoride henüz yayınlanmış ürün bulunamadı.' ?></p>
+                    <a href="<?= BASE_URL ?>/urunler#urunler-vitrini" class="btn btn-primary" style="border-radius: 9999px;"><?= $currentLang === 'en' ? 'Return to All Products' : 'Tüm Ürünlere Dön' ?></a>
                 </div>
             <?php else: ?>
                 <div class="popout-products-grid">
@@ -147,7 +147,7 @@ $GLOBALS['hasHero'] = true;
                                 </div>
 
                                 <!-- Sayı yerine çapraz ok işareti olan dairesel buton -->
-                                <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?> İncele">
+                                <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) . ' ' . ($currentLang === 'en' ? 'Inspect' : 'İncele') ?>">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                         <line x1="7" y1="17" x2="17" y2="7"></line>
                                         <polyline points="7 7 17 7 17 17"></polyline>

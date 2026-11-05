@@ -107,31 +107,34 @@ $GLOBALS['hasHero'] = true;
         
         <!-- Üst Küçük Soru/Etiket -->
         <div class="about-statement-tag">
-            <?= htmlspecialchars($story['subtitle_tr'] ?? ($currentLang === 'en' ? 'Our History' : 'Tarihçemiz')) ?>
+            <?= htmlspecialchars($story['subtitle_' . $currentLang] ?? ($currentLang === 'en' ? 'Our History' : ($story['subtitle_tr'] ?? 'Tarihçemiz'))) ?>
         </div>
 
         <!-- Birebir Görseldeki Büyük Kalın Düz Metin (Renkli Vurgular) -->
         <h2 class="about-statement-lead">
-            <?= !empty($story['title_tr']) ? nl2br(htmlspecialchars($story['title_tr'])) : ($currentLang === 'en' 
-                ? 'Founded in 2018, BİK GRUP began its agricultural journey as a producer with Zeliha Sultan Farm.' 
-                : 'Temelleri 2018 yılında atılan BİK GRUP, tarım sektöründeki yolculuğuna <span class="text-green">Zeliha Sultan Çiftliği</span> ile üretici olarak başlamıştır.') ?>
+            <?php if ($currentLang === 'en'): ?>
+                <?= !empty($story['title_en']) ? nl2br(htmlspecialchars($story['title_en'])) : 'Founded in 2018, BİK GRUP began its agricultural journey as a producer with Zeliha Sultan Farm.' ?>
+            <?php else: ?>
+                <?= !empty($story['title_tr']) ? nl2br(htmlspecialchars($story['title_tr'])) : 'Temelleri 2018 yılında atılan BİK GRUP, tarım sektöründeki yolculuğuna <span class="text-green">Zeliha Sultan Çiftliği</span> ile üretici olarak başlamıştır.' ?>
+            <?php endif; ?>
         </h2>
 
         <!-- KULLANICI TALEBİ: HİKAYEMİZİ ANLATAN NORMAL FORMATTA DÜZ PARAGRAF -->
         <div class="about-statement-story" style="display: flex; flex-direction: column; gap: 18px; font-size: 16.5px; line-height: 1.8; color: #334155;">
-            <?php if (!empty($story['body_tr'])): ?>
-                <p style="margin: 0;"><?= nl2br(htmlspecialchars($story['body_tr'])) ?></p>
+            <?php if ($currentLang === 'en'): ?>
+                <?php if (!empty($story['body_en'])): ?>
+                    <p style="margin: 0;"><?= nl2br(htmlspecialchars($story['body_en'])) ?></p>
+                <?php else: ?>
+                    <p style="margin: 0;">Our operations, which started with citrus and grain production, expanded in 2021 by venturing into the supply and trade of agricultural raw materials.</p>
+                    <p style="margin: 0;">Today, under the BİK GRUP umbrella, we operate in various fields of agriculture from production to supply, trade, and marketing with our brands Köylü Tarım, Zeliha Sultan Çiftliği, İnci Fresh, and Lara Citrus.</p>
+                <?php endif; ?>
             <?php else: ?>
-                <p style="margin: 0;">
-                    <?= $currentLang === 'en' 
-                        ? 'Our operations, which started with citrus and grain production, expanded in 2021 by venturing into the supply and trade of agricultural raw materials.' 
-                        : 'Narenciye ve tahıl üretimiyle başlayan faaliyetlerimiz, 2021 yılında tarımsal ham madde tedariği ve ticaretine uzanarak büyümeye devam etmiştir.' ?>
-                </p>
-                <p style="margin: 0;">
-                    <?= $currentLang === 'en' 
-                        ? 'Today, under the BİK GRUP umbrella, we operate in various fields of agriculture from production to supply, trade, and marketing with our brands Köylü Tarım, Zeliha Sultan Çiftliği, İnci Fresh, and Lara Citrus.' 
-                        : 'Bugün BİK GRUP çatısı altında <strong>Köylü Tarım</strong>, <strong>Zeliha Sultan Çiftliği</strong>, <strong>İnci Fresh</strong> ve <strong>Lara Citrus</strong> markalarımızla üretimden tedariğe, ticaretten pazarlamaya kadar tarımın farklı alanlarında faaliyet göstermekteyiz.' ?>
-                </p>
+                <?php if (!empty($story['body_tr'])): ?>
+                    <p style="margin: 0;"><?= nl2br(htmlspecialchars($story['body_tr'])) ?></p>
+                <?php else: ?>
+                    <p style="margin: 0;">Narenciye ve tahıl üretimiyle başlayan faaliyetlerimiz, 2021 yılında tarımsal ham madde tedariği ve ticaretine uzanarak büyümeye devam etmiştir.</p>
+                    <p style="margin: 0;">Bugün BİK GRUP çatısı altında <strong>Köylü Tarım</strong>, <strong>Zeliha Sultan Çiftliği</strong>, <strong>İnci Fresh</strong> ve <strong>Lara Citrus</strong> markalarımızla üretimden tedariğe, ticaretten pazarlamaya kadar tarımın farklı alanlarında faaliyet göstermekteyiz.</p>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
 
@@ -142,12 +145,12 @@ $GLOBALS['hasHero'] = true;
             <div class="mv-color-box mv-box-mission">
                 <div class="mv-box-inner-frame">
                     <h3 class="mv-box-clean-title">
-                        <?= htmlspecialchars($mvExtra['mission_title'] ?? ($currentLang === 'en' ? 'OUR MISSION' : 'MİSYONUMUZ')) ?>
+                        <?= htmlspecialchars($currentLang === 'en' ? ($mvExtra['mission_title_en'] ?? 'OUR MISSION') : ($mvExtra['mission_title'] ?? 'MİSYONUMUZ')) ?>
                     </h3>
                     <p class="mv-box-desc">
-                        <?= htmlspecialchars($mvExtra['mission_desc'] ?? ($currentLang === 'en' 
-                            ? 'Connecting the abundance of the soil with technology, quality, and trust to create a sustainable value chain extending from producer to consumer.' 
-                            : 'Toprağın bereketini teknoloji, kalite ve güvenle buluşturarak, üreticiden tüketiciye uzanan sürdürülebilir bir değer zinciri oluşturmak.')) ?>
+                        <?= htmlspecialchars($currentLang === 'en' 
+                            ? ($mvExtra['mission_desc_en'] ?? 'Connecting the abundance of the soil with technology, quality, and trust to create a sustainable value chain extending from producer to consumer.') 
+                            : ($mvExtra['mission_desc'] ?? 'Toprağın bereketini teknoloji, kalite ve güvenle buluşturarak, üreticiden tüketiciye uzanan sürdürülebilir bir değer zinciri oluşturmak.')) ?>
                     </p>
                 </div>
             </div>
@@ -156,12 +159,12 @@ $GLOBALS['hasHero'] = true;
             <div class="mv-color-box mv-box-vision">
                 <div class="mv-box-inner-frame">
                     <h3 class="mv-box-clean-title">
-                        <?= htmlspecialchars($mvExtra['vision_title'] ?? ($currentLang === 'en' ? 'OUR VISION' : 'VİZYONUMUZ')) ?>
+                        <?= htmlspecialchars($currentLang === 'en' ? ($mvExtra['vision_title_en'] ?? 'OUR VISION') : ($mvExtra['vision_title'] ?? 'VİZYONUMUZ')) ?>
                     </h3>
                     <p class="mv-box-desc">
-                        <?= htmlspecialchars($mvExtra['vision_desc'] ?? ($currentLang === 'en' 
-                            ? 'Combining the strength of agriculture with modern trade understanding to become a reliable, strong, and pioneering group company in national and international markets.' 
-                            : 'Tarımın gücünü modern ticaret anlayışıyla birleştirerek, ulusal ve uluslararası pazarlarda güvenilir, güçlü ve öncü bir grup şirketi olmak.')) ?>
+                        <?= htmlspecialchars($currentLang === 'en' 
+                            ? ($mvExtra['vision_desc_en'] ?? 'Combining the strength of agriculture with modern trade understanding to become a reliable, strong, and pioneering group company in national and international markets.') 
+                            : ($mvExtra['vision_desc'] ?? 'Tarımın gücünü modern ticaret anlayışıyla birleştirerek, ulusal ve uluslararası pazarlarda güvenilir, güçlü ve öncü bir grup şirketi olmak.')) ?>
                     </p>
                 </div>
             </div>
@@ -232,10 +235,10 @@ $brandsExtra = $brandsSec['extra'] ?? [];
 <section class="section" id="sertifikalar" style="background: #fbfdf9; border-top: 1px solid #eef2f6;">
     <div class="container" style="text-align: center;">
         <h2 style="font-family: var(--font-heading); font-size: 32px; font-weight: 800; margin-bottom: 12px; color: var(--theme-text);">
-            <?= htmlspecialchars($aboutCerts['title_tr'] ?? __('sec_certifications', 'Uluslararası Kalite & Gıda Güvenliği Sertifikalarımız')) ?>
+            <?= htmlspecialchars($aboutCerts['title_' . $currentLang] ?? ($currentLang === 'en' ? 'Our International Quality & Food Safety Accreditations' : ($aboutCerts['title_tr'] ?? __('sec_certifications', 'Uluslararası Kalite & Gıda Güvenliği Sertifikalarımız')))) ?>
         </h2>
         <p style="color: #64748b; font-size: 15px; max-width: 620px; margin: 0 auto 35px auto;">
-            <?= htmlspecialchars($aboutCerts['body_tr'] ?? 'Uluslararası gıda güvenliği, izlenebilirlik ve sürdürülebilir tarım standartlarına tam uyumla belgelendirilmiş üretim tesislerimiz.') ?>
+            <?= htmlspecialchars($aboutCerts['body_' . $currentLang] ?? ($currentLang === 'en' ? 'Our processing facilities operate under full compliance with global food safety, traceability, and sustainable agriculture standards.' : ($aboutCerts['body_tr'] ?? 'Uluslararası gıda güvenliği, izlenebilirlik ve sürdürülebilir tarım standartlarına tam uyumla belgelendirilmiş üretim tesislerimiz.'))) ?>
         </p>
 
         <!-- DEMO RESMİ BELGE GÖRSELLERİ -->
@@ -257,8 +260,8 @@ $brandsExtra = $brandsSec['extra'] ?? [];
                 </div>
                 <div class="cert-doc-body">
                     <h3 class="cert-doc-name"><?= htmlspecialchars($certsExtra['cert1_name'] ?? 'GlobalG.A.P. IFA') ?></h3>
-                    <p class="cert-doc-standard"><?= htmlspecialchars($certsExtra['cert1_standard'] ?? 'İyi Tarım Uygulamaları ve Uluslararası Çiftlik Güvenliği Standardı') ?></p>
-                    <div class="cert-doc-status"><?= htmlspecialchars($certsExtra['cert1_status'] ?? '🛡️ Akredite İhracat Sertifikalı') ?></div>
+                    <p class="cert-doc-standard"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert1_standard_en'] ?? 'Good Agricultural Practices & Global Farm Assurance Standard') : ($certsExtra['cert1_standard'] ?? 'İyi Tarım Uygulamaları ve Uluslararası Çiftlik Güvenliği Standardı')) ?></p>
+                    <div class="cert-doc-status"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert1_status_en'] ?? '🛡️ Accredited Export Certified') : ($certsExtra['cert1_status'] ?? '🛡️ Akredite İhracat Sertifikalı')) ?></div>
                 </div>
             </div>
 
@@ -279,8 +282,8 @@ $brandsExtra = $brandsSec['extra'] ?? [];
                 </div>
                 <div class="cert-doc-body">
                     <h3 class="cert-doc-name"><?= htmlspecialchars($certsExtra['cert2_name'] ?? 'BRCGS Food Safety') ?></h3>
-                    <p class="cert-doc-standard"><?= htmlspecialchars($certsExtra['cert2_standard'] ?? 'Küresel Gıda Güvenliği Girişimi (GFSI) Onaylı Paketleme & Hijyen') ?></p>
-                    <div class="cert-doc-status"><?= htmlspecialchars($certsExtra['cert2_status'] ?? '🛡️ A Sınıfı Tesis Akreditasyonu') ?></div>
+                    <p class="cert-doc-standard"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert2_standard_en'] ?? 'Global Food Safety Initiative (GFSI) Approved Packaging & Hygiene') : ($certsExtra['cert2_standard'] ?? 'Küresel Gıda Güvenliği Girişimi (GFSI) Onaylı Paketleme & Hijyen')) ?></p>
+                    <div class="cert-doc-status"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert2_status_en'] ?? '🛡️ Grade A Facility Accreditation') : ($certsExtra['cert2_status'] ?? '🛡️ A Sınıfı Tesis Akreditasyonu')) ?></div>
                 </div>
             </div>
 
@@ -301,8 +304,8 @@ $brandsExtra = $brandsSec['extra'] ?? [];
                 </div>
                 <div class="cert-doc-body">
                     <h3 class="cert-doc-name"><?= htmlspecialchars($certsExtra['cert3_name'] ?? 'IFS Food Standard') ?></h3>
-                    <p class="cert-doc-standard"><?= htmlspecialchars($certsExtra['cert3_standard'] ?? 'Avrupa Perakende Birliği Yüksek Seviye Kalite ve İzlenebilirlik') ?></p>
-                    <div class="cert-doc-status"><?= htmlspecialchars($certsExtra['cert3_status'] ?? '🛡️ Süpermarket Onaylı Tedarikçi') ?></div>
+                    <p class="cert-doc-standard"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert3_standard_en'] ?? 'European Retail Association Higher-Level Quality & Traceability') : ($certsExtra['cert3_standard'] ?? 'Avrupa Perakende Birliği Yüksek Seviye Kalite ve İzlenebilirlik')) ?></p>
+                    <div class="cert-doc-status"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert3_status_en'] ?? '🛡️ Supermarket Approved Supplier') : ($certsExtra['cert3_status'] ?? '🛡️ Süpermarket Onaylı Tedarikçi')) ?></div>
                 </div>
             </div>
 
@@ -323,8 +326,8 @@ $brandsExtra = $brandsSec['extra'] ?? [];
                 </div>
                 <div class="cert-doc-body">
                     <h3 class="cert-doc-name"><?= htmlspecialchars($certsExtra['cert4_name'] ?? 'ISO 22000:2018') ?></h3>
-                    <p class="cert-doc-standard"><?= htmlspecialchars($certsExtra['cert4_standard'] ?? 'Tarladan Tüketime Gıda Güvenliği Yönetim Sistemi Standardı') ?></p>
-                    <div class="cert-doc-status"><?= htmlspecialchars($certsExtra['cert4_status'] ?? '🛡️ Entegre Kalite Yönetimi') ?></div>
+                    <p class="cert-doc-standard"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert4_standard_en'] ?? 'Food Safety Management Systems Standard - Farm to Table') : ($certsExtra['cert4_standard'] ?? 'Tarladan Tüketime Gıda Güvenliği Yönetim Sistemi Standardı')) ?></p>
+                    <div class="cert-doc-status"><?= htmlspecialchars($currentLang === 'en' ? ($certsExtra['cert4_status_en'] ?? '🛡️ Integrated Quality Management') : ($certsExtra['cert4_status'] ?? '🛡️ Entegre Kalite Yönetimi')) ?></div>
                 </div>
             </div>
         </div>

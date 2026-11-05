@@ -128,39 +128,45 @@ if (!function_exists('resolveUrl')) {
                 
                 <!-- Kart 1: Seçili / Beyaz Özel Kart (Üretim) -->
                 <a href="<?= htmlspecialchars(resolveUrl($heroExtra['card1_link'] ?? '/kurumsal')) ?>" class="adler-white-card">
-                    <div class="adler-card-title"><?= htmlspecialchars($heroExtra['card1_title'] ?? 'Üretim') ?></div>
+                    <div class="adler-card-title"><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card1_title_en'] ?? 'Production') : ($heroExtra['card1_title'] ?? 'Üretim')) ?></div>
                     <p class="adler-card-desc">
-                        <?= htmlspecialchars($heroExtra['card1_desc'] ?? 'Kendi çiftliklerimizde modern tarım teknikleriyle yüksek kaliteli narenciye ve tahıl üretimi.') ?>
+                        <?= htmlspecialchars($currentLang === 'en' 
+                            ? ($heroExtra['card1_desc_en'] ?? 'High-quality citrus and grain production using modern agricultural practices across our own farms.') 
+                            : ($heroExtra['card1_desc'] ?? 'Kendi çiftliklerimizde modern tarım teknikleriyle yüksek kaliteli narenciye ve tahıl üretimi.')) ?>
                     </p>
                     <div class="adler-card-divider"></div>
                     <div class="adler-card-btn">
-                        <span><?= htmlspecialchars($heroExtra['card1_btn'] ?? 'KEŞFET') ?></span>
+                        <span><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card1_btn_en'] ?? 'DISCOVER') : ($heroExtra['card1_btn'] ?? 'KEŞFET')) ?></span>
                         <span class="arrow">→</span>
                     </div>
                 </a>
 
                 <!-- Kart 2: Şeffaf Çizgisel Sütun (Tedarik & Ticaret) -->
                 <a href="<?= htmlspecialchars(resolveUrl($heroExtra['card2_link'] ?? '/kurumsal')) ?>" class="adler-glass-col">
-                    <div class="adler-card-title"><?= htmlspecialchars($heroExtra['card2_title'] ?? 'Tedarik & Ticaret') ?></div>
+                    <div class="adler-card-title"><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card2_title_en'] ?? 'Supply & Trade') : ($heroExtra['card2_title'] ?? 'Tedarik & Ticaret')) ?></div>
                     <p class="adler-card-desc">
-                        <?= htmlspecialchars($heroExtra['card2_desc'] ?? 'Üreticiden sanayiye ve pazara uzanan güçlü hammadde tedariği ve güvenilir lojistik ağı.') ?>
+                        <?= htmlspecialchars($currentLang === 'en' 
+                            ? ($heroExtra['card2_desc_en'] ?? 'Robust raw material sourcing and reliable logistics networks spanning from producer to industry and market.') 
+                            : ($heroExtra['card2_desc'] ?? 'Üreticiden sanayiye ve pazara uzanan güçlü hammadde tedariği ve güvenilir lojistik ağı.')) ?>
                     </p>
                     <div class="adler-card-divider"></div>
                     <div class="adler-card-btn">
-                        <span><?= htmlspecialchars($heroExtra['card2_btn'] ?? 'İNCELE') ?></span>
+                        <span><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card2_btn_en'] ?? 'EXPLORE') : ($heroExtra['card2_btn'] ?? 'İNCELE')) ?></span>
                         <span class="arrow">→</span>
                     </div>
                 </a>
 
                 <!-- Kart 3: Şeffaf Çizgisel Sütun (Global İhracat) -->
                 <a href="<?= htmlspecialchars(resolveUrl($heroExtra['card3_link'] ?? '/urunler')) ?>" class="adler-glass-col">
-                    <div class="adler-card-title"><?= htmlspecialchars($heroExtra['card3_title'] ?? 'Global İhracat') ?></div>
+                    <div class="adler-card-title"><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card3_title_en'] ?? 'Global Export') : ($heroExtra['card3_title'] ?? 'Global İhracat')) ?></div>
                     <p class="adler-card-desc">
-                        <?= htmlspecialchars($heroExtra['card3_desc'] ?? 'Toprağın bereketini uluslararası kalite standartlarıyla dünya pazarlarına ulaştıran vizyon.') ?>
+                        <?= htmlspecialchars($currentLang === 'en' 
+                            ? ($heroExtra['card3_desc_en'] ?? 'A vision delivering the abundance of our land to international markets under global quality standards.') 
+                            : ($heroExtra['card3_desc'] ?? 'Toprağın bereketini uluslararası kalite standartlarıyla dünya pazarlarına ulaştıran vizyon.')) ?>
                     </p>
                     <div class="adler-card-divider"></div>
                     <div class="adler-card-btn">
-                        <span><?= htmlspecialchars($heroExtra['card3_btn'] ?? 'İNCELE') ?></span>
+                        <span><?= htmlspecialchars($currentLang === 'en' ? ($heroExtra['card3_btn_en'] ?? 'EXPLORE') : ($heroExtra['card3_btn'] ?? 'İNCELE')) ?></span>
                         <span class="arrow">→</span>
                     </div>
                 </a>
@@ -274,7 +280,7 @@ if (!function_exists('resolveUrl')) {
                         </div>
 
                         <!-- Sayı yerine çapraz ok işareti olan dairesel buton -->
-                        <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?> İncele">
+                        <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) . ' ' . ($currentLang === 'en' ? 'Inspect' : 'İncele') ?>">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>

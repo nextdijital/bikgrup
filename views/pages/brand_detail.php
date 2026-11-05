@@ -101,7 +101,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                 </div>
                 <!-- Marka Rozeti -->
                 <div style="position: absolute; bottom: -16px; right: 20px; background: #15803d; color: #ffffff; padding: 10px 22px; border-radius: 9999px; font-weight: 800; font-size: 13px; box-shadow: 0 8px 20px rgba(21, 128, 61, 0.35); letter-spacing: 0.5px;">
-                    BİK GRUP MARKA GÜVENCESİ
+                    <?= $currentLang === 'en' ? 'BİK GRUP BRAND ASSURANCE' : 'BİK GRUP MARKA GÜVENCESİ' ?>
                 </div>
             </div>
 

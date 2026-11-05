@@ -770,50 +770,182 @@ $characteristicsData = [
 $defChar = $characteristicsData[$slug] ?? [];
 $isGrain = str_contains(mb_strtolower($catName, 'UTF-8'), 'hububat') || in_array($slug, ['bugday', 'misir', 'aycekirdegi', 'soya-fasulyesi'], true);
 
-$characteristics = [
-    'et_rengi'    => ['title' => $isGrain ? 'Tane / Et Rengi' : 'Et Rengi', 'val' => !empty($prodExtra['char_et_rengi']) ? $prodExtra['char_et_rengi'] : ($defChar['et_rengi']['val'] ?? ($isGrain ? 'Amber Sarısı Camsı Dane' : 'Pembemsi Turuncu')), 'icon' => $isGrain ? '🌾' : '🎨'],
-    'cekirdek'    => ['title' => $isGrain ? 'Dane / Protein Yapısı' : 'Çekirdek Yapısı', 'val' => !empty($prodExtra['char_cekirdek']) ? $prodExtra['char_cekirdek'] : ($defChar['cekirdek']['val'] ?? ($isGrain ? 'Sert Endosperm & Yüksek Protein' : 'Çekirdeksiz')), 'icon' => $isGrain ? '🔬' : '🌱'],
-    'kabuk_rengi' => ['title' => $isGrain ? 'Kepek / Kabuk' : 'Kabuk Rengi', 'val' => !empty($prodExtra['char_kabuk_rengi']) ? $prodExtra['char_kabuk_rengi'] : ($defChar['kabuk_rengi']['val'] ?? ($isGrain ? 'İnce Altın Kepek' : 'Turuncu')), 'icon' => $isGrain ? '🍞' : '🍊'],
-    'dokusu'      => ['title' => $isGrain ? 'Un / İrmik Verimi' : 'Dokusu & Sululuk', 'val' => !empty($prodExtra['char_dokusu']) ? $prodExtra['char_dokusu'] : ($defChar['dokusu']['val'] ?? ($isGrain ? 'Yüksek İrmik & Un Verimi' : 'Gevrek ve Su Oranı Yüksek')), 'icon' => $isGrain ? '⚙️' : '💧'],
-    'sekil'       => ['title' => $isGrain ? 'Tane Formu' : 'Meyve Şekli', 'val' => !empty($prodExtra['char_sekil']) ? $prodExtra['char_sekil'] : ($defChar['sekil']['val'] ?? ($isGrain ? 'İri Dolgun Dane' : 'Düzgün Yuvarlak Şekilli')), 'icon' => '✨'],
-    'tadi'        => ['title' => $isGrain ? 'Aroma & Kalite Notu' : 'Tadı & Asidite', 'val' => !empty($prodExtra['char_tadi']) ? $prodExtra['char_tadi'] : ($defChar['tadi']['val'] ?? ($isGrain ? 'Doğal Tahıl Lezzeti' : 'Tatlı ve Aromatik')), 'icon' => $isGrain ? '🏆' : '🍯'],
+$monthEnMap = ['AĞU' => 'AUG', 'EYL' => 'SEP', 'EKİ' => 'OCT', 'KAS' => 'NOV', 'ARA' => 'DEC', 'OCA' => 'JAN', 'ŞUB' => 'FEB', 'MAR' => 'MAR', 'NİS' => 'APR', 'MAY' => 'MAY', 'HAZ' => 'JUN', 'TEM' => 'JUL'];
+
+$charTranslationEn = [
+    'Koyu Kırmızı' => 'Deep Red',
+    '1 - 2 Çekirdek' => '1 - 2 Seeds',
+    'Çekirdeksiz' => 'Seedless',
+    'Az Çekirdekli' => 'Low Seed Count',
+    'Pembemsi Turuncu, Kırmızı Yanaklı' => 'Pinkish Orange, Red Blushed',
+    'Pembemsi Turuncu, Kırmızı Yanaklı (İnce)' => 'Pinkish Orange, Red Blushed (Thin)',
+    'Yumuşak Bol Sulu' => 'Soft & Very Juicy',
+    'Yuvarlak, Hafif Basık' => 'Round, Slightly Flattened',
+    'Tatlı ve Aromatik' => 'Sweet & Aromatic',
+    'Mat Sarı' => 'Matte Yellow',
+    'Pürüzsüz, Parlak Açık Sarı' => 'Smooth, Bright Light Yellow',
+    'Pürüzsüz, Parlak Açık Sarı (İnce)' => 'Smooth, Bright Light Yellow (Thin)',
+    'Diri, Bol Sulu' => 'Crisp & Very Juicy',
+    'Ferahlatıcı Ekşi & Aromatik' => 'Refreshing Tangy & Aromatic',
+    'Kırmızımsı - Turuncu Kırmızı Yanaklı' => 'Reddish-Orange, Red Blushed',
+    'Kırmızımsı - Turuncu Kırmızı Yanaklı (İnce)' => 'Reddish-Orange, Red Blushed (Thin)',
+    'Su Oranı Yüksek, Tatlı ve Lezzetli' => 'High Water Content, Sweet & Delicious',
+    'Tatlı ve Lezzetli' => 'Sweet & Delicious',
+    'Turuncu' => 'Orange',
+    'Koyu Turuncu' => 'Deep Orange',
+    'Gevrek, Bol Sulu' => 'Crisp, Very Juicy',
+    'Yuvarlağa Yakın' => 'Near Spherical',
+    'Turuncu, Sarı' => 'Orange, Yellow',
+    'Bol Sulu, Etli' => 'Very Juicy, Fleshy',
+    'Yassı Yuvarlak' => 'Flattened Round',
+    'Tatlı, Çok Lezzetli' => 'Sweet, Very Delicious',
+    'Yeşilimsi Sarı' => 'Greenish Yellow',
+    'Koyu Sarı (Orta - İnce)' => 'Deep Yellow (Medium-Thin)',
+    'Bol Sulu' => 'Very Juicy',
+    'Silindirik, Sap Tarafından Kısa Boyunlu' => 'Cylindrical, Short Neck at Stem',
+    'Canlandırıcı Asidik / Ekşi' => 'Invigorating Acidic / Tangy',
+    'Amber Sarısı Camsı Dane' => 'Vitreous Amber Grain',
+    'Sert Endosperm & Yüksek Protein' => 'Hard Endosperm & High Protein',
+    'İnce Altın Kepek' => 'Fine Golden Bran',
+    'Yüksek İrmik & Un Verimi' => 'High Semolina & Flour Yield',
+    'İri Dolgun Dane Formu' => 'Plump Coarse Grain Form',
+    'İri Dolgun Dane' => 'Plump Coarse Grain',
+    'Doğal Tahıl Lezzeti' => 'Natural Cereal Flavor',
+    'Parlak Altın Sarısı' => 'Bright Golden Yellow',
+    'Geniş Embriyo & Yüksek Enerji' => 'Large Embryo & High Energy',
+    'Pürüzsüz Sarı Parlak Kabuk' => 'Smooth Bright Yellow Husk',
+    'Sert & Dolgun Tane' => 'Hard & Full Kernel',
+    'At Dişi & Küremsi Kalibre' => 'Dent & Spherical Caliber',
+    'Doğal Yüksek Nişasta & Aroma' => 'High Natural Starch & Aroma',
+    'Krem Beyazı / Açık Sarı' => 'Cream White / Light Yellow',
+    '%50+ Dolgun İç Randımanı' => '50%+ Full Kernel Yield',
+    'Alacalı Çizgili / Tam Siyah' => 'Striped / Solid Black',
+    'Gevrek ve Yağlı' => 'Crisp and Oil-Rich',
+    'Uzun İri Kalibre Form' => 'Long Large Caliber Form',
+    'Lezzetli ve Zengin Yağ Aroması' => 'Delicious & Rich Oil Aroma',
+    'Açık Altın Sarısı' => 'Light Golden Yellow',
+    '%36+ Yüksek Ham Protein' => '36%+ High Crude Protein',
+    'Pürüzsüz Açık Sarı Kabuk' => 'Smooth Light Yellow Hull',
+    'Sert, Homojen Boylanmış Tane' => 'Hard, Uniform Sized Bean',
+    'Düzgün Yuvarlak Küre Kalibre' => 'Uniform Spherical Caliber',
+    'Doğal Bitkisel Protein & Yağ' => 'Natural Plant Protein & Oil',
+    'Koyu Kırmızı & Gevrek' => 'Deep Red & Crisp',
+    'Küçük Siyah Çekirdekli' => 'Small Black Seeds',
+    'Açık Yeşil Çizgili Parlak' => 'Bright Light Green Striped',
+    'Ekstra Sulu, Gevrek ve Lifli' => 'Extra Juicy, Crisp and Fibrous',
+    'Blok Yuvarlak & Oval Kalibre' => 'Blocky Round & Oval Caliber',
+    'Yüksek Şeker Oranlı Tatlı (11+ Brix)' => 'High Sugar Sweetness (11+ Brix)',
+    'Canlı Parlak Kırmızı' => 'Vivid Bright Red',
+    'Doğal Jel Çekirdekli' => 'Natural Gel Cavity Seeds',
+    'Koyu Kırmızı & Parlak İnce' => 'Deep Red & Glossy Thin Skin',
+    'Sıkı Dokulu, Çatlamaya Dayanıklı' => 'Firm Texture, Crack Resistant',
+    'Kusursuz Yuvarlak Salkım Kalibre' => 'Flawless Round Truss Caliber',
+    'Geleneksel Aromatik Tatlı Domates Kokusu' => 'Traditional Aromatic Sweet Tomato Scent',
 ];
+
+$varietyDescMapEn = [
+    'Koyu kırmızı iç et, ince kabuk ve zengin tatlı narenciye lezzeti.' => 'Deep red pulp, thin peel, and rich sweet citrus flavor.',
+    'Açık pembe iç et, parlak sarı kırmızı yanaklı kabuk ve diri sululuk.' => 'Light pink pulp, bright yellow red-blushed peel, and crisp juiciness.',
+    'Kırmızımsı turuncu kabuk, koyu kırmızı et ve yüksek su oranı.' => 'Reddish-orange peel, deep red pulp, and high water content.',
+    'Pürüzsüz parlak açık sarı kabuk, mat sarı çekirdeksiz et ve ferahlatıcı lezzet.' => 'Smooth glossy light-yellow peel, matte-yellow seedless pulp, and refreshing taste.',
+    'Özenle seçilmiş, birinci sınıf ihraç kalibresi taze mahsul.' => 'Carefully selected, first-class export caliber fresh produce.',
+    'Global standartlarda kalibrasyon ve soğuk hava koruması.' => 'Global-standard calibration and cold storage preservation.'
+];
+
+if ($currentLang === 'en') {
+    foreach ($productVarieties as &$pv) {
+        if (isset($varietyDescMapEn[$pv['desc']])) {
+            $pv['desc'] = $varietyDescMapEn[$pv['desc']];
+        }
+        if (!empty($pv['char']) && is_array($pv['char'])) {
+            foreach ($pv['char'] as $pck => &$pcv) {
+                if (isset($charTranslationEn[$pcv])) {
+                    $pcv = $charTranslationEn[$pcv];
+                }
+            }
+            unset($pcv);
+        }
+    }
+    unset($pv);
+}
+
+$characteristics = [
+    'et_rengi'    => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain / Pulp Color' : 'Pulp Color') : ($isGrain ? 'Tane / Et Rengi' : 'Et Rengi'), 
+        'val' => !empty($prodExtra['char_et_rengi']) ? $prodExtra['char_et_rengi'] : ($defChar['et_rengi']['val'] ?? ($isGrain ? 'Amber Sarısı Camsı Dane' : 'Pembemsi Turuncu')), 
+        'icon' => $isGrain ? '🌾' : '🎨'
+    ],
+    'cekirdek'    => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain / Protein Structure' : 'Seed Structure') : ($isGrain ? 'Dane / Protein Yapısı' : 'Çekirdek Yapısı'), 
+        'val' => !empty($prodExtra['char_cekirdek']) ? $prodExtra['char_cekirdek'] : ($defChar['cekirdek']['val'] ?? ($isGrain ? 'Sert Endosperm & Yüksek Protein' : 'Çekirdeksiz')), 
+        'icon' => $isGrain ? '🔬' : '🌱'
+    ],
+    'kabuk_rengi' => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Bran / Husk Color' : 'Peel Color') : ($isGrain ? 'Kepek / Kabuk' : 'Kabuk Rengi'), 
+        'val' => !empty($prodExtra['char_kabuk_rengi']) ? $prodExtra['char_kabuk_rengi'] : ($defChar['kabuk_rengi']['val'] ?? ($isGrain ? 'İnce Altın Kepek' : 'Turuncu')), 
+        'icon' => $isGrain ? '🍞' : '🍊'
+    ],
+    'dokusu'      => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Flour / Semolina Yield' : 'Texture & Juiciness') : ($isGrain ? 'Un / İrmik Verimi' : 'Dokusu & Sululuk'), 
+        'val' => !empty($prodExtra['char_dokusu']) ? $prodExtra['char_dokusu'] : ($defChar['dokusu']['val'] ?? ($isGrain ? 'Yüksek İrmik & Un Verimi' : 'Gevrek ve Su Oranı Yüksek')), 
+        'icon' => $isGrain ? '⚙️' : '💧'
+    ],
+    'sekil'       => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain Shape' : 'Fruit Shape') : ($isGrain ? 'Tane Formu' : 'Meyve Şekli'), 
+        'val' => !empty($prodExtra['char_sekil']) ? $prodExtra['char_sekil'] : ($defChar['sekil']['val'] ?? ($isGrain ? 'İri Dolgun Dane' : 'Düzgün Yuvarlak Şekilli')), 
+        'icon' => '✨'
+    ],
+    'tadi'        => [
+        'title' => $currentLang === 'en' ? ($isGrain ? 'Aroma & Quality Profile' : 'Taste & Acidity') : ($isGrain ? 'Aroma & Kalite Notu' : 'Tadı & Asidite'), 
+        'val' => !empty($prodExtra['char_tadi']) ? $prodExtra['char_tadi'] : ($defChar['tadi']['val'] ?? ($isGrain ? 'Doğal Tahıl Lezzeti' : 'Tatlı ve Aromatik')), 
+        'icon' => $isGrain ? '🏆' : '🍯'
+    ],
+];
+
+if ($currentLang === 'en') {
+    foreach ($characteristics as $ck => &$cv) {
+        if (isset($charTranslationEn[$cv['val']])) {
+            $cv['val'] = $charTranslationEn[$cv['val']];
+        }
+    }
+    unset($cv);
+}
 
 // Dinamik Ambalaj ve Kutu Seçenekleri (Arka Panelden Yönetilen)
 $box1 = [
-    'title'  => !empty($prodExtra['box1_title']) ? $prodExtra['box1_title'] : 'Karton Kutu',
+    'title'  => !empty($prodExtra['box1_title']) ? $prodExtra['box1_title'] : ($currentLang === 'en' ? 'Carton Box' : 'Karton Kutu'),
     'weight' => !empty($prodExtra['box1_weight']) ? $prodExtra['box1_weight'] : '7 Kg',
     'dim'    => !empty($prodExtra['box1_dim']) ? $prodExtra['box1_dim'] : '600 x 400 x 120',
     'image'  => !empty($prodExtra['box1_image']) ? $prodExtra['box1_image'] : 'packaging_carton_1.png'
 ];
 $box2 = [
-    'title'  => !empty($prodExtra['box2_title']) ? $prodExtra['box2_title'] : 'Karton Kutu',
+    'title'  => !empty($prodExtra['box2_title']) ? $prodExtra['box2_title'] : ($currentLang === 'en' ? 'Carton Box' : 'Karton Kutu'),
     'weight' => !empty($prodExtra['box2_weight']) ? $prodExtra['box2_weight'] : '15 Kg',
     'dim'    => !empty($prodExtra['box2_dim']) ? $prodExtra['box2_dim'] : '600 x 400 x 160',
     'image'  => !empty($prodExtra['box2_image']) ? $prodExtra['box2_image'] : 'packaging_carton_2.png'
 ];
 $box3 = [
-    'title'  => !empty($prodExtra['box3_title']) ? $prodExtra['box3_title'] : 'Karton Kutu Derin',
+    'title'  => !empty($prodExtra['box3_title']) ? $prodExtra['box3_title'] : ($currentLang === 'en' ? 'Deep Carton Box' : 'Karton Kutu Derin'),
     'weight' => !empty($prodExtra['box3_weight']) ? $prodExtra['box3_weight'] : '15 Kg',
     'dim'    => !empty($prodExtra['box3_dim']) ? $prodExtra['box3_dim'] : '600 x 400 x 180',
     'image'  => !empty($prodExtra['box3_image']) ? $prodExtra['box3_image'] : 'packaging_carton_3.png'
 ];
 $box4 = [
-    'title'  => !empty($prodExtra['box4_title']) ? $prodExtra['box4_title'] : 'Karton Kutu – Teleskopik',
+    'title'  => !empty($prodExtra['box4_title']) ? $prodExtra['box4_title'] : ($currentLang === 'en' ? 'Telescopic Carton Box' : 'Karton Kutu – Teleskopik'),
     'weight' => !empty($prodExtra['box4_weight']) ? $prodExtra['box4_weight'] : '15 Kg',
     'dim'    => !empty($prodExtra['box4_dim']) ? $prodExtra['box4_dim'] : '600 x 400 x 180',
     'image'  => !empty($prodExtra['box4_image']) ? $prodExtra['box4_image'] : 'packaging_telescopic.png'
 ];
 $box5 = [
-    'title'  => !empty($prodExtra['box5_title']) ? $prodExtra['box5_title'] : 'File Ambalaj',
+    'title'  => !empty($prodExtra['box5_title']) ? $prodExtra['box5_title'] : ($currentLang === 'en' ? 'Mesh Bag Packaging' : 'File Ambalaj'),
     'weight' => !empty($prodExtra['box5_weight']) ? $prodExtra['box5_weight'] : '1.5 Kg - 2 Kg',
-    'dim'    => !empty($prodExtra['box5_dim']) ? $prodExtra['box5_dim'] : 'Perakende Market Rafı',
+    'dim'    => !empty($prodExtra['box5_dim']) ? $prodExtra['box5_dim'] : ($currentLang === 'en' ? 'Retail Supermarket Shelf' : 'Perakende Market Rafı'),
     'image'  => !empty($prodExtra['box5_image']) ? $prodExtra['box5_image'] : 'packaging_mesh.png'
 ];
 
-$badge1 = !empty($prodExtra['badge1']) ? $prodExtra['badge1'] : 'C Vitamini Deposu';
-$badge2 = !empty($prodExtra['badge2']) ? $prodExtra['badge2'] : 'Yüksek Doğal Su & Lif';
-$badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksidan';
+$badge1 = !empty($prodExtra['badge1']) ? $prodExtra['badge1'] : ($currentLang === 'en' ? 'Vitamin C Store' : 'C Vitamini Deposu');
+$badge2 = !empty($prodExtra['badge2']) ? $prodExtra['badge2'] : ($currentLang === 'en' ? 'High Natural Moisture & Fiber' : 'Yüksek Doğal Su & Lif');
+$badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang === 'en' ? 'Rich Antioxidants' : 'Zengin Antioksidan');
 ?>
 
 <div class="product-detail-page">
@@ -862,7 +994,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                         <h1 class="showcase-product-title" id="showcaseProductTitle" style="margin-bottom:0;"><?= htmlspecialchars($prodName) ?></h1>
                         <span id="varietySelectedTag" style="display:none; background:#ecfdf5; color:#15803d; border:1px solid #86efac; padding:4px 12px; border-radius:9999px; font-size:12px; font-weight:700; align-items:center; gap:6px;">
                             <span id="varietySelectedName"></span>
-                            <button type="button" onclick="resetToDefaultProduct(event)" title="Genel Ürüne Dön" style="background:none; border:none; cursor:pointer; color:#15803d; font-weight:800; font-size:14px; padding:0 2px; line-height:1;">✕</button>
+                            <button type="button" onclick="resetToDefaultProduct(event)" title="<?= $currentLang === 'en' ? 'Return to General Product' : 'Genel Ürüne Dön' ?>" style="background:none; border:none; cursor:pointer; color:#15803d; font-weight:800; font-size:14px; padding:0 2px; line-height:1;">✕</button>
                         </span>
                     </div>
                     
@@ -874,14 +1006,14 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                          KULLANICI TALEBİ: İÇERİK & NİTELİKLER (4 YUVARLAK İKON & HOVER/MOBİL TIKLAMA)
                          ================================================================ -->
                     <div class="product-features-cluster-wrap">
-                        <div class="features-cluster-heading">İçerik & Nitelikler:</div>
+                        <div class="features-cluster-heading"><?= $currentLang === 'en' ? 'Contents & Features:' : 'İçerik & Nitelikler:' ?></div>
                         <div class="features-cluster-row" id="featuresClusterRow">
                             
                             <!-- 1. Doğal Vitamin Deposu -->
                             <div class="feature-capsule-item" 
                                  tabindex="0"
-                                 data-title="Doğal C & A Vitaminleri Deposu" 
-                                 data-desc="Yüksek doğal C vitamini, bağışıklığı güçlendirici doğal antioksidanlar ve canlı hücre koruması.">
+                                 data-title="<?= $currentLang === 'en' ? 'Natural C & A Vitamin Store' : 'Doğal C & A Vitaminleri Deposu' ?>" 
+                                 data-desc="<?= $currentLang === 'en' ? 'High natural vitamin C, immunity-boosting natural antioxidants and cellular defense.' : 'Yüksek doğal C vitamini, bağışıklığı güçlendirici doğal antioksidanlar ve canlı hücre koruması.' ?>">
                                 <div class="feature-icon-bubble">
                                     <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
                                         <circle cx="18" cy="20" r="14" fill="#f97316"/>
@@ -893,16 +1025,16 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                     </svg>
                                 </div>
                                 <span class="feature-tooltip-box">
-                                    <strong>Doğal Vitamin Deposu</strong>
-                                    <span>Zengin C & A vitaminleri, yüksek enerji.</span>
+                                    <strong><?= $currentLang === 'en' ? 'Natural Vitamin Store' : 'Doğal Vitamin Deposu' ?></strong>
+                                    <span><?= $currentLang === 'en' ? 'Rich in vitamins C & A, high vitality.' : 'Zengin C & A vitaminleri, yüksek enerji.' ?></span>
                                 </span>
                             </div>
 
                             <!-- 2. Bol Doğal Su & Nem Oranı -->
                             <div class="feature-capsule-item" 
                                  tabindex="0"
-                                 data-title="%88+ Yüksek Doğal Su & Nem" 
-                                 data-desc="Doğal mineralce zengin, dalından taze hasat edilmiş maksimum sululuk ve ferahlatıcı lezzet.">
+                                 data-title="<?= $currentLang === 'en' ? '88%+ High Natural Water & Moisture' : '%88+ Yüksek Doğal Su & Nem' ?>" 
+                                 data-desc="<?= $currentLang === 'en' ? 'Naturally rich in minerals, fresh from branch with maximum juiciness and refreshing taste.' : 'Doğal mineralce zengin, dalından taze hasat edilmiş maksimum sululuk ve ferahlatıcı lezzet.' ?>">
                                 <div class="feature-icon-bubble">
                                     <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
                                         <path d="M18 4 C18 4 8 16 8 23 A10 10 0 0 0 28 23 C28 16 18 4 18 4 Z" fill="url(#dropGrad)"/>
@@ -916,16 +1048,16 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                     </svg>
                                 </div>
                                 <span class="feature-tooltip-box">
-                                    <strong>Yüksek Su & Nem</strong>
-                                    <span>Maksimum sululuk ve ferahlatıcı mineral zenginliği.</span>
+                                    <strong><?= $currentLang === 'en' ? 'High Moisture & Water' : 'Yüksek Su & Nem' ?></strong>
+                                    <span><?= $currentLang === 'en' ? 'Maximum juiciness and mineral richness.' : 'Maksimum sululuk ve ferahlatıcı mineral zenginliği.' ?></span>
                                 </span>
                             </div>
 
                             <!-- 3. %100 Doğal Lif & Katkısız -->
                             <div class="feature-capsule-item" 
                                  tabindex="0"
-                                 data-title="%100 Doğal & Zengin Diyet Lifi" 
-                                 data-desc="İyi tarım uygulamalarıyla yetiştirilmiş, sıfır kimyasal kalıntı ve sağlıklı sindirimi destekleyen taze lif yapısı.">
+                                 data-title="<?= $currentLang === 'en' ? '100% Natural & Rich Dietary Fiber' : '%100 Doğal & Zengin Diyet Lifi' ?>" 
+                                 data-desc="<?= $currentLang === 'en' ? 'Grown with good agricultural practices, zero chemical residue, supporting healthy digestion.' : 'İyi tarım uygulamalarıyla yetiştirilmiş, sıfır kimyasal kalıntı ve sağlıklı sindirimi destekleyen taze lif yapısı.' ?>">
                                 <div class="feature-icon-bubble">
                                     <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
                                         <path d="M9 29 C14 22 18 16 27 7" stroke="#15803d" stroke-width="2.6" stroke-linecap="round"/>
@@ -935,16 +1067,16 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                     </svg>
                                 </div>
                                 <span class="feature-tooltip-box">
-                                    <strong>Doğal & Zengin Lif</strong>
-                                    <span>İyi tarım uygulamaları, sıfır kalıntı ve yüksek lif.</span>
+                                    <strong><?= $currentLang === 'en' ? 'Natural & Rich Fiber' : 'Doğal & Zengin Lif' ?></strong>
+                                    <span><?= $currentLang === 'en' ? 'Good agricultural practices, zero residue and high fiber.' : 'İyi tarım uygulamaları, sıfır kalıntı ve yüksek lif.' ?></span>
                                 </span>
                             </div>
 
                             <!-- 4. İhracat Kalite Kalkanı -->
                             <div class="feature-capsule-item" 
                                  tabindex="0"
-                                 data-title="Uluslararası Kalite & Gıda Güvenliği" 
-                                 data-desc="GlobalGAP, ISO 22000 ve izlenebilir soğuk zincir protokollerine uygun sertifikalı dünya standardı.">
+                                 data-title="<?= $currentLang === 'en' ? 'International Quality & Food Safety' : 'Uluslararası Kalite & Gıda Güvenliği' ?>" 
+                                 data-desc="<?= $currentLang === 'en' ? 'Certified global standard compliant with GlobalGAP, ISO 22000, and traceable cold chain protocols.' : 'GlobalGAP, ISO 22000 ve izlenebilir soğuk zincir protokollerine uygun sertifikalı dünya standardı.' ?>">
                                 <div class="feature-icon-bubble">
                                     <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
                                         <path d="M18 3 L7 7 V17 C7 24 12 30 18 33 C24 30 29 24 29 17 V7 L18 3 Z" fill="url(#shieldGrad)"/>
@@ -958,8 +1090,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                     </svg>
                                 </div>
                                 <span class="feature-tooltip-box">
-                                    <strong>Kalite & Güvenlik Kalkanı</strong>
-                                    <span>GlobalGAP, ISO 22000 gıda güvenliği güvencesi.</span>
+                                    <strong><?= $currentLang === 'en' ? 'Quality & Safety Shield' : 'Kalite & Güvenlik Kalkanı' ?></strong>
+                                    <span><?= $currentLang === 'en' ? 'GlobalGAP, ISO 22000 food safety assurance.' : 'GlobalGAP, ISO 22000 gıda güvenliği güvencesi.' ?></span>
                                 </span>
                             </div>
 
@@ -974,7 +1106,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
 
                     <!-- Besin Değerleri Tablosu (Görsel 1: Nutritional values:) -->
                     <div class="showcase-nutrition-block">
-                        <div class="block-label">Besin Değerleri (100g):</div>
+                        <div class="block-label"><?= $currentLang === 'en' ? 'Nutritional Values (100g):' : 'Besin Değerleri (100g):' ?></div>
                         <div class="nutrition-card">
                             <div class="nutrition-col-values">
                                 <div class="nutri-val" id="nutriKcal">47</div>
@@ -983,10 +1115,10 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                 <div class="nutri-val" id="nutriProtein">0.9 g</div>
                             </div>
                             <div class="nutrition-col-labels">
-                                <div class="nutri-lbl">kcal (Enerji)</div>
-                                <div class="nutri-lbl">yağ (fats)</div>
-                                <div class="nutri-lbl">karbonhidrat</div>
-                                <div class="nutri-lbl">protein</div>
+                                <div class="nutri-lbl"><?= $currentLang === 'en' ? 'kcal (Energy)' : 'kcal (Enerji)' ?></div>
+                                <div class="nutri-lbl"><?= $currentLang === 'en' ? 'fats' : 'yağ (fats)' ?></div>
+                                <div class="nutri-lbl"><?= $currentLang === 'en' ? 'carbohydrates' : 'karbonhidrat' ?></div>
+                                <div class="nutri-lbl"><?= $currentLang === 'en' ? 'protein' : 'protein' ?></div>
                             </div>
                         </div>
                     </div>
@@ -1000,7 +1132,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                             <?= $currentLang === 'en' ? 'Get a Quote' : 'Teklif Al' ?>
                         </a>
                         <a href="<?= BASE_URL ?>/iletisim?konu=<?= urlencode($prodName . ' İhracat Bilgisi') ?>" class="btn-detail-contact">
-                            Bize Ulaşın
+                            <?= $currentLang === 'en' ? 'Contact Us' : 'Bize Ulaşın' ?>
                         </a>
                     </div>
 
@@ -1034,8 +1166,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                         </div>
 
                         <div class="char-panel-header">
-                            <h3 class="char-panel-title"><?= $isGrain ? 'Ürün & Kalite Karakteristiği' : 'Meyve Karakteristiği' ?></h3>
-                            <p class="char-panel-desc"><?= $isGrain ? 'Fiziksel analiz ve kalite kriterleri' : 'Optik kalibrasyon ve kalite kriterleri' ?></p>
+                            <h3 class="char-panel-title"><?= $currentLang === 'en' ? ($isGrain ? 'Product & Quality Profile' : 'Fruit Characteristics') : ($isGrain ? 'Ürün & Kalite Karakteristiği' : 'Meyve Karakteristiği') ?></h3>
+                            <p class="char-panel-desc"><?= $currentLang === 'en' ? ($isGrain ? 'Physical analysis and quality criteria' : 'Optical calibration and quality criteria') : ($isGrain ? 'Fiziksel analiz ve kalite kriterleri' : 'Optik kalibrasyon ve kalite kriterleri') ?></p>
                         </div>
 
                         <div class="char-items-list">
@@ -1050,7 +1182,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                         </div>
 
                         <div class="char-panel-footer">
-                            <span class="char-footer-text">%100 İzlenebilir İhracat Standardı</span>
+                            <span class="char-footer-text"><?= $currentLang === 'en' ? '100% Traceable Export Standard' : '%100 İzlenebilir İhracat Standardı' ?></span>
                         </div>
                     </div>
                 </div>
@@ -1062,24 +1194,26 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
              3. BÖLÜM: ÜRÜN CİNSLERİ & 12 AYLIK HASAT SEZON TAKVİMİ (GÖRSEL 2)
              ==================================================================== -->
         <section class="season-section">
-            <div class="section-badge-center">Hasat & İhracat Takvimi</div>
-            <h2 class="section-title-center">Ürün Cinsleri ve Hasat Sezonları</h2>
+            <div class="section-badge-center"><?= $currentLang === 'en' ? 'Harvest & Export Calendar' : 'Hasat & İhracat Takvimi' ?></div>
+            <h2 class="section-title-center"><?= $currentLang === 'en' ? 'Product Varieties & Harvest Seasons' : 'Ürün Cinsleri ve Hasat Sezonları' ?></h2>
             <p class="section-desc-center">
-                Yılın dört mevsiminde tarladan dünya sofralarına kesintisiz, taze ve planlı sevkiyat.
+                <?= $currentLang === 'en' 
+                    ? 'Uninterrupted, fresh, and scheduled shipments from soil to world tables across all four seasons.' 
+                    : 'Yılın dört mevsiminde tarladan dünya sofralarına kesintisiz, taze ve planlı sevkiyat.' ?>
             </p>
 
             <!-- Mobil ve Masaüstü Sezon Bilgi Çubuğu & Kaydırma Rehberi -->
             <div class="season-meta-bar">
                 <div class="season-active-badge">
                     <span class="active-badge-dot">●</span>
-                    <span>Hasat Dönemi: <strong><?= htmlspecialchars($product['harvest_season_' . $currentLang] ?? $product['harvest_season_tr'] ?? 'Mayıs - Ağustos') ?></strong></span>
+                    <span><?= $currentLang === 'en' ? 'Harvest Period:' : 'Hasat Dönemi:' ?> <strong><?= htmlspecialchars($product['harvest_season_' . $currentLang] ?? $product['harvest_season_tr'] ?? ($currentLang === 'en' ? 'May - August' : 'Mayıs - Ağustos')) ?></strong></span>
                 </div>
                 <div class="season-swipe-indicator season-swipe-desktop-only">
                     <span class="swipe-icon">⇄</span>
-                    <span>Tüm ayları görmek için sağa kaydırın</span>
+                    <span><?= $currentLang === 'en' ? 'Swipe right to view all months' : 'Tüm ayları görmek için sağa kaydırın' ?></span>
                 </div>
                 <div class="season-mobile-hint">
-                    <span>👆 Cins kartına dokunarak üstteki karakteristikleri inceleyin</span>
+                    <span><?= $currentLang === 'en' ? '👆 Tap a variety card to inspect characteristics above' : '👆 Cins kartına dokunarak üstteki karakteristikleri inceleyin' ?></span>
                 </div>
             </div>
 
@@ -1088,9 +1222,9 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                 <table class="season-table">
                     <thead>
                         <tr>
-                            <th class="col-season-label">SEZON / CİNS</th>
+                            <th class="col-season-label"><?= $currentLang === 'en' ? 'SEASON / VARIETY' : 'SEZON / CİNS' ?></th>
                             <?php foreach ($allMonths as $m): ?>
-                                <th><?= $m ?></th>
+                                <th><?= $currentLang === 'en' ? ($monthEnMap[$m] ?? $m) : $m ?></th>
                             <?php endforeach; ?>
                         </tr>
                     </thead>
@@ -1106,11 +1240,11 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                 data-variety-nutri='<?= $vNutriJson ?>'
                                 data-variety-char='<?= $vCharJson ?>'
                                 onclick="selectProductVariety(this)"
-                                title="<?= htmlspecialchars($v['name']) ?> cinsini seçip üstteki detayları görüntüle">
+                                title="<?= htmlspecialchars($v['name']) ?> <?= $currentLang === 'en' ? 'select variety to inspect details' : 'cinsini seçip üstteki detayları görüntüle' ?>">
                                 <td class="col-variety-info">
                                     <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
                                         <div class="variety-name"><?= htmlspecialchars($v['name']) ?></div>
-                                        <span class="variety-select-pill">Seç & İncele ➔</span>
+                                        <span class="variety-select-pill"><?= $currentLang === 'en' ? 'Select & Inspect ➔' : 'Seç & İncele ➔' ?></span>
                                     </div>
                                     <div class="variety-desc"><?= htmlspecialchars($v['desc']) ?></div>
                                 </td>
@@ -1118,7 +1252,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                                     <?php $isActiveMonth = in_array($m, $v['months'], true); ?>
                                     <td class="col-month <?= $isActiveMonth ? 'active-season' : '' ?>">
                                         <?php if ($isActiveMonth): ?>
-                                            <div class="season-badge-icon" title="<?= htmlspecialchars($v['name']) ?> hasat ayı">
+                                            <div class="season-badge-icon" title="<?= htmlspecialchars($v['name']) ?> <?= $currentLang === 'en' ? 'harvest month' : 'hasat ayı' ?>">
                                                 <?= $prodIcon ?>
                                             </div>
                                         <?php else: ?>
@@ -1146,14 +1280,14 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                          data-variety-nutri='<?= $vNutriJson ?>'
                          data-variety-char='<?= $vCharJson ?>'
                          onclick="selectProductVariety(this)"
-                         title="<?= htmlspecialchars($v['name']) ?> cinsini seçip üstteki detayları görüntüle">
+                         title="<?= htmlspecialchars($v['name']) ?> <?= $currentLang === 'en' ? 'select variety to inspect details' : 'cinsini seçip üstteki detayları görüntüle' ?>">
                         
                         <div class="variety-mob-top">
                             <div class="variety-mob-header-left">
                                 <span class="variety-mob-icon"><?= $prodIcon ?></span>
                                 <div class="variety-mob-title"><?= htmlspecialchars($v['name']) ?></div>
                             </div>
-                            <span class="variety-select-pill">Seç & İncele ➔</span>
+                            <span class="variety-select-pill"><?= $currentLang === 'en' ? 'Select & Inspect ➔' : 'Seç & İncele ➔' ?></span>
                         </div>
 
                         <?php if (!empty($v['desc'])): ?>
@@ -1164,14 +1298,23 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                         <div class="variety-mob-calendar-block">
                             <div class="variety-mob-calendar-head">
                                 <span class="cal-head-icon">🗓️</span>
-                                <span class="cal-head-label">Hasat Sezonu:</span>
-                                <strong class="cal-head-active"><?= implode(', ', $activeMonthsList) ?></strong>
+                                <span class="cal-head-label"><?= $currentLang === 'en' ? 'Harvest Season:' : 'Hasat Sezonu:' ?></span>
+                                <strong class="cal-head-active">
+                                    <?php 
+                                    if ($currentLang === 'en') {
+                                        $enMonthsDisplay = array_map(fn($m) => $monthEnMap[$m] ?? $m, $activeMonthsList);
+                                        echo implode(', ', $enMonthsDisplay);
+                                    } else {
+                                        echo implode(', ', $activeMonthsList);
+                                    }
+                                    ?>
+                                </strong>
                             </div>
                             <div class="variety-mob-months-row">
                                 <?php foreach ($allMonths as $m): ?>
                                     <?php $isActive = in_array($m, $activeMonthsList, true); ?>
                                     <div class="mob-month-cell <?= $isActive ? 'active-month' : '' ?>">
-                                        <div class="mob-month-lbl"><?= $m ?></div>
+                                        <div class="mob-month-lbl"><?= $currentLang === 'en' ? ($monthEnMap[$m] ?? $m) : $m ?></div>
                                         <div class="mob-month-dot-box">
                                             <?php if ($isActive): ?>
                                                 <span class="mob-active-icon"><?= $prodIcon ?></span>
@@ -1193,10 +1336,12 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
              4. BÖLÜM: İHRACAT AMBALAJ VE KUTU ÇEŞİTLERİ (ARKAPLANI OLMAYAN SAYDAM GÖRSELLER)
              ==================================================================== -->
         <section class="packaging-section">
-            <div class="section-badge-center">Uluslararası Standartlar</div>
-            <h2 class="section-title-center">İhracat Ambalaj ve Kutu Çeşitlerimiz</h2>
+            <div class="section-badge-center"><?= $currentLang === 'en' ? 'International Standards' : 'Uluslararası Standartlar' ?></div>
+            <h2 class="section-title-center"><?= $currentLang === 'en' ? 'Export Packaging & Box Options' : 'İhracat Ambalaj ve Kutu Çeşitlerimiz' ?></h2>
             <p class="section-desc-center">
-                Soğuk zincire ve uzun yol nakliyesine dayanıklı, havalandırma kanallı profesyonel ambalaj çözümleri.
+                <?= $currentLang === 'en' 
+                    ? 'Ventilated professional packaging solutions resistant to cold chains and long-haul freight.' 
+                    : 'Soğuk zincire ve uzun yol nakliyesine dayanıklı, havalandırma kanallı profesyonel ambalaj çözümleri.' ?>
             </p>
 
             <div class="packaging-grid">
@@ -1208,8 +1353,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                     </div>
                     <div class="packaging-details">
                         <h4 class="pkg-title"><?= htmlspecialchars($box1['title']) ?></h4>
-                        <div class="pkg-meta"><strong>Ağırlık:</strong> <?= htmlspecialchars($box1['weight']) ?></div>
-                        <div class="pkg-meta"><strong>Ebatlar(mm):</strong> <?= htmlspecialchars($box1['dim']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box1['weight']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box1['dim']) ?></div>
                     </div>
                 </div>
 
@@ -1220,8 +1365,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                     </div>
                     <div class="packaging-details">
                         <h4 class="pkg-title"><?= htmlspecialchars($box2['title']) ?></h4>
-                        <div class="pkg-meta"><strong>Ağırlık:</strong> <?= htmlspecialchars($box2['weight']) ?></div>
-                        <div class="pkg-meta"><strong>Ebatlar(mm):</strong> <?= htmlspecialchars($box2['dim']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box2['weight']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box2['dim']) ?></div>
                     </div>
                 </div>
 
@@ -1232,8 +1377,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                     </div>
                     <div class="packaging-details">
                         <h4 class="pkg-title"><?= htmlspecialchars($box3['title']) ?></h4>
-                        <div class="pkg-meta"><strong>Ağırlık:</strong> <?= htmlspecialchars($box3['weight']) ?></div>
-                        <div class="pkg-meta"><strong>Ebatlar(mm):</strong> <?= htmlspecialchars($box3['dim']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box3['weight']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box3['dim']) ?></div>
                     </div>
                 </div>
 
@@ -1244,8 +1389,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                     </div>
                     <div class="packaging-details">
                         <h4 class="pkg-title"><?= htmlspecialchars($box4['title']) ?></h4>
-                        <div class="pkg-meta"><strong>Ağırlık:</strong> <?= htmlspecialchars($box4['weight']) ?></div>
-                        <div class="pkg-meta"><strong>Ebatlar(mm):</strong> <?= htmlspecialchars($box4['dim']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box4['weight']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box4['dim']) ?></div>
                     </div>
                 </div>
 
@@ -1256,8 +1401,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
                     </div>
                     <div class="packaging-details">
                         <h4 class="pkg-title"><?= htmlspecialchars($box5['title']) ?></h4>
-                        <div class="pkg-meta"><strong>Ağırlık:</strong> <?= htmlspecialchars($box5['weight']) ?></div>
-                        <div class="pkg-meta"><strong>Kullanım:</strong> <?= htmlspecialchars($box5['dim']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box5['weight']) ?></div>
+                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Usage:' : 'Kullanım:' ?></strong> <?= htmlspecialchars($box5['dim']) ?></div>
                     </div>
                 </div>
 
@@ -1266,10 +1411,10 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
             <!-- Alt Yönlendirme Linkleri (Görsel 2 Sağ Alt) -->
             <div class="detail-bottom-nav">
                 <a href="<?= BASE_URL ?>/urunler" class="nav-return-btn">
-                    <span>↩</span> <?= mb_strtoupper($catName, 'UTF-8') ?> LİSTESİ
+                    <span>↩</span> <?= $currentLang === 'en' ? strtoupper($catName) . ' LIST' : mb_strtoupper($catName, 'UTF-8') . ' LİSTESİ' ?>
                 </a>
                 <a href="<?= BASE_URL ?>/" class="nav-return-btn">
-                    <span>🏠</span> ANA SAYFA
+                    <span>🏠</span> <?= $currentLang === 'en' ? 'HOME' : 'ANA SAYFA' ?>
                 </a>
             </div>
 
@@ -1691,7 +1836,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : 'Zengin Antioksi
         const tag = document.getElementById('varietySelectedTag');
         const tagName = document.getElementById('varietySelectedName');
         if (tag && tagName) {
-            tagName.innerText = 'Cins: ' + vName;
+            tagName.innerText = (<?= json_encode($currentLang === 'en') ?> ? 'Variety: ' : 'Cins: ') + vName;
             tag.style.display = 'inline-flex';
         }
 
