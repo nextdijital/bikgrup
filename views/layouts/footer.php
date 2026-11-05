@@ -335,6 +335,206 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
         </div>
     </div>
 
+    <!-- ÇEREZ POLİTİKASI (COOKIE CONSENT) BANNER -->
+    <div id="cookieConsentBanner" class="cookie-consent-bar" style="display: none;" role="region" aria-label="<?= $currentLang === 'en' ? 'Cookie Consent' : 'Çerez Onayı' ?>">
+        <div class="cookie-consent-inner">
+            <div class="cookie-consent-icon" aria-hidden="true">
+                <span>🍪</span>
+            </div>
+            <div class="cookie-consent-text">
+                <strong class="cookie-consent-title">
+                    <?= $currentLang === 'en' ? 'Cookie Policy & Privacy' : 'Çerez Politikası ve Gizlilik' ?>
+                </strong>
+                <p class="cookie-consent-desc">
+                    <?= $currentLang === 'en'
+                        ? 'We use cookies to enhance your browsing experience, analyze site traffic, and ensure seamless performance. Learn more in our <a href="' . BASE_URL . '/cerez-politikasi?lang=en" target="_blank" rel="noopener">Cookie Policy</a>.'
+                        : 'Sizlere daha iyi bir gezinme deneyimi sunmak, site trafiğini analiz etmek ve güvenli bir kullanım sağlamak amacıyla çerezler (cookies) kullanıyoruz. Detaylı bilgi için <a href="' . BASE_URL . '/cerez-politikasi" target="_blank" rel="noopener">Çerez Politikamızı</a> inceleyebilirsiniz.' ?>
+                </p>
+            </div>
+            <div class="cookie-consent-actions">
+                <button type="button" class="cookie-btn cookie-btn-reject" onclick="handleCookieConsent('rejected')">
+                    <?= $currentLang === 'en' ? 'Reject' : 'Reddet' ?>
+                </button>
+                <button type="button" class="cookie-btn cookie-btn-accept" onclick="handleCookieConsent('accepted')">
+                    <?= $currentLang === 'en' ? 'Accept All' : 'Kabul Et' ?>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .cookie-consent-bar {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(40px);
+        width: calc(100% - 36px);
+        max-width: 660px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1.5px solid rgba(226, 232, 240, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        z-index: 99998;
+        padding: 18px 22px;
+        opacity: 0;
+        transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+    }
+    .cookie-consent-bar.cookie-show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+    .cookie-consent-inner {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .cookie-consent-icon {
+        font-size: 28px;
+        line-height: 1;
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fef3c7;
+        border-radius: 14px;
+    }
+    .cookie-consent-text {
+        flex: 1;
+        min-width: 0;
+    }
+    .cookie-consent-title {
+        display: block;
+        font-size: 14px;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 3px;
+        letter-spacing: -0.2px;
+    }
+    .cookie-consent-desc {
+        font-size: 13px;
+        line-height: 1.45;
+        color: #475569;
+        margin: 0;
+    }
+    .cookie-consent-desc a {
+        color: #15803d;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: color 0.15s ease;
+    }
+    .cookie-consent-desc a:hover {
+        color: #166534;
+    }
+    .cookie-consent-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+    .cookie-btn {
+        padding: 9px 18px;
+        font-size: 13px;
+        font-weight: 700;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        outline: none;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .cookie-btn-accept {
+        background: #15803d;
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(21, 128, 61, 0.3);
+    }
+    .cookie-btn-accept:hover {
+        background: #166534;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(21, 128, 61, 0.4);
+    }
+    .cookie-btn-reject {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+    .cookie-btn-reject:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+    @media (max-width: 768px) {
+        .cookie-consent-bar {
+            bottom: 84px;
+            left: 12px;
+            right: 12px;
+            width: auto;
+            transform: translateY(40px);
+            padding: 14px 16px;
+            border-radius: 18px;
+        }
+        .cookie-consent-bar.cookie-show {
+            transform: translateY(0);
+        }
+        .cookie-consent-inner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .cookie-consent-icon {
+            display: none;
+        }
+        .cookie-consent-actions {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .cookie-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 14px;
+        }
+    }
+    </style>
+
+    <script>
+    (function() {
+        const consentKey = 'bikgrup_cookie_consent';
+        const banner = document.getElementById('cookieConsentBanner');
+        if (!banner) return;
+
+        try {
+            const currentConsent = localStorage.getItem(consentKey);
+            if (!currentConsent) {
+                banner.style.display = 'block';
+                setTimeout(function() {
+                    banner.classList.add('cookie-show');
+                }, 600);
+            }
+        } catch (e) {
+            banner.style.display = 'block';
+            banner.classList.add('cookie-show');
+        }
+
+        window.handleCookieConsent = function(status) {
+            try {
+                localStorage.setItem(consentKey, status);
+            } catch (e) {}
+            banner.classList.remove('cookie-show');
+            setTimeout(function() {
+                banner.style.display = 'none';
+            }, 350);
+        };
+    })();
+    </script>
+
     <!-- Ana JavaScript Motoru -->
     <script src="<?= BASE_URL ?>/public/js/main.js?v=<?= file_exists(PUBLIC_PATH . '/js/main.js') ? filemtime(PUBLIC_PATH . '/js/main.js') : time() ?>"></script>
 </body>
