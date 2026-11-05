@@ -1096,12 +1096,6 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
                             </div>
 
                         </div>
-
-                        <!-- Mobilde tıklandığında anında beliren açıklama paneli -->
-                        <div class="feature-mobile-desc-card" id="featureMobileDescCard" style="display:none;">
-                            <div class="feat-mob-title" id="featMobTitle"></div>
-                            <div class="feat-mob-text" id="featMobText"></div>
-                        </div>
                     </div>
 
                     <!-- Besin Değerleri Tablosu (Görsel 1: Nutritional values:) -->
@@ -1470,13 +1464,12 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
-.feature-capsule-item:hover .feature-icon-bubble,
-.feature-capsule-item.active .feature-icon-bubble {
+.feature-capsule-item:hover .feature-icon-bubble {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
     border-color: #cbd5e1;
 }
-/* Masaüstü Tooltip */
+/* Masaüstü ve Mobil Tooltip */
 .feature-tooltip-box {
     position: absolute;
     bottom: calc(100% + 12px);
@@ -1517,32 +1510,6 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
-}
-/* Mobil Bilgi Kartı */
-.feature-mobile-desc-card {
-    margin-top: 16px;
-    padding: 14px 16px;
-    background: #ffffff;
-    border: 1px solid #bae6fd;
-    border-left: 4px solid #0284c7;
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
-    animation: fadeInQuick 0.2s ease;
-}
-.feat-mob-title {
-    font-size: 13.5px;
-    font-weight: 800;
-    color: #0369a1;
-    margin-bottom: 3px;
-}
-.feat-mob-text {
-    font-size: 13px;
-    color: #475569;
-    line-height: 1.45;
-}
-@keyframes fadeInQuick {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Tıklanabilir Sezon / Cins Tablo Satırları */
@@ -1761,7 +1728,9 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
 
 @media (max-width: 640px) {
     .feature-tooltip-box {
-        display: none !important; /* Mobilde tooltip yerine alt kart kullanılır */
+        white-space: normal;
+        min-width: 180px;
+        max-width: 240px;
     }
     .feature-icon-bubble {
         width: 50px;
@@ -1868,32 +1837,6 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
 
         document.querySelectorAll('.variety-clickable-row').forEach(r => r.classList.remove('active-variety-row'));
     };
-
-    // 4. İçerik & Nitelikler Mobil Dokunma (Click/Tap)
-    const items = document.querySelectorAll('.feature-capsule-item');
-    const mobCard = document.getElementById('featureMobileDescCard');
-    const mobTitle = document.getElementById('featMobTitle');
-    const mobText = document.getElementById('featMobText');
-
-    items.forEach(item => {
-        item.addEventListener('click', function() {
-            const isAlreadyActive = this.classList.contains('active');
-            items.forEach(it => it.classList.remove('active'));
-
-            if (!isAlreadyActive) {
-                this.classList.add('active');
-                const title = this.getAttribute('data-title') || '';
-                const desc = this.getAttribute('data-desc') || '';
-                if (mobCard && mobTitle && mobText) {
-                    mobTitle.innerText = title;
-                    mobText.innerText = desc;
-                    mobCard.style.display = 'block';
-                }
-            } else {
-                if (mobCard) mobCard.style.display = 'none';
-            }
-        });
-    });
 
 })();
 </script>
