@@ -28,7 +28,7 @@ return [
     'cat_hububat_desc' => 'Superior quality wheat, corn, sunflower seeds, and soybeans from fertile agricultural basins.',
     'btn_details' => 'View Details',
     'btn_explore' => 'Discover More',
-    'btn_contact_us' => 'Get in Touch',
+    'btn_contact_us' => 'Contact Us',
     'btn_send_message' => 'Send Message',
     'btn_all_products' => 'Explore All Products',
     'btn_read_more' => 'Read Article',
@@ -57,7 +57,7 @@ return [
     'form_error' => 'Please fill out all required fields with valid information.',
     'footer_about_text' => 'BİKGRUP is a world-class agricultural exporter processing fresh citrus, fruits, and vegetables grown in the Mediterranean and Aegean regions.',
     'footer_quick_links' => 'Quick Links',
-    'footer_contact_info' => 'Contact Details',
+    'footer_contact_info' => 'Contact & Location',
     'footer_rights' => 'All rights reserved.',
     'footer_privacy' => 'Privacy & GDPR Policy',
 ];

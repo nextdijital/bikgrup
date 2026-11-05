@@ -79,13 +79,13 @@ $GLOBALS['hasHero'] = true;
                     : 'BİKGRUP olarak kişisel verilerinizin güvenliğine, gizlilik haklarınıza ve yasal mevzuata tam uyuma azami özen gösteriyoruz.' ?>
             </p>
             <div class="adler-inner-actions">
-                <a href="<?= BASE_URL ?>/gizlilik" class="sarikaya-cat-pill <?= $activeTab === 'gizlilik' ? 'is-active' : '' ?>">
+                <a href="<?= BASE_URL ?>/gizlilik<?= $currentLang === 'en' ? '?lang=en' : '' ?>" class="sarikaya-cat-pill <?= $activeTab === 'gizlilik' ? 'is-active' : '' ?>">
                     🔒 <?= $currentLang === 'en' ? 'Privacy Policy' : 'Gizlilik Politikası' ?>
                 </a>
-                <a href="<?= BASE_URL ?>/kvkk" class="sarikaya-cat-pill <?= $activeTab === 'kvkk' ? 'is-active' : '' ?>">
+                <a href="<?= BASE_URL ?>/kvkk<?= $currentLang === 'en' ? '?lang=en' : '' ?>" class="sarikaya-cat-pill <?= $activeTab === 'kvkk' ? 'is-active' : '' ?>">
                     ⚖️ <?= $currentLang === 'en' ? 'GDPR / KVKK' : 'KVKK Metni' ?>
                 </a>
-                <a href="<?= BASE_URL ?>/cerez-politikasi" class="sarikaya-cat-pill <?= $activeTab === 'cerez' ? 'is-active' : '' ?>">
+                <a href="<?= BASE_URL ?>/cerez-politikasi<?= $currentLang === 'en' ? '?lang=en' : '' ?>" class="sarikaya-cat-pill <?= $activeTab === 'cerez' ? 'is-active' : '' ?>">
                     🍪 <?= $currentLang === 'en' ? 'Cookie Policy' : 'Çerez Politikası' ?>
                 </a>
             </div>

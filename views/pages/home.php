@@ -297,7 +297,7 @@ if (!function_exists('resolveUrl')) {
             $finalBtnUrl = resolveUrl($rawBtnLink, '/urunler');
             ?>
             <a href="<?= htmlspecialchars($finalBtnUrl) ?>" class="btn btn-outline" style="padding: 14px 36px; font-weight: 700;">
-                <?= htmlspecialchars($featExtra['all_products_text'] ?? ($featExtra['btn_text'] ?? ($currentLang === 'en' ? 'View All Products' : 'Tüm Ürünleri İncele'))) ?>
+                <?= htmlspecialchars($currentLang === 'en' ? ($featExtra['all_products_text_en'] ?? ($featExtra['btn_text_en'] ?? 'View All Products')) : ($featExtra['all_products_text'] ?? ($featExtra['btn_text'] ?? 'Tüm Ürünleri İncele'))) ?>
             </a>
         </div>
 
@@ -510,7 +510,7 @@ if (!function_exists('resolveUrl')) {
             </p>
             <div style="margin-top: 38px;">
                 <a href="<?= htmlspecialchars(resolveUrl($facExtra['btn_link'] ?? '/iletisim')) ?>" class="btn btn-primary" style="background:#22c55e; color:#0f172a; font-weight:800; font-size:16px; padding: 16px 42px; border-radius: 9999px; box-shadow: 0 14px 32px -6px rgba(34, 197, 94, 0.45);">
-                    <?= htmlspecialchars($facExtra['btn_text'] ?? __('btn_contact_us')) ?>
+                    <?= htmlspecialchars($currentLang === 'en' ? ($facExtra['btn_text_en'] ?? __('btn_contact_us')) : ($facExtra['btn_text'] ?? __('btn_contact_us'))) ?>
                 </a>
             </div>
         </div>
@@ -533,7 +533,7 @@ if (!function_exists('resolveUrl')) {
                 </h2>
             </div>
             <a href="<?= htmlspecialchars(resolveUrl($blogExtra['btn_link'] ?? '/blog')) ?>" class="btn btn-outline" style="display:inline-flex;">
-                <?= htmlspecialchars($blogExtra['btn_text'] ?? ($currentLang === 'en' ? 'All Articles' : 'Tüm Makaleler')) ?>
+                <?= htmlspecialchars($currentLang === 'en' ? ($blogExtra['btn_text_en'] ?? 'All Articles') : ($blogExtra['btn_text'] ?? 'Tüm Makaleler')) ?>
             </a>
         </div>
 

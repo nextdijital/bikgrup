@@ -86,7 +86,7 @@ $GLOBALS['hasHero'] = true;
             <!-- KULLANICI TALEBİ: DİĞER SAYFALARLA BİREBİR AYNI TASARIMLI BUTON (İKONSUZ) -->
             <div class="adler-inner-actions">
                 <a href="#urunler-vitrini" class="about-pill-btn" style="border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
-                    <?= htmlspecialchars($prodHeroExtra['all_products_text'] ?? __('cat_all')) ?>
+                    <?= htmlspecialchars($currentLang === 'en' ? ($prodHeroExtra['all_products_text_en'] ?? __('cat_all')) : ($prodHeroExtra['all_products_text'] ?? __('cat_all'))) ?>
                 </a>
             </div>
         </div>

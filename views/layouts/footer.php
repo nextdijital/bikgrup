@@ -40,11 +40,11 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     <!-- SAĞ ALT: Floating Ara Butonu (WhatsApp Butonunun Üzerinde) -->
     <a href="tel:<?= preg_replace('/[^0-9+]/', '', $phone) ?>" 
        class="floating-call-btn anim-pulse" 
-       title="Bizi Arayın: <?= htmlspecialchars($phone) ?>">
+       title="<?= $currentLang === 'en' ? 'Call Us: ' . htmlspecialchars($phone) : 'Bizi Arayın: ' . htmlspecialchars($phone) ?>">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
-        <span>Ara</span>
+        <span><?= $currentLang === 'en' ? 'Call' : 'Ara' ?></span>
     </a>
 
     <!-- SAĞ ALT: Floating WhatsApp Butonu -->
@@ -52,11 +52,11 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
        target="_blank" 
        rel="noopener noreferrer" 
        class="floating-action-btn anim-pulse" 
-       title="WhatsApp ile Bilgi Al">
+       title="<?= $currentLang === 'en' ? 'Inquire via WhatsApp' : 'WhatsApp ile Bilgi Al' ?>">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.031 2C6.495 2 2 6.495 2 12.031c0 1.956.564 3.782 1.541 5.334L2 22l4.795-1.503a9.98 9.98 0 005.236 1.488c5.536 0 10.031-4.495 10.031-10.031C22.062 6.495 17.567 2 12.031 2zm5.733 14.18c-.244.685-1.42 1.306-1.954 1.365-.494.054-1.127.08-3.266-.807-2.735-1.134-4.507-3.904-4.644-4.088-.136-.184-1.112-1.478-1.112-2.82 0-1.341.704-2.001.954-2.274.244-.265.535-.333.712-.333.178 0 .356.002.511.01.168.008.39-.064.611.468.228.552.778 1.899.845 2.036.067.137.112.298.023.475-.09.178-.134.29-.267.445-.133.155-.28.347-.399.466-.134.133-.274.278-.118.545.156.267.692 1.142 1.487 1.85 1.024.912 1.888 1.195 2.155 1.328.267.134.423.112.578-.067.156-.178.667-.778.845-1.045.178-.267.356-.222.6-.133.245.089 1.556.734 1.823.867.267.134.445.2.511.312.067.111.067.645-.177 1.33z"/>
         </svg>
-        <span>Bilgi Al</span>
+        <span><?= $currentLang === 'en' ? 'Get Info' : 'Bilgi Al' ?></span>
     </a>
 
     <!-- YENİ: AÇIK RENKLİ & SANATSAL MİMARİ FOOTER (KULLANICI TALEBİ) -->
@@ -113,7 +113,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
 
                 <!-- 2. Hızlı Kurumsal Bağlantılar -->
                 <div>
-                    <h4 class="footer-heading"><?= htmlspecialchars($footerExtra['quick_links_title'] ?? __('footer_quick_links')) ?></h4>
+                    <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['quick_links_title_en'] ?? __('footer_quick_links')) : ($footerExtra['quick_links_title'] ?? __('footer_quick_links'))) ?></h4>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/"><?= __('nav_home') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/kurumsal"><?= __('nav_about') ?></a></li>
@@ -127,7 +127,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
 
                 <!-- 3. Ürün Kategorileri -->
                 <div>
-                    <h4 class="footer-heading"><?= htmlspecialchars($footerExtra['products_title'] ?? __('nav_products')) ?></h4>
+                    <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['products_title_en'] ?? __('nav_products')) : ($footerExtra['products_title'] ?? __('nav_products'))) ?></h4>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=hububat"><?= $currentLang === 'en' ? 'Grains & Crops' : 'Hububat' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=narenciye"><?= __('cat_citrus') ?></a></li>
@@ -139,7 +139,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
 
                 <!-- 4. KULLANICI TALEBİ: Politikalar Sütunu -->
                 <div>
-                    <h4 class="footer-heading"><?= htmlspecialchars($footerExtra['policies_title'] ?? ($currentLang === 'en' ? 'Policies' : 'Politikalar')) ?></h4>
+                    <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['policies_title_en'] ?? 'Policies') : ($footerExtra['policies_title'] ?? 'Politikalar')) ?></h4>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/gizlilik"><?= $currentLang === 'en' ? 'Privacy Policy' : 'Gizlilik Politikası' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/kvkk"><?= $currentLang === 'en' ? 'GDPR / KVKK Clarification' : 'KVKK Aydınlatma Metni' ?></a></li>
@@ -149,7 +149,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
 
                 <!-- 5. İletişim & Lokasyon -->
                 <div class="footer-col-contact">
-                    <h4 class="footer-heading"><?= htmlspecialchars($footerExtra['contact_title'] ?? __('footer_contact_info')) ?></h4>
+                    <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['contact_title_en'] ?? __('footer_contact_info')) : ($footerExtra['contact_title'] ?? __('footer_contact_info'))) ?></h4>
                     <div class="footer-contact-item footer-address-item">
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -191,7 +191,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
             <div class="footer-bottom-bar">
                 <div class="footer-copyright-text">
                     <span class="footer-copy-line1">&copy; <?= date('Y') ?> <strong><?= htmlspecialchars(Settings::get('site_name', 'BİK GRUP')) ?></strong>.</span>
-                    <span class="footer-copy-line2"><?= htmlspecialchars($footerExtra['copyright_text'] ?? ($currentLang === 'en' ? 'All rights reserved.' : 'Tüm hakları saklıdır.')) ?></span>
+                    <span class="footer-copy-line2"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['copyright_text_en'] ?? 'All rights reserved.') : ($footerExtra['copyright_text'] ?? 'Tüm hakları saklıdır.')) ?></span>
                 </div>
             </div>
         </div>

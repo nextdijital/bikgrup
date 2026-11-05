@@ -150,7 +150,13 @@ switch ($route) {
         }
         $siteTitle = Settings::getLocalized('site_title', 'BİKGRUP');
         $siteDesc = Settings::getLocalized('site_description', '');
-        $pageTitle = ($activeTab === 'kvkk' ? 'KVKK Aydınlatma Metni' : ($activeTab === 'cerez' ? 'Çerez Politikası' : 'Gizlilik Politikası')) . ' - ' . $siteTitle;
+        $isEn = Lang::current() === 'en';
+        $policyName = $activeTab === 'kvkk' 
+            ? ($isEn ? 'GDPR / KVKK Clarification' : 'KVKK Aydınlatma Metni') 
+            : ($activeTab === 'cerez' 
+                ? ($isEn ? 'Cookie Policy' : 'Çerez Politikası') 
+                : ($isEn ? 'Privacy Policy' : 'Gizlilik Politikası'));
+        $pageTitle = $policyName . ' - ' . $siteTitle;
         require_once ROOT_PATH . '/core/View.php';
         View::render('policy', [
             'activeTab' => $activeTab,
