@@ -193,17 +193,17 @@ declare(strict_types=1);
             <?php unset($_SESSION['panel_error']); ?>
         <?php endif; ?>
 
-        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/do-login" method="POST">
+        <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/do-login" method="POST" autocomplete="off">
             <?= Security::csrfField() ?>
 
             <div class="login-form-group">
                 <label class="login-label">E-Posta Adresi</label>
-                <input type="email" name="email" value="suleymannozer0@gmail.com" required class="login-input" placeholder="admin@bikgrup.com">
+                <input type="email" name="email" value="" required class="login-input" placeholder="admin@bikgrup.com" autocomplete="off">
             </div>
 
             <div class="login-form-group" style="margin-bottom: 0;">
                 <label class="login-label">Yönetici Şifresi</label>
-                <input type="password" name="password" value="7530" required class="login-input" placeholder="••••••••">
+                <input type="password" name="password" value="" required class="login-input" placeholder="••••••••" autocomplete="new-password">
             </div>
 
             <button type="submit" class="login-btn">
