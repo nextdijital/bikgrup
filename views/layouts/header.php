@@ -63,7 +63,19 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
             <ul class="nav-menu">
                 <li><a href="<?= BASE_URL ?>/" class="nav-link <?= ($activeNav ?? '') === 'home' ? 'active' : '' ?>"><?= __('nav_home') ?></a></li>
                 <li><a href="<?= BASE_URL ?>/kurumsal" class="nav-link <?= ($activeNav ?? '') === 'about' ? 'active' : '' ?>"><?= __('nav_about') ?></a></li>
-                <li><a href="<?= BASE_URL ?>/markalar" class="nav-link <?= ($activeNav ?? '') === 'brands' ? 'active' : '' ?>"><?= __('nav_brands', 'Markalarımız') ?></a></li>
+                <li class="nav-item-dropdown">
+                    <a href="<?= BASE_URL ?>/markalar" class="nav-link nav-link-dropdown <?= in_array($activeNav ?? '', ['brands', 'references'], true) ? 'active' : '' ?>">
+                        <?= $currentLang === 'en' ? 'Brands & References' : 'Markalarımız & Referanslarımız' ?> <span style="font-size: 11px; margin-left: 2px;">▾</span>
+                    </a>
+                    <div class="nav-dropdown-content">
+                        <a href="<?= BASE_URL ?>/markalar" class="<?= ($activeNav ?? '') === 'brands' ? 'active' : '' ?>">
+                            <?= $currentLang === 'en' ? 'Our Brands' : 'Markalarımız' ?>
+                        </a>
+                        <a href="<?= BASE_URL ?>/referanslar" class="<?= ($activeNav ?? '') === 'references' ? 'active' : '' ?>">
+                            <?= $currentLang === 'en' ? 'Our References' : 'Referanslarımız' ?>
+                        </a>
+                    </div>
+                </li>
                 <li><a href="<?= BASE_URL ?>/urunler" class="nav-link <?= ($activeNav ?? '') === 'products' ? 'active' : '' ?>"><?= __('nav_products') ?></a></li>
                 <li><a href="<?= BASE_URL ?>/galeri" class="nav-link <?= ($activeNav ?? '') === 'gallery' ? 'active' : '' ?>"><?= $currentLang === 'en' ? 'Gallery' : 'Galeri' ?></a></li>
                 <li><a href="<?= BASE_URL ?>/blog" class="nav-link <?= ($activeNav ?? '') === 'blog' ? 'active' : '' ?>"><?= __('nav_blog') ?></a></li>
@@ -126,6 +138,9 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
                 </a>
                 <a href="<?= BASE_URL ?>/urunler" class="<?= ($activeNav ?? '') === 'products' ? 'active' : '' ?>" onclick="closeMobileMenu();">
                     <span><?= __('nav_products') ?></span>
+                </a>
+                <a href="<?= BASE_URL ?>/referanslar" class="<?= ($activeNav ?? '') === 'references' ? 'active' : '' ?>" onclick="closeMobileMenu();">
+                    <span><?= $currentLang === 'en' ? 'References' : 'Referanslarımız' ?></span>
                 </a>
                 <a href="<?= BASE_URL ?>/galeri" class="<?= ($activeNav ?? '') === 'gallery' ? 'active' : '' ?>" onclick="closeMobileMenu();">
                     <span><?= $currentLang === 'en' ? 'Gallery' : 'Galeri' ?></span>

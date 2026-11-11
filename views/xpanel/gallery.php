@@ -119,7 +119,7 @@ $categoryLabelsTr = [
             <thead>
                 <tr style="border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 12.5px; text-transform: uppercase;">
                     <th style="padding: 12px 16px; width: 80px;">Önizleme</th>
-                    <th style="padding: 12px 16px;">Başlık & Bilgi</th>
+                    <th style="padding: 12px 16px;">Dosya & Bilgi</th>
                     <th style="padding: 12px 16px; width: 120px;">Tür</th>
                     <th style="padding: 12px 16px; width: 130px;">Kategori</th>
                     <th style="padding: 12px 16px; width: 90px; text-align: center;">Sıra</th>
@@ -154,16 +154,11 @@ $categoryLabelsTr = [
                                 </div>
                             </td>
 
-                            <!-- Başlık & Bilgi -->
+                            <!-- Dosya & Bilgi -->
                             <td style="padding: 12px 16px;">
-                                <strong style="font-size: 14.5px; color: #0f172a; display: block;">
-                                    <?= htmlspecialchars($item['title_tr']) ?>
+                                <strong style="font-size: 13.5px; color: #0f172a; display: block; word-break: break-all;">
+                                    <?= htmlspecialchars($previewImg) ?>
                                 </strong>
-                                <?php if (!empty($item['title_en'])): ?>
-                                    <span style="font-size: 12px; color: #64748b; display: block; margin-top: 2px;">
-                                        🌐 EN: <?= htmlspecialchars($item['title_en']) ?>
-                                    </span>
-                                <?php endif; ?>
                                 <?php if ($item['type'] === 'video' && !empty($item['video_url'])): ?>
                                     <a href="<?= htmlspecialchars($item['video_url']) ?>" target="_blank" style="font-size: 11.5px; color: #2563eb; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 3px;">
                                         🔗 Video Bağlantısı Aç
@@ -267,15 +262,6 @@ $categoryLabelsTr = [
                 </div>
             </div>
 
-            <!-- Başlık (Sadece Türkçe, İngilizce Otomatik) -->
-            <div class="form-group" style="margin-bottom: 18px;">
-                <label class="form-label" style="font-weight: 700; color: #0f172a;">Medya Başlığı *</label>
-                <input type="text" name="title_tr" id="form_title_tr" class="form-control" placeholder="Örn: Çukurova Bereketli Narenciye Hasadı" required>
-                <small style="color: #64748b; font-size: 11.5px; display: block; margin-top: 4px;">
-                    ℹ️ Sistem İngilizce çevirisini otomatik yapacaktır.
-                </small>
-            </div>
-
             <!-- Kategori ve Sıralama -->
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 18px;">
                 <div class="form-group">
@@ -296,18 +282,31 @@ $categoryLabelsTr = [
                 </div>
             </div>
 
-            <!-- Fotoğraf / Video Kapak Görseli Yükleme -->
-            <div class="form-group" style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 16px; margin-bottom: 18px;">
-                <label class="form-label" id="image_label" style="font-weight: 700; color: #0f172a; display: block; margin-bottom: 6px;">
-                    Fotoğraf Dosyası (JPG, PNG, WebP)
-                </label>
-                <input type="file" name="image_file" id="form_image_file" accept="image/*" class="form-control" style="font-size: 13px;">
+            <!-- Fotoğraf / Video Kapak Görseli Yükleme (KULLANICI TALEBİ: BİRDEN FAZLA SEÇİM DESTEĞİ) -->
+            <div class="form-group" style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 18px; margin-bottom: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+                    <label class="form-label" id="image_label" style="font-weight: 700; color: #0f172a; margin: 0;">
+                        Fotoğraf Dosyaları (JPG, PNG, WebP)
+                    </label>
+                    <span id="multi_badge" style="background: #e0f2fe; color: #0369a1; font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 6px; border: 1px solid #bae6fd;">
+                        📁 Birden Fazla Fotoğraf Seçebilirsiniz
+                    </span>
+                </div>
+                
+                <input type="file" name="image_files[]" id="form_image_files" accept="image/*" multiple class="form-control" style="font-size: 13px;" onchange="handleImageFilesChange(this)">
+                
                 <div id="image_preview_box" style="display: none; align-items: center; gap: 12px; margin-top: 10px;">
                     <img id="form_image_preview" src="" alt="Önizleme" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1;">
                     <span style="font-size: 12px; color: #64748b;" id="form_image_name"></span>
                 </div>
-                <small style="color: #059669; font-weight: 600; display: block; margin-top: 6px;">
-                    ⚡ Otomatik WebP Dönüştürücü Aktiftir. Görsel boyutu kalite kaybı olmadan sıkıştırılır.
+
+                <!-- Çoklu Seçim Bilgilendirme Kutusu -->
+                <div id="multi_selected_info" style="display: none; margin-top: 10px; padding: 10px 14px; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 8px; color: #065f46; font-size: 12.5px; font-weight: 600;">
+                    🎉 <span id="multi_selected_count" style="font-weight: 800; font-size: 14px;">0</span> adet fotoğraf seçildi. "Kaydet & Yayınla" butonuna bastığınızda tüm fotoğraflar otomatik olarak WebP'ye dönüştürülüp galeriye tek seferde eklenecektir.
+                </div>
+
+                <small style="color: #059669; font-weight: 600; display: block; margin-top: 8px;">
+                    ⚡ Otomatik WebP Dönüştürücü Aktiftir. Bütün görseller kalite kaybı olmadan sıkıştırılarak galeriye kaydedilir.
                 </small>
             </div>
 
@@ -400,16 +399,44 @@ function handleTypeChange() {
     }
 }
 
+function handleImageFilesChange(input) {
+    const multiBox = document.getElementById('multi_selected_info');
+    const multiCount = document.getElementById('multi_selected_count');
+    const singlePreview = document.getElementById('image_preview_box');
+
+    if (input.files && input.files.length > 1) {
+        multiBox.style.display = 'block';
+        multiCount.textContent = input.files.length;
+        singlePreview.style.display = 'none';
+    } else if (input.files && input.files.length === 1) {
+        multiBox.style.display = 'none';
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('form_image_preview').src = e.target.result;
+            document.getElementById('form_image_name').textContent = file.name;
+            singlePreview.style.display = 'flex';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        multiBox.style.display = 'none';
+    }
+}
+
 function openGalleryModal() {
     document.getElementById('form_id').value = '0';
-    document.getElementById('form_title_tr').value = '';
     document.getElementById('form_category').value = 'hasat';
     document.getElementById('form_sort_order').value = '0';
     document.getElementById('form_video_url').value = '';
     document.getElementById('form_is_active').checked = true;
     document.getElementById('type_image').checked = true;
+    const fileInput = document.getElementById('form_image_files');
+    fileInput.value = '';
+    fileInput.setAttribute('multiple', 'multiple');
+    document.getElementById('multi_badge').style.display = 'inline-block';
+    document.getElementById('multi_selected_info').style.display = 'none';
     document.getElementById('image_preview_box').style.display = 'none';
-    document.getElementById('modalHeading').innerHTML = '<span>➕</span> Yeni Medya Ekle';
+    document.getElementById('modalHeading').innerHTML = '<span>➕</span> Yeni Medya Ekle (Tekli veya Çoklu)';
     handleTypeChange();
     document.getElementById('galleryModal').style.display = 'flex';
 }
@@ -420,11 +447,16 @@ function closeGalleryModal() {
 
 function editGalleryItem(item) {
     document.getElementById('form_id').value = item.id;
-    document.getElementById('form_title_tr').value = item.title_tr || '';
     document.getElementById('form_category').value = item.category || 'genel';
     document.getElementById('form_sort_order').value = item.sort_order || '0';
     document.getElementById('form_video_url').value = item.video_url || '';
     document.getElementById('form_is_active').checked = String(item.is_active) === '1';
+
+    const fileInput = document.getElementById('form_image_files');
+    fileInput.value = '';
+    fileInput.removeAttribute('multiple');
+    document.getElementById('multi_badge').style.display = 'none';
+    document.getElementById('multi_selected_info').style.display = 'none';
 
     if (item.type === 'video') {
         document.getElementById('type_video').checked = true;
@@ -441,7 +473,7 @@ function editGalleryItem(item) {
         document.getElementById('image_preview_box').style.display = 'none';
     }
 
-    document.getElementById('modalHeading').innerHTML = '<span>✏️</span> Medya Düzenle: ' + (item.title_tr || '');
+    document.getElementById('modalHeading').innerHTML = '<span>✏️</span> Medya Düzenle #' + item.id;
     document.getElementById('galleryModal').style.display = 'flex';
 }
 

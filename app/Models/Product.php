@@ -91,7 +91,7 @@ class Product
         return null;
     }
 
-    public static function create(array $data): bool
+    public static function create(array $data): int|bool
     {
         $db = Database::getConnection();
         $extraJson = isset($data['extra']) ? json_encode($data['extra'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;

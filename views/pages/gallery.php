@@ -191,20 +191,6 @@ if ($currentLang === 'en') {
                                     </svg>
                                 </div>
                             <?php endif; ?>
-
-                            <!-- Alt Bilgi Paneli -->
-                            <div class="gallery-card-overlay">
-                                <?php 
-                                $catKey = strtolower(trim((string)($item['category'] ?? 'genel')));
-                                $catBadge = $categoryPillMap[$catKey][$currentLang] ?? ($currentLang === 'en' ? strtoupper($catKey) : mb_strtoupper($catKey, 'UTF-8'));
-                                ?>
-                                <span class="gallery-category-pill">
-                                    <?= htmlspecialchars($catBadge) ?>
-                                </span>
-                                <h3 class="gallery-item-title">
-                                    <?= htmlspecialchars($title) ?>
-                                </h3>
-                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -228,11 +214,6 @@ if ($currentLang === 'en') {
         <!-- İçerik Kutusu -->
         <div class="media-lightbox-body" id="lightboxBody">
             <!-- Dinamik Olarak Resim veya Video Yerleşir -->
-        </div>
-
-        <!-- Alt Başlık Barı -->
-        <div class="media-lightbox-footer" id="lightboxFooter">
-            <span id="lightboxTitle"></span>
         </div>
     </div>
 </div>
@@ -611,14 +592,6 @@ if ($currentLang === 'en') {
     height: 0 !important;
 }
 
-.media-lightbox-footer {
-    margin-top: 14px;
-    color: #e2e8f0;
-    font-size: 15px;
-    font-weight: 600;
-    text-align: center;
-}
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -654,9 +627,6 @@ function openMediaModal(el) {
     const videoUrl = el.getAttribute('data-video-url');
     const videoFile = el.getAttribute('data-video-file');
     const body = document.getElementById('lightboxBody');
-    const titleEl = document.getElementById('lightboxTitle');
-
-    titleEl.textContent = title || '';
     body.innerHTML = '';
 
     if (type === 'video') {

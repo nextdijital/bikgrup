@@ -10,7 +10,10 @@ $currentLang = Lang::current();
 $whatsapp = Settings::get('site_whatsapp', '+905320000000');
 $phone = Settings::get('site_phone', '+90 (242) 555 01 23');
 $email = Settings::get('site_email', 'destek@bikgrup.com');
-$address = Settings::getLocalized('site_address', 'Organize Sanayi Bölgesi 4. Cadde No: 18, Antalya / TÜRKİYE');
+$mainAddress = Settings::getLocalized('site_address', 'Sirkenli, ANA YOL ÜZERİ, 01900 Karataş/Adana');
+$warehouseAddress = Settings::getLocalized('site_warehouse_address', 'Sirkenli Paketleme & Soğuk Hava Deposu Tesisleri, Karataş / Adana');
+$addressMapLink = Settings::get('site_address_map_link', 'https://maps.app.goo.gl/KxejLkF6GA7i7LsBA');
+$warehouseMapLink = Settings::get('site_warehouse_map_link', 'https://maps.app.goo.gl/KxejLkF6GA7i7LsBA');
 $defaultSubject = $_GET['konu'] ?? $_GET['subject'] ?? '';
 
 $contactHero = PageSection::get('contact_hero') ?? [];
@@ -91,17 +94,25 @@ $GLOBALS['hasHero'] = true;
                 <!-- Sol Kolon: Küçük Dikdörtgen İletişim Kartları -->
                 <div class="contact-cards-stack">
                     
-                    <!-- 1. Adres Kartı (Küçük Dikdörtgen) -->
-                    <?php $addressMapLink = Settings::get('site_address_map_link', 'https://maps.app.goo.gl/KxejLkF6GA7i7LsBA'); ?>
-                    <a href="<?= htmlspecialchars($addressMapLink) ?>" target="_blank" rel="noopener noreferrer" class="contact-compact-rect" title="Haritada Aç">
-                        <div class="contact-rect-icon">📍</div>
+                    <!-- 1. Merkez Adres Kartı -->
+                    <a href="<?= htmlspecialchars($addressMapLink) ?>" target="_blank" rel="noopener noreferrer" class="contact-compact-rect" title="Merkez Adresi Haritada Aç">
+                        <div class="contact-rect-icon">🏢</div>
                         <div class="contact-rect-content">
-                            <span class="contact-rect-label"><?= $currentLang === 'en' ? 'LOCATIONS & OFFICES' : 'MERKEZ & ŞUBELER' ?></span>
-                            <span class="contact-rect-val" style="line-height: 1.5;"><?= nl2br(htmlspecialchars($address)) ?></span>
+                            <span class="contact-rect-label"><?= $currentLang === 'en' ? 'HEAD OFFICE / MERKEZ ADRES' : 'MERKEZ ADRES' ?></span>
+                            <span class="contact-rect-val" style="line-height: 1.5;"><?= nl2br(htmlspecialchars($mainAddress)) ?></span>
                         </div>
                     </a>
 
-                    <!-- 2. Telefon & WhatsApp Kartı (Küçük Dikdörtgen) -->
+                    <!-- 2. Depo Adresi Kartı -->
+                    <a href="<?= htmlspecialchars($warehouseMapLink) ?>" target="_blank" rel="noopener noreferrer" class="contact-compact-rect" title="Depo Adresini Haritada Aç">
+                        <div class="contact-rect-icon">🏭</div>
+                        <div class="contact-rect-content">
+                            <span class="contact-rect-label"><?= $currentLang === 'en' ? 'WAREHOUSE / DEPO ADRESİ' : 'DEPO ADRESİ' ?></span>
+                            <span class="contact-rect-val" style="line-height: 1.5;"><?= nl2br(htmlspecialchars($warehouseAddress)) ?></span>
+                        </div>
+                    </a>
+
+                    <!-- 3. Telefon & WhatsApp Kartı (Küçük Dikdörtgen) -->
                     <a href="tel:<?= preg_replace('/[^0-9+]/', '', $phone) ?>" class="contact-compact-rect" title="Bizi Arayın">
                         <div class="contact-rect-icon">📞</div>
                         <div class="contact-rect-content">
@@ -110,7 +121,7 @@ $GLOBALS['hasHero'] = true;
                         </div>
                     </a>
 
-                    <!-- 3. E-Posta & Mesai Kartı (Küçük Dikdörtgen) -->
+                    <!-- 4. E-Posta & Mesai Kartı (Küçük Dikdörtgen) -->
                     <a href="mailto:<?= htmlspecialchars($email) ?>" class="contact-compact-rect" title="E-Posta Gönderin">
                         <div class="contact-rect-icon">✉️</div>
                         <div class="contact-rect-content">

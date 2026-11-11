@@ -257,6 +257,10 @@ class PanelController
         // 3. Metin Alanlarını Kaydet
         foreach ($_POST as $key => $value) {
             if ($key !== 'csrf_token' && is_string($value)) {
+                if ($key === 'smtp_pass' && trim($value) === '') {
+                    // Şifre boş bırakılmışsa mevcut SMTP şifresini asla silme, koru
+                    continue;
+                }
                 $stmt->execute([$key, trim($value)]);
             }
         }
@@ -269,6 +273,10 @@ class PanelController
         if (!empty($_POST['site_address_tr'])) {
             $addressEn = AutoTranslator::translate($_POST['site_address_tr'], 'tr', 'en');
             $stmt->execute(['site_address_en', $addressEn]);
+        }
+        if (!empty($_POST['site_warehouse_address_tr'])) {
+            $whAddressEn = AutoTranslator::translate($_POST['site_warehouse_address_tr'], 'tr', 'en');
+            $stmt->execute(['site_warehouse_address_en', $whAddressEn]);
         }
 
         $_SESSION['panel_success'] = 'Genel site ayarları ve görseller başarıyla güncellendi.';
@@ -571,117 +579,189 @@ class PanelController
 
         $id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
 
-        $slug = trim($_POST['slug'] ?? '');
-        if (empty($slug)) {
-            $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $_POST['name_tr'] ?? 'urun')));
-        }
-
-        // Manuel Görsel Yükleme ve Otomatik WebP Dönüştürme
-        $imageName = trim($_POST['image'] ?? 'product_riored.png');
-        if (!empty($_FILES['image_file']['tmp_name'])) {
-            $uploadedWebp = ImageUploader::uploadAndConvertToWebP(
-                $_FILES['image_file'],
-                ROOT_PATH . '/public/images',
-                'prod_' . $slug
-            );
-            if ($uploadedWebp) {
-                $imageName = $uploadedWebp;
+        try {
+            $slug = trim($_POST['slug'] ?? '');
+            if (empty($slug)) {
+                $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $_POST['name_tr'] ?? 'urun')));
             }
-        }
 
-        // Kutu ve Ambalaj Görsellerini Yükle (Kutu 1'den 5'e)
-        $extra = is_array($_POST['extra'] ?? null) ? $_POST['extra'] : [];
-        for ($b = 1; $b <= 5; $b++) {
-            $boxFileKey = 'box' . $b . '_image_file';
-            if (!empty($_FILES[$boxFileKey]['tmp_name']) && $_FILES[$boxFileKey]['error'] === UPLOAD_ERR_OK) {
-                $uploadedBox = ImageUploader::uploadAndConvertToWebP(
-                    $_FILES[$boxFileKey],
+            // Slug Çakışma Önleyici (Unique Key Hatasını Engelle)
+            $db = Database::getConnection();
+            if ($id) {
+                $stmtSlug = $db->prepare("SELECT id FROM products WHERE slug = ? AND id != ? LIMIT 1");
+                $stmtSlug->execute([$slug, $id]);
+            } else {
+                $stmtSlug = $db->prepare("SELECT id FROM products WHERE slug = ? LIMIT 1");
+                $stmtSlug->execute([$slug]);
+            }
+            if ($stmtSlug->fetch()) {
+                $slug .= '-' . time();
+            }
+
+            // Manuel Görsel Yükleme ve Otomatik WebP Dönüştürme
+            $imageName = trim($_POST['image'] ?? 'product_riored.png');
+            if (!empty($_FILES['image_file']['tmp_name'])) {
+                $uploadedWebp = ImageUploader::uploadAndConvertToWebP(
+                    $_FILES['image_file'],
                     ROOT_PATH . '/public/images',
-                    'pkg_' . $slug . '_' . $b
+                    'prod_' . $slug
                 );
-                if ($uploadedBox) {
-                    $extra['box' . $b . '_image'] = $uploadedBox;
+                if ($uploadedWebp) {
+                    $imageName = $uploadedWebp;
                 }
             }
-        }
 
-        // Cinsler & Çeşitler (Varieties) Temizleme ve Formatlama
-        if (!empty($extra['varieties']) && is_array($extra['varieties'])) {
-            $cleanVarieties = [];
-            foreach ($extra['varieties'] as $v) {
-                $vName = trim($v['name'] ?? '');
-                if ($vName !== '') {
-                    $cleanVarieties[] = [
-                        'name'      => $vName,
-                        'desc'      => trim($v['desc'] ?? ''),
-                        'months'    => trim($v['months'] ?? ''),
-                        'char_note' => trim($v['char_note'] ?? ''),
-                        'nutrition' => [
-                            'kcal'    => trim($v['nutrition']['kcal'] ?? ''),
-                            'fat'     => trim($v['nutrition']['fat'] ?? ''),
-                            'carb'    => trim($v['nutrition']['carb'] ?? ''),
-                            'protein' => trim($v['nutrition']['protein'] ?? '')
-                        ],
-                        'char'      => [
-                            'et'       => trim($v['char']['et'] ?? ''),
-                            'cekirdek' => trim($v['char']['cekirdek'] ?? ''),
-                            'kabuk'    => trim($v['char']['kabuk'] ?? ''),
-                            'doku'     => trim($v['char']['doku'] ?? ''),
-                            'sekil'    => trim($v['char']['sekil'] ?? ''),
-                            'tat'      => trim($v['char']['tat'] ?? '')
-                        ]
-                    ];
+            $extra = is_array($_POST['extra'] ?? null) ? $_POST['extra'] : [];
+
+            // Kutu Ambalajı Göster / Gizle Seçeneği (Kullanıcı Talebi: Seçenekli Kutucuk Ayarı)
+            $showPackaging = isset($_POST['extra']['show_packaging']) ? (int)$_POST['extra']['show_packaging'] : 0;
+            $extra['show_packaging'] = $showPackaging;
+
+            // Kutu ve Ambalaj Dinamik Öğeleri (Kullanıcı Talebi: Ekleme & Silme Özelliği)
+            $packagingItems = [];
+            if (!empty($_POST['extra']['packaging_items']) && is_array($_POST['extra']['packaging_items'])) {
+                foreach ($_POST['extra']['packaging_items'] as $bIdx => $bData) {
+                    $bTitle = trim($bData['title'] ?? '');
+                    $bWeight = trim($bData['weight'] ?? '');
+                    $bDim = trim($bData['dim'] ?? '');
+                    $bImg = trim($bData['image'] ?? 'packaging_carton_1.png');
+
+                    // Özel yeni görsel yüklendi mi?
+                    $boxFileKey = 'pkg_box_file_' . $bIdx;
+                    if (!empty($_FILES[$boxFileKey]['tmp_name']) && $_FILES[$boxFileKey]['error'] === UPLOAD_ERR_OK) {
+                        $uploadedBox = ImageUploader::uploadAndConvertToWebP(
+                            $_FILES[$boxFileKey],
+                            ROOT_PATH . '/public/images',
+                            'pkg_' . $slug . '_' . ($bIdx + 1)
+                        );
+                        if ($uploadedBox) {
+                            $bImg = $uploadedBox;
+                        }
+                    }
+
+                    if ($bTitle !== '' || $bImg !== '') {
+                        $packagingItems[] = [
+                            'title'  => $bTitle,
+                            'weight' => $bWeight,
+                            'dim'    => $bDim,
+                            'image'  => $bImg
+                        ];
+                    }
                 }
             }
-            $extra['varieties'] = $cleanVarieties;
+
+            // Eğer dinamik kutu listesi varsa kaydet ve geriye dönük box1..5 alanlarını doldur
+            if (!empty($packagingItems)) {
+                $extra['packaging_items'] = $packagingItems;
+                foreach ($packagingItems as $idx => $pItem) {
+                    $num = $idx + 1;
+                    $extra['box' . $num . '_title'] = $pItem['title'];
+                    $extra['box' . $num . '_weight'] = $pItem['weight'];
+                    $extra['box' . $num . '_dim'] = $pItem['dim'];
+                    $extra['box' . $num . '_image'] = $pItem['image'];
+                }
+            } else {
+                // Geleneksel box 1'den 5'e fallback
+                for ($b = 1; $b <= 5; $b++) {
+                    $boxFileKey = 'box' . $b . '_image_file';
+                    if (!empty($_FILES[$boxFileKey]['tmp_name']) && $_FILES[$boxFileKey]['error'] === UPLOAD_ERR_OK) {
+                        $uploadedBox = ImageUploader::uploadAndConvertToWebP(
+                            $_FILES[$boxFileKey],
+                            ROOT_PATH . '/public/images',
+                            'pkg_' . $slug . '_' . $b
+                        );
+                        if ($uploadedBox) {
+                            $extra['box' . $b . '_image'] = $uploadedBox;
+                        }
+                    }
+                }
+            }
+
+            // Cinsler & Çeşitler (Varieties) Temizleme ve Formatlama
+            if (!empty($extra['varieties']) && is_array($extra['varieties'])) {
+                $cleanVarieties = [];
+                foreach ($extra['varieties'] as $v) {
+                    $vName = trim($v['name'] ?? '');
+                    if ($vName !== '') {
+                        $cleanVarieties[] = [
+                            'name'      => $vName,
+                            'desc'      => trim($v['desc'] ?? ''),
+                            'months'    => trim($v['months'] ?? ''),
+                            'char_note' => trim($v['char_note'] ?? ''),
+                            'nutrition' => [
+                                'kcal'    => trim($v['nutrition']['kcal'] ?? ''),
+                                'fat'     => trim($v['nutrition']['fat'] ?? ''),
+                                'carb'    => trim($v['nutrition']['carb'] ?? ''),
+                                'protein' => trim($v['nutrition']['protein'] ?? '')
+                            ],
+                            'char'      => [
+                                'et'       => trim($v['char']['et'] ?? ''),
+                                'cekirdek' => trim($v['char']['cekirdek'] ?? ''),
+                                'kabuk'    => trim($v['char']['kabuk'] ?? ''),
+                                'doku'     => trim($v['char']['doku'] ?? ''),
+                                'sekil'    => trim($v['char']['sekil'] ?? ''),
+                                'tat'      => trim($v['char']['tat'] ?? '')
+                            ]
+                        ];
+                    }
+                }
+                $extra['varieties'] = $cleanVarieties;
+            }
+
+            $nameTr = trim($_POST['name_tr'] ?? '');
+            $shortDescTr = trim($_POST['short_desc_tr'] ?? '');
+            $contentTr = trim($_POST['content_tr'] ?? '');
+            $originTr = trim($_POST['origin_tr'] ?? 'Akdeniz & Ege / Türkiye');
+            $harvestSeasonTr = trim($_POST['harvest_season_tr'] ?? '');
+            $packagingTr = trim($_POST['packaging_tr'] ?? '');
+
+            $data = [
+                'category_id'       => (int)($_POST['category_id'] ?? 1),
+                'slug'              => $slug,
+                'name_tr'           => $nameTr,
+                'name_en'           => !empty($nameTr) ? AutoTranslator::translate($nameTr, 'tr', 'en') : '',
+                'short_desc_tr'     => $shortDescTr,
+                'short_desc_en'     => !empty($shortDescTr) ? AutoTranslator::translate($shortDescTr, 'tr', 'en') : '',
+                'content_tr'        => $contentTr,
+                'content_en'        => !empty($contentTr) ? AutoTranslator::translate($contentTr, 'tr', 'en') : '',
+                'image'             => $imageName,
+                'origin_tr'         => $originTr,
+                'origin_en'         => !empty($originTr) ? AutoTranslator::translate($originTr, 'tr', 'en') : 'Mediterranean & Aegean / Turkey',
+                'harvest_season_tr' => $harvestSeasonTr,
+                'harvest_season_en' => !empty($harvestSeasonTr) ? AutoTranslator::translate($harvestSeasonTr, 'tr', 'en') : '',
+                'packaging_tr'      => $packagingTr,
+                'packaging_en'      => !empty($packagingTr) ? AutoTranslator::translate($packagingTr, 'tr', 'en') : '',
+                'temperature'       => trim($_POST['temperature'] ?? '+4°C / +8°C'),
+                'is_featured'       => isset($_POST['is_featured']) ? 1 : 0,
+                'is_active'         => isset($_POST['is_active']) ? 1 : 0,
+                'sort_order'        => (int)($_POST['sort_order'] ?? 0),
+                'extra'             => $extra
+            ];
+
+            if ($id) {
+                Product::update($id, $data);
+                $_SESSION['panel_success'] = 'Ürün ve detay özellikleri başarıyla güncellendi.';
+                $targetId = $id;
+            } else {
+                $targetId = Product::create($data);
+                $_SESSION['panel_success'] = 'Yeni ürün başarıyla eklendi.';
+            }
+
+            $redirectTo = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : (PANEL_SLUG . "/products");
+            if ($redirectTo === 'stay' && $targetId) {
+                $redirectTo = PANEL_SLUG . "/products?action=edit&id=" . $targetId;
+            }
+
+            header("Location: " . BASE_URL . "/" . ltrim($redirectTo, "/"));
+            exit;
+
+        } catch (Throwable $e) {
+            error_log("BİKGRUP Ürün Kaydetme Hatası: " . $e->getMessage() . " (" . $e->getFile() . ":" . $e->getLine() . ")");
+            $_SESSION['panel_error'] = 'Ürün kaydedilirken bir hata oluştu: ' . $e->getMessage();
+            $targetUrl = $id ? (PANEL_SLUG . "/products?action=edit&id=" . $id) : (PANEL_SLUG . "/products");
+            header("Location: " . BASE_URL . "/" . $targetUrl);
+            exit;
         }
-
-        $nameTr = trim($_POST['name_tr'] ?? '');
-        $shortDescTr = trim($_POST['short_desc_tr'] ?? '');
-        $contentTr = trim($_POST['content_tr'] ?? '');
-        $originTr = trim($_POST['origin_tr'] ?? 'Akdeniz & Ege / Türkiye');
-        $harvestSeasonTr = trim($_POST['harvest_season_tr'] ?? '');
-        $packagingTr = trim($_POST['packaging_tr'] ?? '');
-
-        $data = [
-            'category_id'       => (int)($_POST['category_id'] ?? 1),
-            'slug'              => $slug,
-            'name_tr'           => $nameTr,
-            'name_en'           => !empty($nameTr) ? AutoTranslator::translate($nameTr, 'tr', 'en') : '',
-            'short_desc_tr'     => $shortDescTr,
-            'short_desc_en'     => !empty($shortDescTr) ? AutoTranslator::translate($shortDescTr, 'tr', 'en') : '',
-            'content_tr'        => $contentTr,
-            'content_en'        => !empty($contentTr) ? AutoTranslator::translate($contentTr, 'tr', 'en') : '',
-            'image'             => $imageName,
-            'origin_tr'         => $originTr,
-            'origin_en'         => !empty($originTr) ? AutoTranslator::translate($originTr, 'tr', 'en') : 'Mediterranean & Aegean / Turkey',
-            'harvest_season_tr' => $harvestSeasonTr,
-            'harvest_season_en' => !empty($harvestSeasonTr) ? AutoTranslator::translate($harvestSeasonTr, 'tr', 'en') : '',
-            'packaging_tr'      => $packagingTr,
-            'packaging_en'      => !empty($packagingTr) ? AutoTranslator::translate($packagingTr, 'tr', 'en') : '',
-            'temperature'       => trim($_POST['temperature'] ?? '+4°C / +8°C'),
-            'is_featured'       => isset($_POST['is_featured']) ? 1 : 0,
-            'is_active'         => isset($_POST['is_active']) ? 1 : 0,
-            'sort_order'        => (int)($_POST['sort_order'] ?? 0),
-            'extra'             => $extra
-        ];
-
-        if ($id) {
-            Product::update($id, $data);
-            $_SESSION['panel_success'] = 'Ürün ve detay özellikleri başarıyla güncellendi.';
-            $targetId = $id;
-        } else {
-            $targetId = Product::create($data);
-            $_SESSION['panel_success'] = 'Yeni ürün başarıyla eklendi.';
-        }
-
-        $redirectTo = !empty($_POST['redirect_to']) ? trim($_POST['redirect_to']) : (PANEL_SLUG . "/products");
-        if ($redirectTo === 'stay' && $targetId) {
-            $redirectTo = PANEL_SLUG . "/products?action=edit&id=" . $targetId;
-        }
-
-        header("Location: " . BASE_URL . "/" . ltrim($redirectTo, "/"));
-        exit;
     }
 
     /**
@@ -1312,27 +1392,9 @@ class PanelController
         $sortOrder = (int)($_POST['sort_order'] ?? 0);
         $isActive = isset($_POST['is_active']) ? 1 : 0;
 
-        if (empty($titleTr)) {
-            $_SESSION['panel_error'] = 'Lütfen başlık giriniz.';
-            header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");
-            exit;
-        }
-
         $existing = $id > 0 ? GalleryItem::find($id) : null;
         $imagePath = $existing['image_path'] ?? '';
         $videoFile = $existing['video_file'] ?? '';
-
-        // Görsel Yükleme (Otomatik WebP Dönüştürme)
-        if (!empty($_FILES['image_file']['tmp_name'])) {
-            $uploadedWebp = ImageUploader::uploadAndConvertToWebP(
-                $_FILES['image_file'],
-                UPLOADS_PATH,
-                'gallery_' . ($type === 'video' ? 'poster_' : 'img_')
-            );
-            if ($uploadedWebp) {
-                $imagePath = $uploadedWebp;
-            }
-        }
 
         // Video Dosyası Yükleme (mp4, webm)
         if (!empty($_FILES['video_file']['tmp_name'])) {
@@ -1346,27 +1408,105 @@ class PanelController
             }
         }
 
-        // Otomatik İngilizce Çeviri (Kullanıcı talebi: İngilizceyi sistem otomatik çevirecek)
+        // Çoklu / Tekli Görsel Yükleme (Kullanıcı Talebi: Birden fazla görsel seçip topluca yükleme)
+        $uploadedImages = [];
+        if (!empty($_FILES['image_files']['name']) && is_array($_FILES['image_files']['name'])) {
+            $fileCount = count($_FILES['image_files']['name']);
+            for ($i = 0; $i < $fileCount; $i++) {
+                if (!empty($_FILES['image_files']['tmp_name'][$i]) && $_FILES['image_files']['error'][$i] === UPLOAD_ERR_OK) {
+                    $singleFile = [
+                        'name'     => $_FILES['image_files']['name'][$i],
+                        'type'     => $_FILES['image_files']['type'][$i],
+                        'tmp_name' => $_FILES['image_files']['tmp_name'][$i],
+                        'error'    => $_FILES['image_files']['error'][$i],
+                        'size'     => $_FILES['image_files']['size'][$i]
+                    ];
+                    $uploadedWebp = ImageUploader::uploadAndConvertToWebP(
+                        $singleFile,
+                        UPLOADS_PATH,
+                        'gallery_' . ($type === 'video' ? 'poster_' : 'img_')
+                    );
+                    if ($uploadedWebp) {
+                        $uploadedImages[] = $uploadedWebp;
+                    }
+                }
+            }
+        }
+
+        // Geriye dönük tekil input (image_file) kontrolü
+        if (empty($uploadedImages) && !empty($_FILES['image_file']['tmp_name']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
+            $uploadedWebp = ImageUploader::uploadAndConvertToWebP(
+                $_FILES['image_file'],
+                UPLOADS_PATH,
+                'gallery_' . ($type === 'video' ? 'poster_' : 'img_')
+            );
+            if ($uploadedWebp) {
+                $uploadedImages[] = $uploadedWebp;
+            }
+        }
+
+        // Otomatik İngilizce Çeviri (varsa)
         $titleEn = !empty($titleTr) ? AutoTranslator::translate($titleTr, 'tr', 'en') : '';
 
-        $data = [
-            'type'        => $type,
-            'title_tr'    => $titleTr,
-            'title_en'    => $titleEn,
-            'category'    => $category,
-            'image_path'  => $imagePath,
-            'video_url'   => $videoUrl,
-            'video_file'  => $videoFile,
-            'sort_order'  => $sortOrder,
-            'is_active'   => $isActive
-        ];
-
         if ($id > 0) {
+            // Düzenleme modu: Tekil öğeyi güncelle
+            if (!empty($uploadedImages)) {
+                $imagePath = $uploadedImages[0];
+            }
+            $data = [
+                'type'        => $type,
+                'title_tr'    => $titleTr,
+                'title_en'    => $titleEn,
+                'category'    => $category,
+                'image_path'  => $imagePath,
+                'video_url'   => $videoUrl,
+                'video_file'  => $videoFile,
+                'sort_order'  => $sortOrder,
+                'is_active'   => $isActive
+            ];
             GalleryItem::update($id, $data);
             $_SESSION['panel_success'] = 'Medya öğesi başarıyla güncellendi.';
         } else {
-            GalleryItem::create($data);
-            $_SESSION['panel_success'] = 'Yeni medya öğesi galeriye eklendi.';
+            // Yeni ekleme modu: Çoklu veya tekli
+            if (!empty($uploadedImages)) {
+                $addedCount = 0;
+                foreach ($uploadedImages as $idx => $imgName) {
+                    $itemSort = $sortOrder + $idx;
+                    GalleryItem::create([
+                        'type'        => $type,
+                        'title_tr'    => $titleTr,
+                        'title_en'    => $titleEn,
+                        'category'    => $category,
+                        'image_path'  => $imgName,
+                        'video_url'   => $videoUrl,
+                        'video_file'  => $videoFile,
+                        'sort_order'  => $itemSort,
+                        'is_active'   => $isActive
+                    ]);
+                    $addedCount++;
+                }
+                if ($addedCount > 1) {
+                    $_SESSION['panel_success'] = "🎉 Toplam {$addedCount} adet görsel başarıyla optimize edilerek galeriye eklendi!";
+                } else {
+                    $_SESSION['panel_success'] = 'Yeni medya öğesi galeriye eklendi.';
+                }
+            } elseif ($type === 'video') {
+                // Sadece video ekleniyorsa
+                GalleryItem::create([
+                    'type'        => $type,
+                    'title_tr'    => $titleTr,
+                    'title_en'    => $titleEn,
+                    'category'    => $category,
+                    'image_path'  => $imagePath,
+                    'video_url'   => $videoUrl,
+                    'video_file'  => $videoFile,
+                    'sort_order'  => $sortOrder,
+                    'is_active'   => $isActive
+                ]);
+                $_SESSION['panel_success'] = 'Yeni video galeriye eklendi.';
+            } else {
+                $_SESSION['panel_error'] = 'Lütfen en az bir fotoğraf dosyası seçiniz.';
+            }
         }
 
         header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");

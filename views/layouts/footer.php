@@ -63,7 +63,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     <footer class="footer-creative">
         <div class="container">
             <!-- Footer Alanları (Beyaz Blok Kutusu Kaldırıldı, Doğal & Ferah Mimari) -->
-            <div class="footer-grid">
+            <div class="footer-grid footer-grid-6col">
                 
                 <!-- 1. Marka ve Tanıtım -->
                 <div class="footer-col-brand">
@@ -117,7 +117,6 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/"><?= __('nav_home') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/kurumsal"><?= __('nav_about') ?></a></li>
-                        <li><a href="<?= BASE_URL ?>/markalar"><?= __('nav_brands', 'Markalarımız') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler"><?= __('nav_products') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/galeri"><?= $currentLang === 'en' ? 'Gallery' : 'Galeri' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/blog"><?= __('nav_blog') ?></a></li>
@@ -125,7 +124,16 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                     </ul>
                 </div>
 
-                <!-- 3. Ürün Kategorileri -->
+                <!-- 3. KULLANICI TALEBİ: Markalarımız ve Referanslarımız (Ayrı Menü) -->
+                <div>
+                    <h4 class="footer-heading"><?= $currentLang === 'en' ? 'Brands & References' : 'Markalarımız & Referanslarımız' ?></h4>
+                    <ul class="footer-links">
+                        <li><a href="<?= BASE_URL ?>/markalar"><?= $currentLang === 'en' ? 'Our Brands' : 'Markalarımız' ?></a></li>
+                        <li><a href="<?= BASE_URL ?>/referanslar"><?= $currentLang === 'en' ? 'Our References' : 'Referanslarımız' ?></a></li>
+                    </ul>
+                </div>
+
+                <!-- 4. Ürün Kategorileri -->
                 <div>
                     <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['products_title_en'] ?? __('nav_products')) : ($footerExtra['products_title'] ?? __('nav_products'))) ?></h4>
                     <ul class="footer-links">
@@ -137,7 +145,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                     </ul>
                 </div>
 
-                <!-- 4. KULLANICI TALEBİ: Politikalar Sütunu -->
+                <!-- 5. KULLANICI TALEBİ: Politikalar Sütunu -->
                 <div>
                     <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['policies_title_en'] ?? 'Policies') : ($footerExtra['policies_title'] ?? 'Politikalar')) ?></h4>
                     <ul class="footer-links">
@@ -147,7 +155,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                     </ul>
                 </div>
 
-                <!-- 5. İletişim & Lokasyon -->
+                <!-- 6. İletişim & Lokasyon -->
                 <div class="footer-col-contact">
                     <h4 class="footer-heading"><?= htmlspecialchars($currentLang === 'en' ? ($footerExtra['contact_title_en'] ?? __('footer_contact_info')) : ($footerExtra['contact_title'] ?? __('footer_contact_info'))) ?></h4>
                     <div class="footer-contact-item footer-address-item">
@@ -363,6 +371,25 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     </div>
 
     <style>
+    .footer-grid-6col {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1.15fr 1fr 0.95fr 1.35fr;
+        gap: 36px;
+    }
+    @media (max-width: 1200px) {
+        .footer-grid-6col {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+    }
+    @media (max-width: 768px) {
+        .footer-grid-6col {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            text-align: center;
+            justify-items: center;
+        }
+    }
     .cookie-consent-bar {
         position: fixed;
         bottom: 24px;

@@ -54,6 +54,7 @@ $smtpHost   = Settings::get('smtp_host', '');
 $smtpPort   = Settings::get('smtp_port', '587');
 $smtpUser   = Settings::get('smtp_user', '');
 $smtpSecure = Settings::get('smtp_secure', 'tls');
+$smtpPass   = Settings::get('smtp_pass', '');
 ?>
 <div style="background: #ffffff; border-radius: 20px; border: 1.5px solid #cbd5e1; padding: 26px 30px; margin-bottom: 28px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
@@ -76,6 +77,24 @@ $smtpSecure = Settings::get('smtp_secure', 'tls');
             </button>
         </div>
     </div>
+
+    <?php if (empty($smtpPass)): ?>
+        <div style="background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px;">
+            <span style="font-size: 22px; line-height: 1;">⚠️</span>
+            <div>
+                <strong style="color: #c2410c; font-size: 14px; display: block; margin-bottom: 2px;">
+                    SMTP E-Posta Şifresi Henüz Girilmemiş!
+                </strong>
+                <span style="color: #9a3412; font-size: 13px; line-height: 1.5;">
+                    Teklifler panele sorunsuz kaydediliyor ancak e-posta adresinize iletilebilmesi için aşağıdaki <strong>SMTP Şifresi</strong> kutusuna e-posta kutunuzun (webmail) şifresini yazıp <strong>"Kaydet"</strong>e basınız.
+                </span>
+            </div>
+        </div>
+    <?php else: ?>
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; color: #166534; font-size: 13px; font-weight: 600;">
+            <span>✅</span> <span>SMTP Sunucu şifresi tanımlıdır. Yeni gelen teklifler doğrudan e-postanıza iletilmektedir.</span>
+        </div>
+    <?php endif; ?>
 
     <form id="quoteMailSettingsForm" action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quote-mail-settings" method="POST">
         <?= Security::csrfField() ?>
@@ -101,7 +120,7 @@ $smtpSecure = Settings::get('smtp_secure', 'tls');
         </div>
 
         <!-- İsteğe Bağlı SMTP Ayarları Açılır Kutusu -->
-        <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-top: 14px;">
+        <details <?= empty($smtpPass) ? 'open' : '' ?> style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-top: 14px;">
             <summary style="font-size: 13.5px; font-weight: 700; color: #475569; cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between;">
                 <span>⚙️ Gelişmiş SMTP Sunucu Ayarları (İsteğe Bağlı - Kurumsal Mail / Gmail / Yandex)</span>
                 <span style="font-size: 12px; color: #94a3b8;">Ayarları Aç / Kapat ▾</span>

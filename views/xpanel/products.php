@@ -38,13 +38,31 @@ if (!empty($prod['extra_json'])) {
     }
 }
 
-// Genel Karakteristikler
+// Genel Karakteristikler (Dinamik Başlıklar & Değerler)
+$charPanelTitle = $prodExtra['char_panel_title'] ?? '';
+$charPanelDesc = $prodExtra['char_panel_desc'] ?? '';
+
+$charLblEt = $prodExtra['char_lbl_et_rengi'] ?? '';
 $charEt = $prodExtra['char_et_rengi'] ?? '';
+
+$charLblCekirdek = $prodExtra['char_lbl_cekirdek'] ?? '';
 $charCekirdek = $prodExtra['char_cekirdek'] ?? '';
+
+$charLblKabuk = $prodExtra['char_lbl_kabuk_rengi'] ?? '';
 $charKabuk = $prodExtra['char_kabuk_rengi'] ?? '';
+
+$charLblDoku = $prodExtra['char_lbl_dokusu'] ?? '';
 $charDoku = $prodExtra['char_dokusu'] ?? '';
+
+$charLblSekil = $prodExtra['char_lbl_sekil'] ?? '';
 $charSekil = $prodExtra['char_sekil'] ?? '';
+
+$charLblTat = $prodExtra['char_lbl_tadi'] ?? '';
 $charTat = $prodExtra['char_tadi'] ?? '';
+
+// Galeri Entegrasyonu (Kullanıcı Talebi: Galeri Kategorisini Ürüne Bağlama)
+$galleryCategory = $prodExtra['gallery_category'] ?? 'all';
+$showProductGallery = isset($prodExtra['show_product_gallery']) ? ((int)$prodExtra['show_product_gallery'] === 1) : true;
 
 // Vitrin & Rozetler
 $nutriCal = $prodExtra['nutrition_calorie'] ?? '47 kcal / 100g';
@@ -68,6 +86,38 @@ $boxDefaults = [
     4 => ['title' => 'Karton Kutu – Teleskopik', 'weight' => '15 Kg', 'dim' => '600 x 400 x 180', 'img' => 'packaging_telescopic.png'],
     5 => ['title' => 'File Ambalaj', 'weight' => '1.5 Kg - 2 Kg', 'dim' => 'Perakende Market Rafı', 'img' => 'packaging_mesh.png'],
 ];
+
+// Kutu & Ambalaj Listesi ve Seçenek Durumu (Kullanıcı Talebi: Seçenekli Kutucuk Ayarı)
+$showPackaging = isset($prodExtra['show_packaging']) ? ((int)$prodExtra['show_packaging'] === 1) : (!empty($prodExtra['box1_title']) || $isNew);
+
+$packagingItems = [];
+if (!empty($prodExtra['packaging_items']) && is_array($prodExtra['packaging_items'])) {
+    $packagingItems = $prodExtra['packaging_items'];
+} else {
+    // Legacy box1..5 kontrolü
+    for ($b = 1; $b <= 5; $b++) {
+        if (!empty($prodExtra['box' . $b . '_title']) || !empty($prodExtra['box' . $b . '_image'])) {
+            $packagingItems[] = [
+                'title'  => $prodExtra['box' . $b . '_title'] ?? '',
+                'weight' => $prodExtra['box' . $b . '_weight'] ?? '',
+                'dim'    => $prodExtra['box' . $b . '_dim'] ?? '',
+                'image'  => $prodExtra['box' . $b . '_image'] ?? ('packaging_carton_' . min($b, 3) . '.png')
+            ];
+        }
+    }
+}
+
+// Eğer hiçbir kutu yoksa ve yeni ürün ise varsayılan kutuları getir
+if (empty($packagingItems) && $isNew) {
+    foreach ($boxDefaults as $bDef) {
+        $packagingItems[] = [
+            'title'  => $bDef['title'],
+            'weight' => $bDef['weight'],
+            'dim'    => $bDef['dim'],
+            'image'  => $bDef['img']
+        ];
+    }
+}
 ?>
 
 <?php if (!$isEditing): ?>
@@ -308,12 +358,12 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 
             <div class="form-group" style="margin-bottom: 16px;">
                 <label class="form-label" style="font-weight: 700;">Kategori Adı *</label>
-                <input type="text" name="name_tr" id="cat_name_tr" required class="form-control" placeholder="Örn: Narenciye, Meyveler, Sebzeler, Hububat...">
+                <input type="text" name="name_tr" id="cat_name_tr" required class="form-control">
             </div>
 
             <div class="form-group" style="margin-bottom: 16px;">
                 <label class="form-label" style="font-weight: 700;">URL Uzantısı (Slug)</label>
-                <input type="text" name="slug" id="cat_slug" class="form-control" placeholder="Örn: hububat (boş bırakırsanız otomatik üretilir)">
+                <input type="text" name="slug" id="cat_slug" class="form-control">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
@@ -421,14 +471,14 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 
                     <div>
                         <label class="form-label" style="font-weight: 700;">Ürün Adı (Türkçe) *</label>
-                        <input type="text" name="name_tr" id="inp_name_tr" value="<?= htmlspecialchars($prodName) ?>" required class="form-control" style="font-weight: 700;" placeholder="Örn: Buğday, Portakal, Karpuz, Limon...">
+                        <input type="text" name="name_tr" id="inp_name_tr" value="<?= htmlspecialchars($prodName) ?>" required class="form-control" style="font-weight: 700;">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 18px;">
                     <div>
                         <label class="form-label" style="font-weight: 700;">SEO URL (Slug / Bağlantı Adresi)</label>
-                        <input type="text" name="slug" id="inp_slug" value="<?= htmlspecialchars($prodSlug) ?>" class="form-control" placeholder="Örn: bugday, washington-portakal">
+                        <input type="text" name="slug" id="inp_slug" value="<?= htmlspecialchars($prodSlug) ?>" class="form-control">
                         <span style="font-size: 12px; color: #64748b; margin-top: 4px; display: block;">Boş bırakılırsa ürün adından otomatik oluşturulur.</span>
                     </div>
 
@@ -440,12 +490,12 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 
                 <div class="form-group" style="margin-bottom: 18px;">
                     <label class="form-label" style="font-weight: 700;">Kısa Açıklama (Hero ve Ürün Kartlarında Görünür)</label>
-                    <textarea name="short_desc_tr" rows="2" class="form-control" placeholder="Örn: Anadolu ve Çukurova’nın bereketli topraklarında yetiştirilen yüksek proteinli sert durum buğdayı..."><?= htmlspecialchars($prodShortDesc) ?></textarea>
+                    <textarea name="short_desc_tr" rows="2" class="form-control"><?= htmlspecialchars($prodShortDesc) ?></textarea>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" style="font-weight: 700;">Detaylı Ürün İçeriği ve Hikayesi</label>
-                    <textarea name="content_tr" rows="4" class="form-control" placeholder="Ürünün üretim koşulları, kalite kontrolleri ve global tedarik standartları hakkında detaylı açıklama yazın..."><?= htmlspecialchars($prodContent) ?></textarea>
+                    <textarea name="content_tr" rows="4" class="form-control"><?= htmlspecialchars($prodContent) ?></textarea>
                 </div>
             </div>
 
@@ -497,22 +547,22 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                             <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; margin-bottom: 12px;">
                                 <div>
                                     <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Cins / Çeşit Adı *</label>
-                                    <input type="text" name="extra[varieties][<?= $vIdx ?>][name]" value="<?= htmlspecialchars($v['name'] ?? '') ?>" class="form-control variety-name-input" style="font-weight: 700; font-size: 13.5px;" placeholder="Örn: Sert Durum Makarnalık Buğday" required oninput="updateVarietyBadge(this)">
+                                    <input type="text" name="extra[varieties][<?= $vIdx ?>][name]" value="<?= htmlspecialchars($v['name'] ?? '') ?>" class="form-control variety-name-input" style="font-weight: 700; font-size: 13.5px;" required oninput="updateVarietyBadge(this)">
                                 </div>
                                 <div>
                                     <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Hasat Sezonu Ayları</label>
-                                    <input type="text" name="extra[varieties][<?= $vIdx ?>][months]" value="<?= htmlspecialchars($v['months'] ?? '') ?>" class="form-control" style="font-size: 13px;" placeholder="Örn: Haziran - Ağustos veya Tüm Yıl">
+                                    <input type="text" name="extra[varieties][<?= $vIdx ?>][months]" value="<?= htmlspecialchars($v['months'] ?? '') ?>" class="form-control" style="font-size: 13px;">
                                 </div>
                             </div>
 
                             <div style="margin-bottom: 12px;">
                                 <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Cins Açıklaması & Kalite Notları</label>
-                                <textarea name="extra[varieties][<?= $vIdx ?>][desc]" rows="2" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Yüksek camsılık, zengin sarı pigment ve üstün protein değeriyle makarna sanayisinin lideri..."><?= htmlspecialchars($v['desc'] ?? '') ?></textarea>
+                                <textarea name="extra[varieties][<?= $vIdx ?>][desc]" rows="2" class="form-control" style="font-size: 12.5px;"><?= htmlspecialchars($v['desc'] ?? '') ?></textarea>
                             </div>
 
                             <div style="margin-bottom: 14px;">
                                 <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Öne Çıkan Karakteristik / Kalite Özelliği</label>
-                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char_note]" value="<?= htmlspecialchars($v['char_note'] ?? '') ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Amber Sarısı Camsı Dane, Yüksek İrmik Verimi">
+                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char_note]" value="<?= htmlspecialchars($v['char_note'] ?? '') ?>" class="form-control" style="font-size: 12.5px;">
                             </div>
 
                             <!-- Katlanabilir / Genişletilmiş Cins Detayları (Besin Değerleri ve Karakteristikler) -->
@@ -528,19 +578,19 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Kalori (kcal)</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][kcal]" value="<?= htmlspecialchars($v['nutrition']['kcal'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 330">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][kcal]" value="<?= htmlspecialchars($v['nutrition']['kcal'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Protein</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][protein]" value="<?= htmlspecialchars($v['nutrition']['protein'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 12.8 g">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][protein]" value="<?= htmlspecialchars($v['nutrition']['protein'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Karbonhidrat</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][carb]" value="<?= htmlspecialchars($v['nutrition']['carb'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 70.0 g">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][carb]" value="<?= htmlspecialchars($v['nutrition']['carb'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Yağ</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][fat]" value="<?= htmlspecialchars($v['nutrition']['fat'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 2.0 g">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][nutrition][fat]" value="<?= htmlspecialchars($v['nutrition']['fat'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                         </div>
                                     </div>
@@ -551,29 +601,29 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Et / Tane Rengi</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][et]" value="<?= htmlspecialchars($v['char']['et'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Amber Sarısı">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][et]" value="<?= htmlspecialchars($v['char']['et'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Çekirdek / Sertlik</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][cekirdek]" value="<?= htmlspecialchars($v['char']['cekirdek'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Homojen Sertlik">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][cekirdek]" value="<?= htmlspecialchars($v['char']['cekirdek'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Kabuk Rengi / Kepek</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][kabuk]" value="<?= htmlspecialchars($v['char']['kabuk'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: İnce Altın Kepek">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][kabuk]" value="<?= htmlspecialchars($v['char']['kabuk'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                         </div>
                                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Dokusu & Verim</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][doku]" value="<?= htmlspecialchars($v['char']['doku'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Yüksek İrmik Verimi">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][doku]" value="<?= htmlspecialchars($v['char']['doku'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Tane / Meyve Şekli</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][sekil]" value="<?= htmlspecialchars($v['char']['sekil'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: İri Dolgun Tane">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][sekil]" value="<?= htmlspecialchars($v['char']['sekil'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 11px; font-weight: 700; color: #64748b;">Tadı & Aroma</label>
-                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][tat]" value="<?= htmlspecialchars($v['char']['tat'] ?? '') ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Zengin Ekmeklik Aroma">
+                                                <input type="text" name="extra[varieties][<?= $vIdx ?>][char][tat]" value="<?= htmlspecialchars($v['char']['tat'] ?? '') ?>" class="form-control" style="font-size: 12px;">
                                             </div>
                                         </div>
                                     </div>
@@ -591,95 +641,251 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                 </div>
             </div>
 
-            <!-- KART 3: GENEL KARAKTERİSTİK ÖZELLİKLER (6 KUTU) -->
+            <!-- KART 3: DİNAMİK ÜRÜN KARAKTERİSTİK ÖZELLİKLERİ (BAŞLIKLAR VE DEĞERLER DÜZENLENEBİLİR) -->
             <div class="panel-card" style="border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 26px;">
                 <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; display: flex; align-items: center; gap: 10px;">
-                    <span>🌿</span> <span>3. Ürün Karakteristik Özellikleri (Genel Standart)</span>
+                    <span>🌿</span> <span>3. Ürün Karakteristik Özellikleri (Tamamen Dinamik Başlık & Değerler)</span>
                 </h3>
                 <p style="font-size: 13px; color: #64748b; margin: 0 0 18px 0;">
-                    Ürün detay sayfasındaki 6 kutucuklu karakteristik alanında görüntülenir. (Örn: Hububatta 'Amber Camsı Dane, Sert Endosperm' vb.)
+                    Ürün detay sayfasındaki raptiyeli not kartında gösterilir. Başlıkları ve değerleri ürün türünüze göre (örneğin Hububatta: <em>"TANE / ET RENGİ"</em>, Narenciyede: <em>"ET RENGİ"</em>) dilediğiniz gibi özelleştirebilirsiniz.
                 </p>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">🎨 Et / Dane Rengi</label>
-                        <input type="text" name="extra[char_et_rengi]" value="<?= htmlspecialchars($charEt) ?>" class="form-control" placeholder="Örn: Pembemsi Turuncu veya Amber Sarısı">
-                    </div>
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">🌱 Çekirdek / Sertlik Yapısı</label>
-                        <input type="text" name="extra[char_cekirdek]" value="<?= htmlspecialchars($charCekirdek) ?>" class="form-control" placeholder="Örn: Çekirdeksiz veya Sert Endosperm">
-                    </div>
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">🍊 Kabuk Rengi / Kepek Yapısı</label>
-                        <input type="text" name="extra[char_kabuk_rengi]" value="<?= htmlspecialchars($charKabuk) ?>" class="form-control" placeholder="Örn: Turuncu Allı İnce veya İnce Kepek">
+                <!-- Kart Üst Başlıkları -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                    <div style="font-size: 13px; font-weight: 800; color: #334155; margin-bottom: 10px;">📌 Raptiyeli Kart Başlık & Alt Metinleri</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+                        <div>
+                            <label class="form-label" style="font-size: 11.5px; font-weight: 700; color: #475569;">Kart Ana Başlığı</label>
+                            <input type="text" name="extra[char_panel_title]" value="<?= htmlspecialchars($charPanelTitle) ?>" class="form-control" style="font-size: 13px;">
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 11.5px; font-weight: 700; color: #475569;">Kart Alt Açıklaması</label>
+                            <input type="text" name="extra[char_panel_desc]" value="<?= htmlspecialchars($charPanelDesc) ?>" class="form-control" style="font-size: 13px;">
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 11.5px; font-weight: 700; color: #475569;">Alt Rozet / Standart Metni</label>
+                            <input type="text" name="extra[char_panel_footer]" value="<?= htmlspecialchars($prodExtra['char_panel_footer'] ?? '') ?>" class="form-control" style="font-size: 13px;">
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">💧 Dokusu & Sululuk / Randıman</label>
-                        <input type="text" name="extra[char_dokusu]" value="<?= htmlspecialchars($charDoku) ?>" class="form-control" placeholder="Örn: Gevrek Sulu veya Yüksek İrmik Verimi">
+                <!-- 6 Satır / Kutu Dinamik Başlık & Değer -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+                    <!-- 1. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">1. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_et_rengi]" value="<?= htmlspecialchars($charLblEt) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_et_rengi]" value="<?= htmlspecialchars($charEt) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">✨ Meyve / Tane Şekli</label>
-                        <input type="text" name="extra[char_sekil]" value="<?= htmlspecialchars($charSekil) ?>" class="form-control" placeholder="Örn: Düzgün Yuvarlak veya İri Dolgun Tane">
+
+                    <!-- 2. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">2. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_cekirdek]" value="<?= htmlspecialchars($charLblCekirdek) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_cekirdek]" value="<?= htmlspecialchars($charCekirdek) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">🍯 Tadı & Lezzet Karakteristiği</label>
-                        <input type="text" name="extra[char_tadi]" value="<?= htmlspecialchars($charTat) ?>" class="form-control" placeholder="Örn: Tatlı Aromatik veya Doğal Tahıl Aroması">
+
+                    <!-- 3. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">3. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_kabuk_rengi]" value="<?= htmlspecialchars($charLblKabuk) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_kabuk_rengi]" value="<?= htmlspecialchars($charKabuk) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">4. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_dokusu]" value="<?= htmlspecialchars($charLblDoku) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_dokusu]" value="<?= htmlspecialchars($charDoku) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">5. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_sekil]" value="<?= htmlspecialchars($charLblSekil) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_sekil]" value="<?= htmlspecialchars($charSekil) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Özellik -->
+                    <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; display: block; margin-bottom: 6px;">6. Özellik Satırı</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Sabit Başlık / Etiket</label>
+                                <input type="text" name="extra[char_lbl_tadi]" value="<?= htmlspecialchars($charLblTat) ?>" class="form-control" style="font-size: 12.5px; font-weight: 700;">
+                            </div>
+                            <div>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">Değer</label>
+                                <input type="text" name="extra[char_tadi]" value="<?= htmlspecialchars($charTat) ?>" class="form-control" style="font-size: 12.5px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- KART 4: İHRACAT AMBALAJ VE KUTU SEÇENEKLERİ (5 KUTU) -->
+            <!-- KART 4: İHRACAT AMBALAJ VE KUTU SEÇENEKLERİ (DİNAMİK EKLEME / SİLME & SEÇENEKLİ KUTUCUK) -->
             <div class="panel-card" style="border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 26px;">
-                <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; display: flex; align-items: center; gap: 10px;">
-                    <span>📦</span> <span>4. İhracat Ambalaj ve Kutu Seçenekleri (5 Farklı Kutu)</span>
-                </h3>
-                <p style="font-size: 13px; color: #64748b; margin: 0 0 18px 0;">
-                    Ürün detay sayfasında sunulan ambalaj, dökme veya karton kasa seçeneklerini buradan yönetin.
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <span>📦</span> <span>4. İhracat Ambalaj ve Kutu Seçenekleri</span>
+                    </h3>
+                    <button type="button" onclick="addNewPackagingBox()" class="btn btn-sm btn-primary" style="background: #15803d; border-color: #15803d; border-radius: 8px; font-weight: 700; padding: 6px 14px; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>➕</span> <span>Yeni Kutu / Ambalaj Ekle</span>
+                    </button>
+                </div>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 16px 0;">
+                    Ürün detay sayfasında sunulan ambalaj, dökme veya karton kasa seçeneklerini buradan yönetin, ekleyip silin.
                 </p>
 
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <?php for ($b = 1; $b <= 5; $b++): ?>
-                        <?php 
-                        $bDef = $boxDefaults[$b];
-                        $bTitle = $prodExtra['box' . $b . '_title'] ?? $bDef['title'];
-                        $bWeight = $prodExtra['box' . $b . '_weight'] ?? $bDef['weight'];
-                        $bDim = $prodExtra['box' . $b . '_dim'] ?? $bDef['dim'];
-                        $bImg = $prodExtra['box' . $b . '_image'] ?? $bDef['img'];
-                        ?>
-                        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                                <span style="font-weight: 800; font-size: 13px; color: #0f172a;">
-                                    📦 Kutu / Ambalaj #<?= $b ?>
-                                </span>
-                                <span style="font-size: 11.5px; color: #64748b;">
-                                    Mevcut Görsel: <strong><?= htmlspecialchars($bImg) ?></strong>
-                                </span>
-                            </div>
+                <!-- KULLANICI TALEBİ: SEÇENEKLİ KUTUCUK AYARI -->
+                <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 800; font-size: 14px; color: #166534; margin: 0;">
+                        <input type="hidden" name="extra[show_packaging]" value="0">
+                        <input type="checkbox" name="extra[show_packaging]" value="1" id="chk_show_packaging" <?= $showPackaging ? 'checked' : '' ?> onchange="togglePackagingSection(this.checked)" style="width: 20px; height: 20px; accent-color: #16a34a; cursor: pointer;">
+                        <span>📦 Bu Üründe İhracat Ambalaj ve Kutu Seçeneklerini Göster (Aktif)</span>
+                    </label>
+                    <small style="color: #15803d; font-size: 11.5px; display: block; margin-top: 5px; margin-left: 32px;">
+                        İşaretlenirse ürün detay sayfasında kutu/ambalaj bölümü görüntülenir; işaretsiz bırakılırsa bu bölüm ürün sayfasında tamamen gizlenir.
+                    </small>
+                </div>
 
-                            <div style="display: grid; grid-template-columns: 80px 1.5fr 1fr 1.5fr; gap: 14px; align-items: center;">
-                                <div>
-                                    <img id="box<?= $b ?>_preview" src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($bImg) ?>" style="width: 70px; height: 60px; object-fit: contain; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px;">
+                <!-- Dinamik Kutu Listesi Konteyneri -->
+                <div id="packagingItemsContainer" style="display: <?= $showPackaging ? 'flex' : 'none' ?>; flex-direction: column; gap: 16px;">
+                    <?php if (empty($packagingItems)): ?>
+                        <div id="emptyPackagingNotice" style="text-align: center; padding: 30px; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; color: #64748b;">
+                            Henüz kutu/ambalaj seçeneği eklenmemiş. Yukarıdaki <strong>"Yeni Kutu / Ambalaj Ekle"</strong> butonuna tıklayarak kutu ekleyebilirsiniz.
+                        </div>
+                    <?php else: ?>
+                        <?php foreach ($packagingItems as $bIdx => $bItem): 
+                            $bTitle = $bItem['title'] ?? '';
+                            $bWeight = $bItem['weight'] ?? '';
+                            $bDim = $bItem['dim'] ?? '';
+                            $bImg = !empty($bItem['image']) ? $bItem['image'] : 'packaging_carton_1.png';
+                        ?>
+                            <div class="packaging-item-card" data-box-index="<?= $bIdx ?>" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                    <span style="font-weight: 800; font-size: 13px; color: #0f172a;" class="box-card-title">
+                                        📦 Kutu / Ambalaj #<?= $bIdx + 1 ?>
+                                    </span>
+                                    <button type="button" onclick="removePackagingBox(this)" class="btn btn-sm btn-danger" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; cursor: pointer; font-weight: 700;">
+                                        🗑️ Bu Kutuyu Sil
+                                    </button>
                                 </div>
-                                <div>
-                                    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ambalaj Tipi / Başlık</label>
-                                    <input type="text" name="extra[box<?= $b ?>_title]" value="<?= htmlspecialchars($bTitle) ?>" class="form-control" style="font-size: 12.5px;">
-                                    <input type="hidden" name="extra[box<?= $b ?>_image]" value="<?= htmlspecialchars($bImg) ?>">
-                                    <input type="file" name="box<?= $b ?>_image_file" accept="image/*" style="font-size: 11px; margin-top: 4px;" onchange="previewBoxFile(this, 'box<?= $b ?>_preview')">
-                                </div>
-                                <div>
-                                    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Net Ağırlık</label>
-                                    <input type="text" name="extra[box<?= $b ?>_weight]" value="<?= htmlspecialchars($bWeight) ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: 15 Kg">
-                                </div>
-                                <div>
-                                    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ölçüler / Kullanım Alanı</label>
-                                    <input type="text" name="extra[box<?= $b ?>_dim]" value="<?= htmlspecialchars($bDim) ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: 600 x 400 x 160">
+
+                                <div style="display: grid; grid-template-columns: 80px 1.5fr 1fr 1.5fr; gap: 14px; align-items: center;">
+                                    <div>
+                                        <img id="pkg_box_preview_<?= $bIdx ?>" src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($bImg) ?>" style="width: 70px; height: 60px; object-fit: contain; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ambalaj Tipi / Başlık</label>
+                                        <input type="text" name="extra[packaging_items][<?= $bIdx ?>][title]" value="<?= htmlspecialchars($bTitle) ?>" class="form-control" style="font-size: 12.5px;">
+                                        <input type="hidden" name="extra[packaging_items][<?= $bIdx ?>][image]" value="<?= htmlspecialchars($bImg) ?>" class="pkg-img-input">
+                                        <input type="file" name="pkg_box_file_<?= $bIdx ?>" accept="image/*" style="font-size: 11px; margin-top: 4px;" onchange="previewPkgFile(this, 'pkg_box_preview_<?= $bIdx ?>')">
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Net Ağırlık</label>
+                                        <input type="text" name="extra[packaging_items][<?= $bIdx ?>][weight]" value="<?= htmlspecialchars($bWeight) ?>" class="form-control" style="font-size: 12.5px;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ölçüler / Kullanım Alanı</label>
+                                        <input type="text" name="extra[packaging_items][<?= $bIdx ?>][dim]" value="<?= htmlspecialchars($bDim) ?>" class="form-control" style="font-size: 12.5px;">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endfor; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Alt Ekle Butonu -->
+                <div style="margin-top: 18px; text-align: left;">
+                    <button type="button" onclick="addNewPackagingBox()" class="btn btn-secondary" style="background: #f8fafc; border: 1.5px dashed #94a3b8; color: #0f172a; padding: 10px 22px; font-weight: 700; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                        <span>➕</span> <span>Yeni Kutu / Ambalaj Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KART 5: ÜRÜN DETAYI KAYAN GALERİ ENTEGRASYONU (KULLANICI TALEBİ) -->
+            <div class="panel-card" style="border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 26px;">
+                <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0; display: flex; align-items: center; gap: 10px;">
+                    <span>🖼️</span> <span>5. Ürün Detayında Kayan Galeri Entegrasyonu</span>
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 16px 0;">
+                    Ürün detay sayfasının en altında, ana sayfadaki referans kaydırma bandı gibi sürekli yavaşça kayan ve elle de sürüklenebilen galeri şeridini buradan yönetin.
+                </p>
+
+                <!-- Aç/Kapat Seçeneği -->
+                <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px;">
+                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 800; font-size: 14px; color: #166534; margin: 0;">
+                        <input type="hidden" name="extra[show_product_gallery]" value="0">
+                        <input type="checkbox" name="extra[show_product_gallery]" value="1" <?= $showProductGallery ? 'checked' : '' ?> style="width: 20px; height: 20px; accent-color: #16a34a; cursor: pointer;">
+                        <span>🖼️ Bu Ürünün Detay Sayfasında Kayan Galeri Bandını Göster (Aktif)</span>
+                    </label>
+                </div>
+
+                <!-- Galeri Kategori Bağlantısı -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">📂 Bağlanacak Galeri Kategorisi</label>
+                        <select name="extra[gallery_category]" class="form-control" style="font-size: 13.5px; font-weight: 600;">
+                            <option value="all" <?= ($galleryCategory === 'all' || empty($galleryCategory)) ? 'selected' : '' ?>>🌟 Tüm Galeri Görselleri</option>
+                            <option value="urunler" <?= ($galleryCategory === 'urunler') ? 'selected' : '' ?>>🍊 Ürünlerimiz (urunler)</option>
+                            <option value="hasat" <?= ($galleryCategory === 'hasat') ? 'selected' : '' ?>>🌾 Hasat & Bahçelerimiz (hasat)</option>
+                            <option value="tesisler" <?= ($galleryCategory === 'tesisler') ? 'selected' : '' ?>>🏭 Tesisler & Teknoloji (tesisler)</option>
+                            <option value="paketleme" <?= ($galleryCategory === 'paketleme') ? 'selected' : '' ?>>📦 Paketleme & Tasarım (paketleme)</option>
+                            <option value="lojistik" <?= ($galleryCategory === 'lojistik') ? 'selected' : '' ?>>🚚 Soğuk Zincir & Lojistik (lojistik)</option>
+                            <option value="tanitim" <?= ($galleryCategory === 'tanitim') ? 'selected' : '' ?>>🎬 Kurumsal Tanıtım (tanitim)</option>
+                        </select>
+                        <small style="color: #64748b; font-size: 11.5px; display: block; margin-top: 4px;">
+                            Galeride bu kategoriye eklenmiş görseller otomatik olarak bu ürünün altında akar.
+                        </small>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">🏷️ Galeri Özel Başlığı (Opsiyonel)</label>
+                        <input type="text" name="extra[gallery_custom_title]" value="<?= htmlspecialchars($prodExtra['gallery_custom_title'] ?? '') ?>" class="form-control" style="font-size: 13px;">
+                        <small style="color: #64748b; font-size: 11.5px; display: block; margin-top: 4px;">
+                            Boş bırakılırsa standart başlık gösterilir.
+                        </small>
+                    </div>
                 </div>
             </div>
 
@@ -772,17 +978,17 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
 
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label class="form-label" style="font-size: 12px; font-weight: 700;">Menşei Bölge</label>
-                    <input type="text" name="origin_tr" value="<?= htmlspecialchars($prodOriginTr) ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Akdeniz & Çukurova / Türkiye">
+                    <input type="text" name="origin_tr" value="<?= htmlspecialchars($prodOriginTr) ?>" class="form-control" style="font-size: 12.5px;">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label class="form-label" style="font-size: 12px; font-weight: 700;">Ambalaj & Paketleme Türü</label>
-                    <input type="text" name="packaging_tr" value="<?= htmlspecialchars($prodPackagingTr) ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Dökme, Big-Bag (1000 kg), Teleskopik Kutu">
+                    <input type="text" name="packaging_tr" value="<?= htmlspecialchars($prodPackagingTr) ?>" class="form-control" style="font-size: 12.5px;">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" style="font-size: 12px; font-weight: 700;">Saklama Sıcaklığı / Soğuk Zincir</label>
-                    <input type="text" name="temperature" value="<?= htmlspecialchars($prodTemp) ?>" class="form-control" style="font-size: 12.5px;" placeholder="Örn: +4°C / +8°C veya Kuru & Havalandırmalı Depo">
+                    <input type="text" name="temperature" value="<?= htmlspecialchars($prodTemp) ?>" class="form-control" style="font-size: 12.5px;">
                 </div>
             </div>
 
@@ -795,31 +1001,31 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                     <div>
                         <label class="form-label" style="font-size: 11px; font-weight: 700;">Kalori Değeri</label>
-                        <input type="text" name="extra[nutrition_calorie]" value="<?= htmlspecialchars($nutriCal) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 47 kcal / 100g">
+                        <input type="text" name="extra[nutrition_calorie]" value="<?= htmlspecialchars($nutriCal) ?>" class="form-control" style="font-size: 12px;">
                     </div>
                     <div>
                         <label class="form-label" style="font-size: 11px; font-weight: 700;">Şeker (Brix)</label>
-                        <input type="text" name="extra[nutrition_brix]" value="<?= htmlspecialchars($nutriBrix) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 9.8° Brix">
+                        <input type="text" name="extra[nutrition_brix]" value="<?= htmlspecialchars($nutriBrix) ?>" class="form-control" style="font-size: 12px;">
                     </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label class="form-label" style="font-size: 11px; font-weight: 700;">Asitlik / Enerji Oranı</label>
-                    <input type="text" name="extra[nutrition_acidity]" value="<?= htmlspecialchars($nutriAcid) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: 0.9% Sitrik Asit">
+                    <input type="text" name="extra[nutrition_acidity]" value="<?= htmlspecialchars($nutriAcid) ?>" class="form-control" style="font-size: 12px;">
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <div>
                         <label class="form-label" style="font-size: 11px; font-weight: 700;">1. Nitelik Rozeti</label>
-                        <input type="text" name="extra[badge1]" value="<?= htmlspecialchars($badge1) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: C Vitamini Deposu">
+                        <input type="text" name="extra[badge1]" value="<?= htmlspecialchars($badge1) ?>" class="form-control" style="font-size: 12px;">
                     </div>
                     <div>
                         <label class="form-label" style="font-size: 11px; font-weight: 700;">2. Nitelik Rozeti</label>
-                        <input type="text" name="extra[badge2]" value="<?= htmlspecialchars($badge2) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Yüksek Doğal Su & Lif">
+                        <input type="text" name="extra[badge2]" value="<?= htmlspecialchars($badge2) ?>" class="form-control" style="font-size: 12px;">
                     </div>
                     <div>
                         <label class="form-label" style="font-size: 11px; font-weight: 700;">3. Nitelik Rozeti</label>
-                        <input type="text" name="extra[badge3]" value="<?= htmlspecialchars($badge3) ?>" class="form-control" style="font-size: 12px;" placeholder="Örn: Zengin Antioksidan">
+                        <input type="text" name="extra[badge3]" value="<?= htmlspecialchars($badge3) ?>" class="form-control" style="font-size: 12px;">
                     </div>
                 </div>
             </div>
@@ -1019,6 +1225,149 @@ function previewBoxFile(input, previewId) {
     }
 }
 
+// Dinamik Kutu Görseli Önizleme
+function previewPkgFile(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const target = document.getElementById(previewId);
+            if (target) target.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Kutu Ambalajı Bölümü Aç/Kapa
+function togglePackagingSection(show) {
+    const container = document.getElementById('packagingItemsContainer');
+    if (container) {
+        container.style.display = show ? 'flex' : 'none';
+    }
+}
+
+// Kutu Kartını Sil
+function removePackagingBox(btn) {
+    const card = btn.closest('.packaging-item-card');
+    if (card) {
+        card.remove();
+        reindexPackagingBoxes();
+    }
+}
+
+// Kutu Kartlarını Yeniden İndeksle
+function reindexPackagingBoxes() {
+    const container = document.getElementById('packagingItemsContainer');
+    if (!container) return;
+    const cards = container.querySelectorAll('.packaging-item-card');
+    
+    const notice = document.getElementById('emptyPackagingNotice');
+    if (cards.length === 0) {
+        if (!notice) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.id = 'emptyPackagingNotice';
+            emptyDiv.style.cssText = 'text-align: center; padding: 30px; background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; color: #64748b;';
+            emptyDiv.innerHTML = 'Henüz kutu/ambalaj seçeneği eklenmemiş. Yukarıdaki <strong>"Yeni Kutu / Ambalaj Ekle"</strong> butonuna tıklayarak kutu ekleyebilirsiniz.';
+            container.appendChild(emptyDiv);
+        }
+        return;
+    } else if (notice) {
+        notice.remove();
+    }
+
+    cards.forEach((card, idx) => {
+        card.setAttribute('data-box-index', idx);
+        const titleSpan = card.querySelector('.box-card-title');
+        if (titleSpan) {
+            titleSpan.textContent = `📦 Kutu / Ambalaj #${idx + 1}`;
+        }
+        const img = card.querySelector('img');
+        if (img) img.id = `pkg_box_preview_${idx}`;
+
+        const titleInp = card.querySelector('input[name*="[title]"]');
+        if (titleInp) titleInp.name = `extra[packaging_items][${idx}][title]`;
+
+        const hiddenImgInp = card.querySelector('input[name*="[image]"]');
+        if (hiddenImgInp) hiddenImgInp.name = `extra[packaging_items][${idx}][image]`;
+
+        const fileInp = card.querySelector('input[type="file"]');
+        if (fileInp) {
+            fileInp.name = `pkg_box_file_${idx}`;
+            fileInp.setAttribute('onchange', `previewPkgFile(this, 'pkg_box_preview_${idx}')`);
+        }
+
+        const weightInp = card.querySelector('input[name*="[weight]"]');
+        if (weightInp) weightInp.name = `extra[packaging_items][${idx}][weight]`;
+
+        const dimInp = card.querySelector('input[name*="[dim]"]');
+        if (dimInp) dimInp.name = `extra[packaging_items][${idx}][dim]`;
+    });
+}
+
+// Yeni Kutu / Ambalaj Ekle
+function addNewPackagingBox() {
+    const container = document.getElementById('packagingItemsContainer');
+    if (!container) return;
+
+    // Görünür yap ve kutucuğu işaretle
+    const chk = document.getElementById('chk_show_packaging');
+    if (chk && !chk.checked) {
+        chk.checked = true;
+        togglePackagingSection(true);
+    }
+
+    const notice = document.getElementById('emptyPackagingNotice');
+    if (notice) notice.remove();
+
+    const currentCount = container.querySelectorAll('.packaging-item-card').length;
+    const newIdx = currentCount;
+    const defaultBoxes = [
+        { title: 'Karton Kutu', weight: '15 Kg', dim: '600 x 400 x 160', img: 'packaging_carton_2.png' },
+        { title: 'Teleskopik Koli', weight: '15 Kg', dim: '600 x 400 x 180', img: 'packaging_telescopic.png' },
+        { title: 'Plastik Kasa', weight: '10 Kg', dim: '400 x 300 x 150', img: 'packaging_carton_1.png' },
+        { title: 'File Ambalaj', weight: '2 Kg', dim: 'Perakende Market', img: 'packaging_mesh.png' }
+    ];
+    const def = defaultBoxes[newIdx % defaultBoxes.length];
+
+    const card = document.createElement('div');
+    card.className = 'packaging-item-card';
+    card.setAttribute('data-box-index', newIdx);
+    card.style.cssText = 'background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; animation: fadeIn 0.2s ease-out;';
+
+    card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <span style="font-weight: 800; font-size: 13px; color: #0f172a;" class="box-card-title">
+                📦 Kutu / Ambalaj #${newIdx + 1}
+            </span>
+            <button type="button" onclick="removePackagingBox(this)" class="btn btn-sm btn-danger" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; cursor: pointer; font-weight: 700;">
+                🗑️ Bu Kutuyu Sil
+            </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 80px 1.5fr 1fr 1.5fr; gap: 14px; align-items: center;">
+            <div>
+                <img id="pkg_box_preview_${newIdx}" src="<?= BASE_URL ?>/public/images/${def.img}" style="width: 70px; height: 60px; object-fit: contain; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px;">
+            </div>
+            <div>
+                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ambalaj Tipi / Başlık</label>
+                <input type="text" name="extra[packaging_items][${newIdx}][title]" value="${def.title}" class="form-control" style="font-size: 12.5px;">
+                <input type="hidden" name="extra[packaging_items][${newIdx}][image]" value="${def.img}" class="pkg-img-input">
+                <input type="file" name="pkg_box_file_${newIdx}" accept="image/*" style="font-size: 11px; margin-top: 4px;" onchange="previewPkgFile(this, 'pkg_box_preview_${newIdx}')">
+            </div>
+            <div>
+                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Net Ağırlık</label>
+                <input type="text" name="extra[packaging_items][${newIdx}][weight]" value="${def.weight}" class="form-control" style="font-size: 12.5px;">
+            </div>
+            <div>
+                <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 2px;">Ölçüler / Kullanım Alanı</label>
+                <input type="text" name="extra[packaging_items][${newIdx}][dim]" value="${def.dim}" class="form-control" style="font-size: 12.5px;">
+            </div>
+        </div>
+    `;
+
+    container.appendChild(card);
+    reindexPackagingBoxes();
+}
+
 // Cins İsmi Yazıldığında Başlığı Güncelle
 function updateVarietyBadge(input) {
     const card = input.closest('.variety-item-card');
@@ -1076,22 +1425,22 @@ function addNewVarietyCard() {
         <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; margin-bottom: 12px;">
             <div>
                 <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Cins / Çeşit Adı *</label>
-                <input type="text" name="extra[varieties][${idx}][name]" value="" class="form-control variety-name-input" style="font-weight: 700; font-size: 13.5px;" placeholder="Örn: Sert Durum Makarnalık Buğday" required oninput="updateVarietyBadge(this)">
+                <input type="text" name="extra[varieties][${idx}][name]" value="" class="form-control variety-name-input" style="font-weight: 700; font-size: 13.5px;" required oninput="updateVarietyBadge(this)">
             </div>
             <div>
                 <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Hasat Sezonu Ayları</label>
-                <input type="text" name="extra[varieties][${idx}][months]" value="" class="form-control" style="font-size: 13px;" placeholder="Örn: Haziran - Ağustos veya Tüm Yıl">
+                <input type="text" name="extra[varieties][${idx}][months]" value="" class="form-control" style="font-size: 13px;">
             </div>
         </div>
 
         <div style="margin-bottom: 12px;">
             <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Cins Açıklaması & Kalite Notları</label>
-            <textarea name="extra[varieties][${idx}][desc]" rows="2" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Yüksek camsılık, zengin sarı pigment ve üstün protein değeriyle makarna sanayisinin lideri..."></textarea>
+            <textarea name="extra[varieties][${idx}][desc]" rows="2" class="form-control" style="font-size: 12.5px;"></textarea>
         </div>
 
         <div style="margin-bottom: 14px;">
             <label class="form-label" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Öne Çıkan Karakteristik / Kalite Özelliği</label>
-            <input type="text" name="extra[varieties][${idx}][char_note]" value="" class="form-control" style="font-size: 12.5px;" placeholder="Örn: Amber Sarısı Camsı Dane, Yüksek İrmik Verimi">
+            <input type="text" name="extra[varieties][${idx}][char_note]" value="" class="form-control" style="font-size: 12.5px;">
         </div>
 
         <details style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px;">
@@ -1104,19 +1453,19 @@ function addNewVarietyCard() {
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Kalori (kcal)</label>
-                            <input type="text" name="extra[varieties][${idx}][nutrition][kcal]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: 330">
+                            <input type="text" name="extra[varieties][${idx}][nutrition][kcal]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Protein</label>
-                            <input type="text" name="extra[varieties][${idx}][nutrition][protein]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: 12.8 g">
+                            <input type="text" name="extra[varieties][${idx}][nutrition][protein]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Karbonhidrat</label>
-                            <input type="text" name="extra[varieties][${idx}][nutrition][carb]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: 70.0 g">
+                            <input type="text" name="extra[varieties][${idx}][nutrition][carb]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Yağ</label>
-                            <input type="text" name="extra[varieties][${idx}][nutrition][fat]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: 2.0 g">
+                            <input type="text" name="extra[varieties][${idx}][nutrition][fat]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                     </div>
                 </div>
@@ -1126,29 +1475,29 @@ function addNewVarietyCard() {
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Et / Tane Rengi</label>
-                            <input type="text" name="extra[varieties][${idx}][char][et]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: Amber Sarısı">
+                            <input type="text" name="extra[varieties][${idx}][char][et]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Çekirdek / Sertlik</label>
-                            <input type="text" name="extra[varieties][${idx}][char][cekirdek]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: Homojen Sertlik">
+                            <input type="text" name="extra[varieties][${idx}][char][cekirdek]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Kabuk Rengi / Kepek</label>
-                            <input type="text" name="extra[varieties][${idx}][char][kabuk]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: İnce Altın Kepek">
+                            <input type="text" name="extra[varieties][${idx}][char][kabuk]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Dokusu & Verim</label>
-                            <input type="text" name="extra[varieties][${idx}][char][doku]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: Yüksek İrmik Verimi">
+                            <input type="text" name="extra[varieties][${idx}][char][doku]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Tane / Meyve Şekli</label>
-                            <input type="text" name="extra[varieties][${idx}][char][sekil]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: İri Dolgun Tane">
+                            <input type="text" name="extra[varieties][${idx}][char][sekil]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                         <div>
                             <label style="font-size: 11px; font-weight: 700; color: #64748b;">Tadı & Aroma</label>
-                            <input type="text" name="extra[varieties][${idx}][char][tat]" value="" class="form-control" style="font-size: 12px;" placeholder="Örn: Zengin Ekmeklik Aroma">
+                            <input type="text" name="extra[varieties][${idx}][char][tat]" value="" class="form-control" style="font-size: 12px;">
                         </div>
                     </div>
                 </div>

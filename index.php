@@ -193,6 +193,21 @@ switch ($route) {
         ]);
         break;
 
+    // KULLANICI TALEBİ: Referanslar Sayfası (Kare Kutularda Düz Sayfa - 3'erli Logolar)
+    case 'referanslar':
+    case 'references':
+        $siteTitle = Settings::getLocalized('site_title', 'BİKGRUP');
+        $siteDesc = Settings::getLocalized('site_description', '');
+        $pageTitle = (Lang::current() === 'en' ? 'References' : 'Referanslarımız') . ' - ' . $siteTitle;
+        require_once ROOT_PATH . '/core/View.php';
+        View::render('references', [
+            'pageTitle' => $pageTitle,
+            'siteTitle' => $siteTitle,
+            'siteDesc'  => $siteDesc,
+            'activeNav' => 'references'
+        ]);
+        break;
+
     // GİZLİ YÖNETİM PANELİ (xpanel, panel, admin)
     case PANEL_SLUG:
     case 'panel':

@@ -122,14 +122,23 @@ foreach ($generalSettings as $s) {
                 </div>
 
                 <div class="form-group" style="grid-column: span 2;">
-                    <label class="form-label">Merkez Adres Bilgisi</label>
-                    <textarea name="site_address_tr" rows="2" class="form-control" placeholder="Açık adres bilgisi..."><?= htmlspecialchars($settingsMap['site_address_tr'] ?? 'Bosna Cd., 01900 Adana, Karataş Türkiye') ?></textarea>
+                    <label class="form-label" style="font-weight: 700; color: #0f172a;">🏢 1. Merkez Adres Bilgisi</label>
+                    <textarea name="site_address_tr" rows="2" class="form-control" placeholder="Merkez ofis açık adres bilgisi..."><?= htmlspecialchars($settingsMap['site_address_tr'] ?? 'Sirkenli, ANA YOL ÜZERİ, 01900 Karataş/Adana') ?></textarea>
                 </div>
 
                 <div class="form-group" style="grid-column: span 2;">
-                    <label class="form-label">📍 Adres Harita & Navigasyon Linki (Google Maps URL)</label>
-                    <input type="url" name="site_address_map_link" value="<?= htmlspecialchars($settingsMap['site_address_map_link'] ?? 'https://maps.google.com/?q=Bosna+Cd+01900+Karatas+Adana') ?>" class="form-control" placeholder="https://maps.google.com/?q=Bosna+Cd+Karatas+Adana">
-                    <span style="font-size: 11.5px; color: #64748b; margin-top: 4px; display: block;">Web sitesinde adres metnine veya yol tarifi butonlarına tıklandığında doğrudan açılacak Google Haritalar konumu.</span>
+                    <label class="form-label">📍 Merkez Adres Harita Linki (Google Maps URL)</label>
+                    <input type="url" name="site_address_map_link" value="<?= htmlspecialchars($settingsMap['site_address_map_link'] ?? 'https://maps.app.goo.gl/KxejLkF6GA7i7LsBA') ?>" class="form-control" placeholder="https://maps.app.goo.gl/...">
+                </div>
+
+                <div class="form-group" style="grid-column: span 2; border-top: 1px dashed #cbd5e1; padding-top: 16px; margin-top: 8px;">
+                    <label class="form-label" style="font-weight: 700; color: #0f172a;">🏭 2. Depo Adresi Bilgisi</label>
+                    <textarea name="site_warehouse_address_tr" rows="2" class="form-control" placeholder="Paketleme ve soğuk hava deposu açık adres bilgisi..."><?= htmlspecialchars($settingsMap['site_warehouse_address_tr'] ?? 'Sirkenli Paketleme & Soğuk Hava Deposu Tesisleri, Karataş / Adana') ?></textarea>
+                </div>
+
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">📍 Depo Adresi Harita Linki (Google Maps URL)</label>
+                    <input type="url" name="site_warehouse_map_link" value="<?= htmlspecialchars($settingsMap['site_warehouse_map_link'] ?? 'https://maps.app.goo.gl/KxejLkF6GA7i7LsBA') ?>" class="form-control" placeholder="https://maps.app.goo.gl/...">
                 </div>
             </div>
         </div>

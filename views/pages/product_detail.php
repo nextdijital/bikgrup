@@ -871,32 +871,32 @@ if ($currentLang === 'en') {
 
 $characteristics = [
     'et_rengi'    => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain / Pulp Color' : 'Pulp Color') : ($isGrain ? 'Tane / Et Rengi' : 'Et Rengi'), 
+        'title' => !empty($prodExtra['char_lbl_et_rengi']) ? $prodExtra['char_lbl_et_rengi'] : ($currentLang === 'en' ? ($isGrain ? 'Grain / Pulp Color' : 'Pulp Color') : ($isGrain ? 'Tane / Et Rengi' : 'Et Rengi')), 
         'val' => !empty($prodExtra['char_et_rengi']) ? $prodExtra['char_et_rengi'] : ($defChar['et_rengi']['val'] ?? ($isGrain ? 'Amber Sarısı Camsı Dane' : 'Pembemsi Turuncu')), 
         'icon' => $isGrain ? '🌾' : '🎨'
     ],
     'cekirdek'    => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain / Protein Structure' : 'Seed Structure') : ($isGrain ? 'Dane / Protein Yapısı' : 'Çekirdek Yapısı'), 
+        'title' => !empty($prodExtra['char_lbl_cekirdek']) ? $prodExtra['char_lbl_cekirdek'] : ($currentLang === 'en' ? ($isGrain ? 'Grain / Protein Structure' : 'Seed Structure') : ($isGrain ? 'Dane / Protein Yapısı' : 'Çekirdek Yapısı')), 
         'val' => !empty($prodExtra['char_cekirdek']) ? $prodExtra['char_cekirdek'] : ($defChar['cekirdek']['val'] ?? ($isGrain ? 'Sert Endosperm & Yüksek Protein' : 'Çekirdeksiz')), 
         'icon' => $isGrain ? '🔬' : '🌱'
     ],
     'kabuk_rengi' => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Bran / Husk Color' : 'Peel Color') : ($isGrain ? 'Kepek / Kabuk' : 'Kabuk Rengi'), 
+        'title' => !empty($prodExtra['char_lbl_kabuk_rengi']) ? $prodExtra['char_lbl_kabuk_rengi'] : ($currentLang === 'en' ? ($isGrain ? 'Bran / Husk Color' : 'Peel Color') : ($isGrain ? 'Kepek / Kabuk' : 'Kabuk Rengi')), 
         'val' => !empty($prodExtra['char_kabuk_rengi']) ? $prodExtra['char_kabuk_rengi'] : ($defChar['kabuk_rengi']['val'] ?? ($isGrain ? 'İnce Altın Kepek' : 'Turuncu')), 
         'icon' => $isGrain ? '🍞' : '🍊'
     ],
     'dokusu'      => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Flour / Semolina Yield' : 'Texture & Juiciness') : ($isGrain ? 'Un / İrmik Verimi' : 'Dokusu & Sululuk'), 
+        'title' => !empty($prodExtra['char_lbl_dokusu']) ? $prodExtra['char_lbl_dokusu'] : ($currentLang === 'en' ? ($isGrain ? 'Flour / Semolina Yield' : 'Texture & Juiciness') : ($isGrain ? 'Un / İrmik Verimi' : 'Dokusu & Sululuk')), 
         'val' => !empty($prodExtra['char_dokusu']) ? $prodExtra['char_dokusu'] : ($defChar['dokusu']['val'] ?? ($isGrain ? 'Yüksek İrmik & Un Verimi' : 'Gevrek ve Su Oranı Yüksek')), 
         'icon' => $isGrain ? '⚙️' : '💧'
     ],
     'sekil'       => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Grain Shape' : 'Fruit Shape') : ($isGrain ? 'Tane Formu' : 'Meyve Şekli'), 
+        'title' => !empty($prodExtra['char_lbl_sekil']) ? $prodExtra['char_lbl_sekil'] : ($currentLang === 'en' ? ($isGrain ? 'Grain Shape' : 'Fruit Shape') : ($isGrain ? 'Tane Formu' : 'Meyve Şekli')), 
         'val' => !empty($prodExtra['char_sekil']) ? $prodExtra['char_sekil'] : ($defChar['sekil']['val'] ?? ($isGrain ? 'İri Dolgun Dane' : 'Düzgün Yuvarlak Şekilli')), 
         'icon' => '✨'
     ],
     'tadi'        => [
-        'title' => $currentLang === 'en' ? ($isGrain ? 'Aroma & Quality Profile' : 'Taste & Acidity') : ($isGrain ? 'Aroma & Kalite Notu' : 'Tadı & Asidite'), 
+        'title' => !empty($prodExtra['char_lbl_tadi']) ? $prodExtra['char_lbl_tadi'] : ($currentLang === 'en' ? ($isGrain ? 'Aroma & Quality Profile' : 'Taste & Acidity') : ($isGrain ? 'Aroma & Kalite Notu' : 'Tadı & Asidite')), 
         'val' => !empty($prodExtra['char_tadi']) ? $prodExtra['char_tadi'] : ($defChar['tadi']['val'] ?? ($isGrain ? 'Doğal Tahıl Lezzeti' : 'Tatlı ve Aromatik')), 
         'icon' => $isGrain ? '🏆' : '🍯'
     ],
@@ -911,41 +911,54 @@ if ($currentLang === 'en') {
     unset($cv);
 }
 
-// Dinamik Ambalaj ve Kutu Seçenekleri (Arka Panelden Yönetilen)
-$box1 = [
-    'title'  => !empty($prodExtra['box1_title']) ? $prodExtra['box1_title'] : ($currentLang === 'en' ? 'Carton Box' : 'Karton Kutu'),
-    'weight' => !empty($prodExtra['box1_weight']) ? $prodExtra['box1_weight'] : '7 Kg',
-    'dim'    => !empty($prodExtra['box1_dim']) ? $prodExtra['box1_dim'] : '600 x 400 x 120',
-    'image'  => !empty($prodExtra['box1_image']) ? $prodExtra['box1_image'] : 'packaging_carton_1.png'
-];
-$box2 = [
-    'title'  => !empty($prodExtra['box2_title']) ? $prodExtra['box2_title'] : ($currentLang === 'en' ? 'Carton Box' : 'Karton Kutu'),
-    'weight' => !empty($prodExtra['box2_weight']) ? $prodExtra['box2_weight'] : '15 Kg',
-    'dim'    => !empty($prodExtra['box2_dim']) ? $prodExtra['box2_dim'] : '600 x 400 x 160',
-    'image'  => !empty($prodExtra['box2_image']) ? $prodExtra['box2_image'] : 'packaging_carton_2.png'
-];
-$box3 = [
-    'title'  => !empty($prodExtra['box3_title']) ? $prodExtra['box3_title'] : ($currentLang === 'en' ? 'Deep Carton Box' : 'Karton Kutu Derin'),
-    'weight' => !empty($prodExtra['box3_weight']) ? $prodExtra['box3_weight'] : '15 Kg',
-    'dim'    => !empty($prodExtra['box3_dim']) ? $prodExtra['box3_dim'] : '600 x 400 x 180',
-    'image'  => !empty($prodExtra['box3_image']) ? $prodExtra['box3_image'] : 'packaging_carton_3.png'
-];
-$box4 = [
-    'title'  => !empty($prodExtra['box4_title']) ? $prodExtra['box4_title'] : ($currentLang === 'en' ? 'Telescopic Carton Box' : 'Karton Kutu – Teleskopik'),
-    'weight' => !empty($prodExtra['box4_weight']) ? $prodExtra['box4_weight'] : '15 Kg',
-    'dim'    => !empty($prodExtra['box4_dim']) ? $prodExtra['box4_dim'] : '600 x 400 x 180',
-    'image'  => !empty($prodExtra['box4_image']) ? $prodExtra['box4_image'] : 'packaging_telescopic.png'
-];
-$box5 = [
-    'title'  => !empty($prodExtra['box5_title']) ? $prodExtra['box5_title'] : ($currentLang === 'en' ? 'Mesh Bag Packaging' : 'File Ambalaj'),
-    'weight' => !empty($prodExtra['box5_weight']) ? $prodExtra['box5_weight'] : '1.5 Kg - 2 Kg',
-    'dim'    => !empty($prodExtra['box5_dim']) ? $prodExtra['box5_dim'] : ($currentLang === 'en' ? 'Retail Supermarket Shelf' : 'Perakende Market Rafı'),
-    'image'  => !empty($prodExtra['box5_image']) ? $prodExtra['box5_image'] : 'packaging_mesh.png'
-];
+// Dinamik Ambalaj ve Kutu Seçenekleri (Arka Panelden Yönetilen & Seçenekli Kutucuk Ayarlı)
+$showPackaging = isset($prodExtra['show_packaging']) ? ((int)$prodExtra['show_packaging'] === 1) : (!empty($prodExtra['box1_title']) || !empty($prodExtra['packaging_items']));
+
+$packagingBoxes = [];
+if (!empty($prodExtra['packaging_items']) && is_array($prodExtra['packaging_items'])) {
+    $packagingBoxes = $prodExtra['packaging_items'];
+} else {
+    // Legacy box1..5 kontrolü
+    for ($b = 1; $b <= 5; $b++) {
+        if (!empty($prodExtra['box' . $b . '_title']) || !empty($prodExtra['box' . $b . '_image'])) {
+            $packagingBoxes[] = [
+                'title'  => !empty($prodExtra['box' . $b . '_title']) ? $prodExtra['box' . $b . '_title'] : ($currentLang === 'en' ? 'Carton Box' : 'Karton Kutu'),
+                'weight' => !empty($prodExtra['box' . $b . '_weight']) ? $prodExtra['box' . $b . '_weight'] : '15 Kg',
+                'dim'    => !empty($prodExtra['box' . $b . '_dim']) ? $prodExtra['box' . $b . '_dim'] : '600 x 400 x 160',
+                'image'  => !empty($prodExtra['box' . $b . '_image']) ? $prodExtra['box' . $b . '_image'] : ('packaging_carton_' . min($b, 3) . '.png')
+            ];
+        }
+    }
+}
 
 $badge1 = !empty($prodExtra['badge1']) ? $prodExtra['badge1'] : ($currentLang === 'en' ? 'Vitamin C Store' : 'C Vitamini Deposu');
 $badge2 = !empty($prodExtra['badge2']) ? $prodExtra['badge2'] : ($currentLang === 'en' ? 'High Natural Moisture & Fiber' : 'Yüksek Doğal Su & Lif');
 $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang === 'en' ? 'Rich Antioxidants' : 'Zengin Antioksidan');
+
+// Galeri Entegrasyonu (Kullanıcı Talebi: Ürün detayının en altında kayan galeri)
+require_once ROOT_PATH . '/app/models/GalleryItem.php';
+$showProductGallery = isset($prodExtra['show_product_gallery']) ? ((int)$prodExtra['show_product_gallery'] === 1) : true;
+$productGalleryCategory = $prodExtra['gallery_category'] ?? 'all';
+$productGalleryCustomTitle = $prodExtra['gallery_custom_title'] ?? '';
+
+$prodGalleryItems = [];
+if ($showProductGallery) {
+    try {
+        $allGalleryItems = GalleryItem::all(true);
+        if (!empty($productGalleryCategory) && $productGalleryCategory !== 'all') {
+            $prodGalleryItems = array_values(array_filter($allGalleryItems, function($g) use ($productGalleryCategory) {
+                return strtolower($g['category'] ?? '') === strtolower($productGalleryCategory);
+            }));
+        } else {
+            $prodGalleryItems = $allGalleryItems;
+        }
+        if (empty($prodGalleryItems)) {
+            $prodGalleryItems = $allGalleryItems;
+        }
+    } catch (\Throwable $e) {
+        $prodGalleryItems = [];
+    }
+}
 ?>
 
 <div class="product-detail-page">
@@ -1160,8 +1173,8 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
                         </div>
 
                         <div class="char-panel-header">
-                            <h3 class="char-panel-title"><?= $currentLang === 'en' ? ($isGrain ? 'Product & Quality Profile' : 'Fruit Characteristics') : ($isGrain ? 'Ürün & Kalite Karakteristiği' : 'Meyve Karakteristiği') ?></h3>
-                            <p class="char-panel-desc"><?= $currentLang === 'en' ? ($isGrain ? 'Physical analysis and quality criteria' : 'Optical calibration and quality criteria') : ($isGrain ? 'Fiziksel analiz ve kalite kriterleri' : 'Optik kalibrasyon ve kalite kriterleri') ?></p>
+                            <h3 class="char-panel-title"><?= !empty($prodExtra['char_panel_title']) ? htmlspecialchars($prodExtra['char_panel_title']) : ($currentLang === 'en' ? ($isGrain ? 'Product & Quality Profile' : 'Fruit Characteristics') : ($isGrain ? 'Ürün & Kalite Karakteristiği' : 'Meyve Karakteristiği')) ?></h3>
+                            <p class="char-panel-desc"><?= !empty($prodExtra['char_panel_desc']) ? htmlspecialchars($prodExtra['char_panel_desc']) : ($currentLang === 'en' ? ($isGrain ? 'Physical analysis and quality criteria' : 'Optical calibration and quality criteria') : ($isGrain ? 'Fiziksel analiz ve kalite kriterleri' : 'Optik kalibrasyon ve kalite kriterleri')) ?></p>
                         </div>
 
                         <div class="char-items-list">
@@ -1176,7 +1189,7 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
                         </div>
 
                         <div class="char-panel-footer">
-                            <span class="char-footer-text"><?= $currentLang === 'en' ? '100% Traceable Export Standard' : '%100 İzlenebilir İhracat Standardı' ?></span>
+                            <span class="char-footer-text"><?= !empty($prodExtra['char_panel_footer']) ? htmlspecialchars($prodExtra['char_panel_footer']) : ($currentLang === 'en' ? '100% Traceable Export Standard' : '%100 İzlenebilir İhracat Standardı') ?></span>
                         </div>
                     </div>
                 </div>
@@ -1327,8 +1340,9 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
         </section>
 
         <!-- ====================================================================
-             4. BÖLÜM: İHRACAT AMBALAJ VE KUTU ÇEŞİTLERİ (ARKAPLANI OLMAYAN SAYDAM GÖRSELLER)
+             4. BÖLÜM: İHRACAT AMBALAJ VE KUTU ÇEŞİTLERİ (KULLANICI TALEBİ: SEÇENEKLİ KUTUCUK AYARI)
              ==================================================================== -->
+        <?php if ($showPackaging && !empty($packagingBoxes)): ?>
         <section class="packaging-section">
             <div class="section-badge-center"><?= $currentLang === 'en' ? 'International Standards' : 'Uluslararası Standartlar' ?></div>
             <h2 class="section-title-center"><?= $currentLang === 'en' ? 'Export Packaging & Box Options' : 'İhracat Ambalaj ve Kutu Çeşitlerimiz' ?></h2>
@@ -1339,67 +1353,22 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
             </p>
 
             <div class="packaging-grid">
-                
-                <!-- 1. Kutu: Karton Kutu 7 Kg -->
-                <div class="packaging-card">
-                    <div class="packaging-img-holder">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box1['image']) ?>" alt="<?= htmlspecialchars($box1['title']) ?>" loading="lazy">
+                <?php foreach ($packagingBoxes as $box): ?>
+                    <div class="packaging-card">
+                        <div class="packaging-img-holder">
+                            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box['image'] ?? 'packaging_carton_1.png') ?>" alt="<?= htmlspecialchars($box['title'] ?? '') ?>" loading="lazy">
+                        </div>
+                        <div class="packaging-details">
+                            <h4 class="pkg-title"><?= htmlspecialchars($box['title'] ?? '') ?></h4>
+                            <?php if (!empty($box['weight'])): ?>
+                                <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box['weight']) ?></div>
+                            <?php endif; ?>
+                            <?php if (!empty($box['dim'])): ?>
+                                <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions / Usage:' : 'Ebatlar / Kullanım:' ?></strong> <?= htmlspecialchars($box['dim']) ?></div>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="packaging-details">
-                        <h4 class="pkg-title"><?= htmlspecialchars($box1['title']) ?></h4>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box1['weight']) ?></div>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box1['dim']) ?></div>
-                    </div>
-                </div>
-
-                <!-- 2. Kutu: Karton Kutu 15 Kg -->
-                <div class="packaging-card">
-                    <div class="packaging-img-holder">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box2['image']) ?>" alt="<?= htmlspecialchars($box2['title']) ?>" loading="lazy">
-                    </div>
-                    <div class="packaging-details">
-                        <h4 class="pkg-title"><?= htmlspecialchars($box2['title']) ?></h4>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box2['weight']) ?></div>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box2['dim']) ?></div>
-                    </div>
-                </div>
-
-                <!-- 3. Kutu: Karton Kutu 15 Kg Derin -->
-                <div class="packaging-card">
-                    <div class="packaging-img-holder">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box3['image']) ?>" alt="<?= htmlspecialchars($box3['title']) ?>" loading="lazy">
-                    </div>
-                    <div class="packaging-details">
-                        <h4 class="pkg-title"><?= htmlspecialchars($box3['title']) ?></h4>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box3['weight']) ?></div>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box3['dim']) ?></div>
-                    </div>
-                </div>
-
-                <!-- 4. Kutu: Karton Kutu Teleskopik 15 Kg -->
-                <div class="packaging-card">
-                    <div class="packaging-img-holder">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box4['image']) ?>" alt="<?= htmlspecialchars($box4['title']) ?>" loading="lazy">
-                    </div>
-                    <div class="packaging-details">
-                        <h4 class="pkg-title"><?= htmlspecialchars($box4['title']) ?></h4>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box4['weight']) ?></div>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Dimensions (mm):' : 'Ebatlar(mm):' ?></strong> <?= htmlspecialchars($box4['dim']) ?></div>
-                    </div>
-                </div>
-
-                <!-- 5. Kutu: File Perakende Ambalaj -->
-                <div class="packaging-card">
-                    <div class="packaging-img-holder">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($box5['image']) ?>" alt="<?= htmlspecialchars($box5['title']) ?>" loading="lazy">
-                    </div>
-                    <div class="packaging-details">
-                        <h4 class="pkg-title"><?= htmlspecialchars($box5['title']) ?></h4>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Weight:' : 'Ağırlık:' ?></strong> <?= htmlspecialchars($box5['weight']) ?></div>
-                        <div class="pkg-meta"><strong><?= $currentLang === 'en' ? 'Usage:' : 'Kullanım:' ?></strong> <?= htmlspecialchars($box5['dim']) ?></div>
-                    </div>
-                </div>
-
+                <?php endforeach; ?>
             </div>
 
             <!-- Alt Yönlendirme Linkleri (Görsel 2 Sağ Alt) -->
@@ -1413,9 +1382,128 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
             </div>
 
         </section>
+        <?php else: ?>
+            <!-- Ambalaj Kapalı İse Alt Yönlendirme Linkleri -->
+            <div class="detail-bottom-nav" style="margin-top: 40px; margin-bottom: 25px;">
+                <a href="<?= BASE_URL ?>/urunler" class="nav-return-btn">
+                    <span>↩</span> <?= $currentLang === 'en' ? strtoupper($catName) . ' LIST' : mb_strtoupper($catName, 'UTF-8') . ' LİSTESİ' ?>
+                </a>
+                <a href="<?= BASE_URL ?>/" class="nav-return-btn">
+                    <span>🏠</span> <?= $currentLang === 'en' ? 'HOME' : 'ANA SAYFA' ?>
+                </a>
+            </div>
+        <?php endif; ?>
 
     </div>
 </div>
+
+<?php if ($showProductGallery && !empty($prodGalleryItems)): 
+    // Sonsuz döngü için en az 12 kart oluştur
+    $loopGallery = $prodGalleryItems;
+    while (count($loopGallery) < 12 && count($prodGalleryItems) > 0) {
+        $loopGallery = array_merge($loopGallery, $prodGalleryItems);
+    }
+?>
+<!-- ====================================================================
+     ÜRÜN DETAYI EN ALT KAYAN GALERİ ALANI (SAF BEYAZ ZEMİN - YAZISIZ - YAVAŞ AKIŞ)
+     ==================================================================== -->
+<section class="section product-gallery-slider-section" style="background: #ffffff; padding: 20px 0 60px 0; overflow: hidden; position: relative;">
+
+    <!-- Kayan Galeri Bandı Sahnesi -->
+    <div class="prod-gallery-marquee-wrapper" id="prodGalleryMarqueeWrapper">
+        <div class="prod-gallery-marquee-track" id="prodGalleryMarqueeTrack">
+            
+            <!-- 1. Grup -->
+            <?php foreach ($loopGallery as $gItem): 
+                $gImg = !empty($gItem['image_path']) ? $gItem['image_path'] : 'nature_hero_bg.jpg';
+                $gType = $gItem['type'] ?? 'image';
+                $gVideoUrl = $gItem['video_url'] ?? '';
+                $gVideoFile = !empty($gItem['video_file']) ? BASE_URL . '/public/images/' . htmlspecialchars($gItem['video_file']) : '';
+            ?>
+                <div class="prod-gallery-card" 
+                     data-type="<?= htmlspecialchars($gType) ?>"
+                     data-img="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($gImg) ?>"
+                     data-video-url="<?= htmlspecialchars($gVideoUrl) ?>"
+                     data-video-file="<?= htmlspecialchars($gVideoFile) ?>"
+                     onclick="handleProdGalleryCardClick(this)">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($gImg) ?>" 
+                         alt="<?= htmlspecialchars($prodName) ?>" 
+                         class="prod-gallery-img" 
+                         loading="lazy" 
+                         draggable="false">
+                    
+                    <?php if ($gType === 'video'): ?>
+                        <div class="prod-gallery-icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </div>
+                    <?php else: ?>
+                        <div class="prod-gallery-icon-badge">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <line x1="11" y1="8" x2="11" y2="14"></line>
+                                <line x1="8" y1="11" x2="14" y2="11"></line>
+                            </svg>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+
+            <!-- 2. Grup (Dikişsiz Sonsuz Döngü Kopyası) -->
+            <?php foreach ($loopGallery as $gItem): 
+                $gImg = !empty($gItem['image_path']) ? $gItem['image_path'] : 'nature_hero_bg.jpg';
+                $gType = $gItem['type'] ?? 'image';
+                $gVideoUrl = $gItem['video_url'] ?? '';
+                $gVideoFile = !empty($gItem['video_file']) ? BASE_URL . '/public/images/' . htmlspecialchars($gItem['video_file']) : '';
+            ?>
+                <div class="prod-gallery-card" 
+                     aria-hidden="true"
+                     data-type="<?= htmlspecialchars($gType) ?>"
+                     data-img="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($gImg) ?>"
+                     data-video-url="<?= htmlspecialchars($gVideoUrl) ?>"
+                     data-video-file="<?= htmlspecialchars($gVideoFile) ?>"
+                     onclick="handleProdGalleryCardClick(this)">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($gImg) ?>" 
+                         alt="<?= htmlspecialchars($prodName) ?>" 
+                         class="prod-gallery-img" 
+                         loading="lazy" 
+                         draggable="false">
+                    
+                    <?php if ($gType === 'video'): ?>
+                        <div class="prod-gallery-icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </div>
+                    <?php else: ?>
+                        <div class="prod-gallery-icon-badge">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <line x1="11" y1="8" x2="11" y2="14"></line>
+                                <line x1="8" y1="11" x2="14" y2="11"></line>
+                            </svg>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+</section>
+
+<!-- ====================================================================
+     ÜRÜN DETAYI SAF MEDYA LIGHTBOX (TAMAMEN YAZISIZ - RESİM/VİDEO VE KAPAT)
+     ==================================================================== -->
+<div id="productDetailLightbox" class="product-detail-lightbox" onclick="closeProdGalleryModal(event)">
+    <div class="product-lightbox-container">
+        <button type="button" class="product-lightbox-close" onclick="closeProdGalleryModal(null)" aria-label="Kapat">&times;</button>
+        <div class="product-lightbox-body" id="prodLightboxBody"></div>
+    </div>
+</div>
+<?php endif; ?>
 
 
 <!-- ====================================================================
@@ -1740,6 +1828,156 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
         gap: 12px;
     }
 }
+
+/* ====================================================================
+   ÜRÜN DETAYI ALT KAYAN GALERİ VE MODAL STİLLERİ
+   ==================================================================== */
+.prod-gallery-marquee-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 18px 0 26px 0;
+    cursor: grab;
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.prod-gallery-marquee-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.prod-gallery-marquee-wrapper:active {
+    cursor: grabbing;
+}
+.prod-gallery-marquee-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: prodGalleryScrollLoop 120s linear infinite;
+    will-change: transform;
+}
+.prod-gallery-marquee-wrapper:hover .prod-gallery-marquee-track {
+    animation-play-state: paused;
+}
+.prod-gallery-card {
+    display: block;
+    width: 275px;
+    height: 185px;
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    user-select: none;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+.prod-gallery-card:hover {
+    border-color: #15803d;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 14px 28px rgba(21, 128, 61, 0.16);
+}
+.prod-gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+}
+.prod-gallery-icon-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    background: rgba(15, 23, 42, 0.75);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.prod-gallery-card:hover .prod-gallery-icon-badge {
+    transform: scale(1.1);
+    background: #15803d;
+}
+@keyframes prodGalleryScrollLoop {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - 10px));
+    }
+}
+
+/* Lightbox Modal (Saf Medya - Sıfır Yazı) */
+.product-detail-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(8px);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.product-lightbox-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 88vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product-lightbox-close {
+    position: absolute;
+    top: -46px;
+    right: -10px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 38px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+.product-lightbox-close:hover {
+    color: #4ade80;
+    transform: scale(1.15);
+}
+.product-lightbox-body img {
+    max-width: 88vw;
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+.product-lightbox-body video {
+    max-width: 88vw;
+    max-height: 82vh;
+    border-radius: 14px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+.product-lightbox-body iframe {
+    width: 80vw;
+    height: 45vw;
+    max-width: 1000px;
+    max-height: 562px;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
 </style>
 
 <script>
@@ -1837,6 +2075,138 @@ $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang ==
 
         document.querySelectorAll('.variety-clickable-row').forEach(r => r.classList.remove('active-variety-row'));
     };
+
+    // ====================================================================
+    // 4. EN ALT KAYAN GALERİ MOTORU (ELLE SÜRÜKLEME & SAF MEDYA LIGHTBOX)
+    // ====================================================================
+    let isGalleryDragging = false;
+    let galleryStartX = 0;
+    let galleryScrollLeft = 0;
+    let galleryHasMoved = false;
+
+    const gWrapper = document.getElementById('prodGalleryMarqueeWrapper');
+    const gTrack = document.getElementById('prodGalleryMarqueeTrack');
+
+    if (gWrapper && gTrack) {
+        // Fare (Mouse) Sürükleme
+        gWrapper.addEventListener('mousedown', function(e) {
+            isGalleryDragging = true;
+            galleryHasMoved = false;
+            galleryStartX = e.pageX - gWrapper.offsetLeft;
+            galleryScrollLeft = gWrapper.scrollLeft;
+            gTrack.style.animationPlayState = 'paused';
+        });
+
+        window.addEventListener('mousemove', function(e) {
+            if (!isGalleryDragging) return;
+            const x = e.pageX - gWrapper.offsetLeft;
+            const walk = (x - galleryStartX) * 1.6;
+            if (Math.abs(walk) > 6) {
+                galleryHasMoved = true;
+            }
+            gWrapper.scrollLeft = galleryScrollLeft - walk;
+        });
+
+        window.addEventListener('mouseup', function() {
+            if (isGalleryDragging) {
+                isGalleryDragging = false;
+                setTimeout(function() { galleryHasMoved = false; }, 100);
+                if (!gWrapper.matches(':hover')) {
+                    gTrack.style.animationPlayState = 'running';
+                }
+            }
+        });
+
+        // Dokunmatik (Touch) Sürükleme
+        gWrapper.addEventListener('touchstart', function(e) {
+            isGalleryDragging = true;
+            galleryHasMoved = false;
+            galleryStartX = e.touches[0].pageX - gWrapper.offsetLeft;
+            galleryScrollLeft = gWrapper.scrollLeft;
+            gTrack.style.animationPlayState = 'paused';
+        }, { passive: true });
+
+        gWrapper.addEventListener('touchmove', function(e) {
+            if (!isGalleryDragging) return;
+            const x = e.touches[0].pageX - gWrapper.offsetLeft;
+            const walk = (x - galleryStartX) * 1.6;
+            if (Math.abs(walk) > 6) {
+                galleryHasMoved = true;
+            }
+            gWrapper.scrollLeft = galleryScrollLeft - walk;
+        }, { passive: true });
+
+        gWrapper.addEventListener('touchend', function() {
+            isGalleryDragging = false;
+            setTimeout(function() { galleryHasMoved = false; }, 100);
+            gTrack.style.animationPlayState = 'running';
+        });
+    }
+
+    // Kart Tıklandığında Lightbox Açma (Kaydırma yapılmadıysa açar)
+    window.handleProdGalleryCardClick = function(cardEl) {
+        if (galleryHasMoved) return;
+
+        const type = cardEl.getAttribute('data-type') || 'image';
+        const img = cardEl.getAttribute('data-img') || '';
+        const videoUrl = cardEl.getAttribute('data-video-url') || '';
+        const videoFile = cardEl.getAttribute('data-video-file') || '';
+        const body = document.getElementById('prodLightboxBody');
+        if (!body) return;
+
+        body.innerHTML = '';
+
+        if (type === 'video') {
+            if (videoFile) {
+                body.innerHTML = `<video src="${videoFile}" controls autoplay muted loop playsinline style="max-height: 80vh; max-width: 90vw; border-radius: 12px;"></video>`;
+                const v = body.querySelector('video');
+                if (v) {
+                    v.muted = true;
+                    v.defaultMuted = true;
+                    v.volume = 0;
+                }
+            } else if (videoUrl) {
+                let embedUrl = videoUrl;
+                if (videoUrl.includes('youtube.com/watch?v=')) {
+                    const vidId = videoUrl.split('watch?v=')[1].split('&')[0];
+                    embedUrl = 'https://www.youtube.com/embed/' + vidId + '?autoplay=1&mute=1';
+                } else if (videoUrl.includes('youtu.be/')) {
+                    const vidId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                    embedUrl = 'https://www.youtube.com/embed/' + vidId + '?autoplay=1&mute=1';
+                } else if (videoUrl.includes('vimeo.com/')) {
+                    const vidId = videoUrl.split('vimeo.com/')[1];
+                    embedUrl = 'https://player.vimeo.com/video/' + vidId + '?autoplay=1&muted=1';
+                }
+                body.innerHTML = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                body.innerHTML = `<img src="${img}" alt="">`;
+            }
+        } else {
+            body.innerHTML = `<img src="${img}" alt="">`;
+        }
+
+        const modal = document.getElementById('productDetailLightbox');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    };
+
+    window.closeProdGalleryModal = function(e) {
+        if (!e || e.target === document.getElementById('productDetailLightbox') || e.target.classList.contains('product-lightbox-close')) {
+            const body = document.getElementById('prodLightboxBody');
+            if (body) body.innerHTML = '';
+            const modal = document.getElementById('productDetailLightbox');
+            if (modal) modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    };
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.closeProdGalleryModal(null);
+        }
+    });
 
 })();
 </script>
