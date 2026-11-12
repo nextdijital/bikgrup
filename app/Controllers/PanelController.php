@@ -1528,5 +1528,51 @@ class PanelController
         header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/gallery");
         exit;
     }
+
+    /**
+     * Yeni Galeri Kategorisi Ekle
+     */
+    public function saveGalleryCategory(): void
+    {
+        $this->requireAuth();
+        require_once ROOT_PATH . '/app/models/GalleryItem.php';
+
+        $title = trim($_POST['category_title'] ?? '');
+        $slug = trim($_POST['category_slug'] ?? '');
+
+        if (!empty($title)) {
+            $saved = GalleryItem::saveCategory($title, !empty($slug) ? $slug : null);
+            if ($saved) {
+                $_SESSION['panel_success'] = 'Yeni galeri kategorisi ("' . htmlspecialchars($title) . '") başarıyla oluşturuldu.';
+            } else {
+                $_SESSION['panel_error'] = 'Kategori kaydedilirken bir hata oluştu.';
+            }
+        } else {
+            $_SESSION['panel_error'] = 'Lütfen kategori adını girin.';
+        }
+
+        $redirectTo = $_POST['redirect_to'] ?? (PANEL_SLUG . '/gallery');
+        header("Location: " . BASE_URL . "/" . $redirectTo);
+        exit;
+    }
+
+    /**
+     * Galeri Kategorisi Sil
+     */
+    public function deleteGalleryCategory(): void
+    {
+        $this->requireAuth();
+        require_once ROOT_PATH . '/app/models/GalleryItem.php';
+
+        $slug = trim($_GET['slug'] ?? '');
+        if (!empty($slug)) {
+            GalleryItem::deleteCategory($slug);
+            $_SESSION['panel_success'] = 'Galeri kategorisi başarıyla silindi.';
+        }
+
+        $redirectTo = $_GET['redirect_to'] ?? (PANEL_SLUG . '/gallery');
+        header("Location: " . BASE_URL . "/" . $redirectTo);
+        exit;
+    }
 }
 

@@ -946,13 +946,11 @@ if ($showProductGallery) {
     try {
         $allGalleryItems = GalleryItem::all(true);
         if (!empty($productGalleryCategory) && $productGalleryCategory !== 'all') {
-            $prodGalleryItems = array_values(array_filter($allGalleryItems, function($g) use ($productGalleryCategory) {
-                return strtolower($g['category'] ?? '') === strtolower($productGalleryCategory);
+            $targetCategory = strtolower(trim($productGalleryCategory));
+            $prodGalleryItems = array_values(array_filter($allGalleryItems, function($g) use ($targetCategory) {
+                return strtolower(trim($g['category'] ?? '')) === $targetCategory;
             }));
         } else {
-            $prodGalleryItems = $allGalleryItems;
-        }
-        if (empty($prodGalleryItems)) {
             $prodGalleryItems = $allGalleryItems;
         }
     } catch (\Throwable $e) {
@@ -1405,9 +1403,9 @@ if ($showProductGallery) {
     }
 ?>
 <!-- ====================================================================
-     ÜRÜN DETAYI EN ALT KAYAN GALERİ ALANI (SAF BEYAZ ZEMİN - YAZISIZ - YAVAŞ AKIŞ)
+     ÜRÜN DETAYI EN ALT KAYAN GALERİ ALANI (SİTE ZEMİNİ - YAZISIZ - YAVAŞ AKIŞ)
      ==================================================================== -->
-<section class="section product-gallery-slider-section" style="background: #ffffff; padding: 20px 0 60px 0; overflow: hidden; position: relative;">
+<section class="section product-gallery-slider-section" style="background: var(--theme-bg, #fbfcfd); padding: 20px 0 60px 0; overflow: hidden; position: relative;">
 
     <!-- Kayan Galeri Bandı Sahnesi -->
     <div class="prod-gallery-marquee-wrapper" id="prodGalleryMarqueeWrapper">
@@ -1864,7 +1862,7 @@ if ($showProductGallery) {
     display: block;
     width: 275px;
     height: 185px;
-    background: #ffffff !important;
+    background: var(--theme-bg, #fbfcfd) !important;
     border: 1.5px solid #e2e8f0;
     border-radius: 18px;
     box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);

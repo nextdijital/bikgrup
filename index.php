@@ -289,6 +289,12 @@ switch ($route) {
             case 'delete-gallery':
                 $panel->deleteGalleryItem();
                 break;
+            case 'save-gallery-category':
+                $panel->saveGalleryCategory();
+                break;
+            case 'delete-gallery-category':
+                $panel->deleteGalleryCategory();
+                break;
             case 'messages':
             case 'read-message':
             case 'delete-message':

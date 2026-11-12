@@ -9,15 +9,15 @@ declare(strict_types=1);
 $galleryHero = PageSection::get('gallery_page_hero') ?? [];
 $galleryHeroExtra = $galleryHero['extra'] ?? (!empty($galleryHero['extra_json']) ? json_decode($galleryHero['extra_json'], true) : []);
 
-$categoryLabelsTr = [
-    'hasat'     => 'Hasat & Bahçeler',
-    'tesisler'  => 'Tesislerimiz',
-    'paketleme' => 'Paketleme',
-    'urunler'   => 'Ürünlerimiz',
-    'lojistik'  => 'Soğuk Zincir & Lojistik',
-    'tanitim'   => 'Kurumsal Tanıtım',
-    'genel'     => 'Genel'
-];
+require_once ROOT_PATH . '/app/models/GalleryItem.php';
+$categoryLabelsTr = GalleryItem::getCategories();
+$customCategories = GalleryItem::getCustomCategories();
+
+$categoryCounts = [];
+foreach ($items as $it) {
+    $c = $it['category'] ?? 'genel';
+    $categoryCounts[$c] = ($categoryCounts[$c] ?? 0) + 1;
+}
 ?>
 
 <!-- Galeri Sayfası Hero Afiş & Başlık Alanı -->
@@ -95,9 +95,14 @@ $categoryLabelsTr = [
                 Fotoğrafları ve kurumsal videoları yönetin. Yüklenen tüm fotoğraflar otomatik olarak <strong>WebP</strong> formatına optimize edilir.
             </p>
         </div>
-        <button type="button" class="btn btn-primary" onclick="openGalleryModal()" style="display: flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 20px;">
-            <span>➕</span> Yeni Medya Ekle
-        </button>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" onclick="openCategoryModal()" style="display: flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 18px; border: 1.5px solid #cbd5e1; background: #ffffff; color: #1e293b;">
+                <span>📁</span> Kategorileri Yönet (<?= count($categoryLabelsTr) ?>)
+            </button>
+            <button type="button" class="btn btn-primary" onclick="openGalleryModal()" style="display: flex; align-items: center; gap: 8px; font-weight: 700; padding: 10px 20px;">
+                <span>➕</span> Yeni Medya Ekle
+            </button>
+        </div>
     </div>
 
     <!-- Filtre Sekmeleri -->
@@ -265,15 +270,16 @@ $categoryLabelsTr = [
             <!-- Kategori ve Sıralama -->
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 18px;">
                 <div class="form-group">
-                    <label class="form-label" style="font-weight: 700; color: #0f172a;">Kategori / Etiket</label>
-                    <select name="category" id="form_category" class="form-control">
-                        <option value="hasat">Hasat & Bahçelerimiz</option>
-                        <option value="tesisler">Tesisler & Teknoloji</option>
-                        <option value="paketleme">Paketleme & Tasarım</option>
-                        <option value="urunler">Ürünlerimiz</option>
-                        <option value="lojistik">Soğuk Zincir & Lojistik</option>
-                        <option value="tanitim">Kurumsal Tanıtım</option>
-                        <option value="genel">Genel</option>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label class="form-label" style="font-weight: 700; color: #0f172a; margin: 0;">Kategori / Etiket *</label>
+                        <button type="button" onclick="openCategoryModal()" style="background: none; border: none; padding: 0; font-size: 11.5px; font-weight: 700; color: #16a34a; cursor: pointer; text-decoration: underline;">
+                            ➕ Yeni Kategori Oluştur
+                        </button>
+                    </div>
+                    <select name="category" id="form_category" class="form-control" style="font-weight: 600;">
+                        <?php foreach ($categoryLabelsTr as $catKey => $catTitle): ?>
+                            <option value="<?= htmlspecialchars($catKey) ?>"><?= htmlspecialchars($catTitle) ?> (<?= htmlspecialchars($catKey) ?>)</option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -348,6 +354,110 @@ $categoryLabelsTr = [
                 </button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- ========================================================================
+     KATEGORİ YÖNETİMİ VE YENİ KATEGORİ EKLEME MODALI (KULLANICI TALEBİ)
+     ======================================================================== -->
+<div id="categoryModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 10000; backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px; overflow-y: auto;">
+    <div style="background: #ffffff; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #e2e8f0; overflow: hidden; animation: modalIn 0.25s ease-out;">
+        
+        <!-- Modal Başlık -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1.5px solid #f1f5f9; background: #fafafa;">
+            <h3 style="margin: 0; font-size: 18px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                <span>📁</span> Galeri Kategorileri Yönetimi
+            </h3>
+            <button type="button" onclick="closeCategoryModal()" style="background: transparent; border: none; font-size: 24px; cursor: pointer; color: #64748b; line-height: 1;">&times;</button>
+        </div>
+
+        <div style="padding: 24px;">
+            <!-- Yeni Kategori Ekleme Formu -->
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/save-gallery-category" method="POST" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+                <?= Security::csrfField() ?>
+                <input type="hidden" name="redirect_to" value="<?= PANEL_SLUG ?>/gallery">
+                <h4 style="margin: 0 0 12px 0; font-size: 14.5px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                    <span>✨</span> Yeni Galeri Kategorisi Oluştur
+                </h4>
+                <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label" style="font-size: 12.5px; font-weight: 700; color: #334155;">Kategori Başlığı *</label>
+                        <input type="text" name="category_title" id="cat_title_input" required class="form-control" placeholder="Örn: Ayçekirdeği, Sıvı Gübre..." style="font-size: 13px;" onkeyup="autoFillSlug(this.value)">
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label class="form-label" style="font-size: 12.5px; font-weight: 700; color: #334155;">Kod / Slug <small style="color:#94a3b8; font-weight:normal;">(Otomatik)</small></label>
+                        <input type="text" name="category_slug" id="cat_slug_input" class="form-control" placeholder="aycekirdegi" style="font-size: 13px;">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <small style="color: #64748b; font-size: 11.5px;">Bu kategori otomatik olarak ürün düzenleme sayfasındaki listeye de yansır.</small>
+                    <button type="submit" class="btn btn-primary" style="padding: 8px 18px; font-size: 13px; font-weight: 700;">
+                        ➕ Kategoriyi Ekle
+                    </button>
+                </div>
+            </form>
+
+            <!-- Mevcut Kategoriler Tablosu -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                    <span>📋</span> Mevcut Kategoriler (<?= count($categoryLabelsTr) ?>)
+                </h4>
+                <span style="font-size: 11.5px; color: #64748b;">Toplam kategori sayısı</span>
+            </div>
+
+            <div style="max-height: 260px; overflow-y: auto; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #ffffff;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                    <thead>
+                        <tr style="background: #f8fafc; color: #475569; font-size: 12px; border-bottom: 1.5px solid #e2e8f0;">
+                            <th style="padding: 10px 14px;">Kategori Başlığı</th>
+                            <th style="padding: 10px 14px;">Kod / Slug</th>
+                            <th style="padding: 10px 14px; text-align: center;">Medya</th>
+                            <th style="padding: 10px 14px; text-align: right;">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($categoryLabelsTr as $cKey => $cLabel): 
+                            $isCustom = isset($customCategories[$cKey]);
+                            $mCount = $categoryCounts[$cKey] ?? 0;
+                        ?>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">
+                                    <?= htmlspecialchars($cLabel) ?>
+                                    <?php if ($isCustom): ?>
+                                        <span style="font-size: 10px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 700;">Özel</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="padding: 10px 14px; color: #64748b; font-family: monospace; font-size: 12px;">
+                                    <?= htmlspecialchars($cKey) ?>
+                                </td>
+                                <td style="padding: 10px 14px; text-align: center;">
+                                    <span style="background: #f1f5f9; color: #334155; padding: 2px 8px; border-radius: 12px; font-size: 11.5px; font-weight: 700;">
+                                        <?= $mCount ?>
+                                    </span>
+                                </td>
+                                <td style="padding: 10px 14px; text-align: right;">
+                                    <?php if ($isCustom): ?>
+                                        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/delete-gallery-category?slug=<?= urlencode($cKey) ?>&redirect_to=<?= urlencode(PANEL_SLUG . '/gallery') ?>" 
+                                           onclick="return confirm('Bu özel kategoriyi silmek istediğinize emin misiniz?')"
+                                           style="color: #ef4444; font-size: 11.5px; font-weight: 700; text-decoration: none; padding: 3px 8px; border-radius: 4px; background: #fef2f2; border: 1px solid #fecaca;">
+                                            Sil ✕
+                                        </a>
+                                    <?php else: ?>
+                                        <span style="color: #94a3b8; font-size: 11px; font-weight: 600;">Sistem</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; padding: 14px 24px; border-top: 1.5px solid #f1f5f9; background: #fafafa;">
+            <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()" style="padding: 8px 20px; font-weight: 700; font-size: 13px;">
+                Kapat
+            </button>
+        </div>
     </div>
 </div>
 
@@ -476,6 +586,40 @@ function editGalleryItem(item) {
     document.getElementById('modalHeading').innerHTML = '<span>✏️</span> Medya Düzenle #' + item.id;
     document.getElementById('galleryModal').style.display = 'flex';
 }
+
+// Kategori Modalı Fonksiyonları
+function openCategoryModal() {
+    document.getElementById('cat_title_input').value = '';
+    document.getElementById('cat_slug_input').value = '';
+    delete document.getElementById('cat_slug_input').dataset.manual;
+    document.getElementById('categoryModal').style.display = 'flex';
+}
+
+function closeCategoryModal() {
+    document.getElementById('categoryModal').style.display = 'none';
+}
+
+function autoFillSlug(val) {
+    const slugInput = document.getElementById('cat_slug_input');
+    if (!slugInput.dataset.manual) {
+        let s = val.toLowerCase()
+            .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u')
+            .replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        slugInput.value = s;
+    }
+}
+
+document.getElementById('cat_slug_input')?.addEventListener('input', function() {
+    this.dataset.manual = "true";
+});
+
+document.getElementById('categoryModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeCategoryModal();
+    }
+});
 
 // Dışarı tıklayınca kapatma
 document.getElementById('galleryModal').addEventListener('click', function(e) {

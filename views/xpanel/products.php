@@ -61,6 +61,8 @@ $charLblTat = $prodExtra['char_lbl_tadi'] ?? '';
 $charTat = $prodExtra['char_tadi'] ?? '';
 
 // Galeri Entegrasyonu (Kullanıcı Talebi: Galeri Kategorisini Ürüne Bağlama)
+require_once ROOT_PATH . '/app/models/GalleryItem.php';
+$allGalleryCategories = GalleryItem::getCategories();
 $galleryCategory = $prodExtra['gallery_category'] ?? 'all';
 $showProductGallery = isset($prodExtra['show_product_gallery']) ? ((int)$prodExtra['show_product_gallery'] === 1) : true;
 
@@ -865,18 +867,27 @@ $prodPageHeroExtra = $prodPageHero['extra'] ?? (!empty($prodPageHero['extra_json
                 <!-- Galeri Kategori Bağlantısı -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <div>
-                        <label class="form-label" style="font-size: 12.5px; font-weight: 700;">📂 Bağlanacak Galeri Kategorisi</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="form-label" style="font-size: 12.5px; font-weight: 700; margin: 0;">📂 Bağlanacak Galeri Kategorisi</label>
+                            <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/gallery" target="_blank" style="font-size: 11.5px; font-weight: 700; color: #16a34a; text-decoration: underline;">
+                                ➕ Yeni Kategori Oluştur ↗
+                            </a>
+                        </div>
                         <select name="extra[gallery_category]" class="form-control" style="font-size: 13.5px; font-weight: 600;">
-                            <option value="all" <?= ($galleryCategory === 'all' || empty($galleryCategory)) ? 'selected' : '' ?>>🌟 Tüm Galeri Görselleri</option>
-                            <option value="urunler" <?= ($galleryCategory === 'urunler') ? 'selected' : '' ?>>🍊 Ürünlerimiz (urunler)</option>
-                            <option value="hasat" <?= ($galleryCategory === 'hasat') ? 'selected' : '' ?>>🌾 Hasat & Bahçelerimiz (hasat)</option>
-                            <option value="tesisler" <?= ($galleryCategory === 'tesisler') ? 'selected' : '' ?>>🏭 Tesisler & Teknoloji (tesisler)</option>
-                            <option value="paketleme" <?= ($galleryCategory === 'paketleme') ? 'selected' : '' ?>>📦 Paketleme & Tasarım (paketleme)</option>
-                            <option value="lojistik" <?= ($galleryCategory === 'lojistik') ? 'selected' : '' ?>>🚚 Soğuk Zincir & Lojistik (lojistik)</option>
-                            <option value="tanitim" <?= ($galleryCategory === 'tanitim') ? 'selected' : '' ?>>🎬 Kurumsal Tanıtım (tanitim)</option>
+                            <option value="all" <?= ($galleryCategory === 'all' || empty($galleryCategory)) ? 'selected' : '' ?>>🌟 Tüm Galeri Görselleri (all)</option>
+                            <?php foreach ($allGalleryCategories as $catKey => $catTitle): ?>
+                                <option value="<?= htmlspecialchars($catKey) ?>" <?= (strtolower(trim($galleryCategory)) === strtolower(trim($catKey))) ? 'selected' : '' ?>>
+                                    📂 <?= htmlspecialchars($catTitle) ?> (<?= htmlspecialchars($catKey) ?>)
+                                </option>
+                            <?php endforeach; ?>
+                            <?php if (!empty($galleryCategory) && $galleryCategory !== 'all' && !isset($allGalleryCategories[$galleryCategory])): ?>
+                                <option value="<?= htmlspecialchars($galleryCategory) ?>" selected>
+                                    📂 <?= htmlspecialchars($galleryCategory) ?> (<?= htmlspecialchars($galleryCategory) ?>)
+                                </option>
+                            <?php endif; ?>
                         </select>
                         <small style="color: #64748b; font-size: 11.5px; display: block; margin-top: 4px;">
-                            Galeride bu kategoriye eklenmiş görseller otomatik olarak bu ürünün altında akar.
+                            Xpanel Galeri alanında bu kategoriye yüklenen fotoğraflar, bu ürünün detay sayfasında kesintisiz akacaktır.
                         </small>
                     </div>
                     <div>
