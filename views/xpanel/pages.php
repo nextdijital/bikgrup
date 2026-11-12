@@ -87,7 +87,7 @@ if (!function_exists('renderLinkSelector')) {
         ?>
         <div style="margin-top: 4px;">
             <label class="form-label" style="font-size: <?= $fontSize ?>; margin-bottom: 3px; font-weight: 700; color: #475569;"><?= htmlspecialchars($label) ?></label>
-            <div style="display: flex; gap: 6px; align-items: center;">
+            <div class="panel-link-selector-row" style="display: flex; gap: 6px; align-items: center;">
                 <select class="form-control" style="font-size: <?= $fontSize ?>; background: #ffffff; border-color: #cbd5e1; cursor: pointer; flex: 1.2; padding: 6px 8px;" onchange="const inp = this.parentElement.querySelector('input'); if(this.value){ inp.value = this.value; }">
                     <option value="">📂 Kategori / Ürün / Sayfa Seç</option>
                     <?php foreach ($presetGroups as $groupTitle => $opts): ?>
@@ -166,7 +166,7 @@ if (!function_exists('renderLinkSelector')) {
                 <!-- Arka Plan Görseli -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
                     <label class="form-label" style="font-weight: 700; color: #0f172a;">Giriş Ekranı Arka Plan Afiş Görseli</label>
-                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
+                    <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
                         <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($heroExtra['bg_image'] ?? 'nature_hero_bg.jpg') ?>" 
                              alt="Hero Arka Plan" style="width: 160px; height: 90px; object-fit: cover; border-radius: 8px; border: 2px solid #cbd5e1;">
                         <div>
@@ -488,7 +488,7 @@ if (!function_exists('renderLinkSelector')) {
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px;">
                         <span style="font-weight: 800; font-size: 13px; color: #ea580c; text-transform: uppercase;">1. Marka</span>
                         
-                        <div style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
+                        <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
                             <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand1_image'] ?? 'fresh_vegetables.jpg') ?>" 
                                  alt="Marka 1" style="width: 80px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1;">
                             <div style="flex: 1;">
@@ -511,7 +511,7 @@ if (!function_exists('renderLinkSelector')) {
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px;">
                         <span style="font-weight: 800; font-size: 13px; color: #ea580c; text-transform: uppercase;">2. Marka</span>
                         
-                        <div style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
+                        <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
                             <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand2_image'] ?? 'blog_agriculture_hero.jpg') ?>" 
                                  alt="Marka 2" style="width: 80px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1;">
                             <div style="flex: 1;">
@@ -534,7 +534,7 @@ if (!function_exists('renderLinkSelector')) {
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px;">
                         <span style="font-weight: 800; font-size: 13px; color: #ea580c; text-transform: uppercase;">3. Marka</span>
                         
-                        <div style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
+                        <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
                             <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand3_image'] ?? 'fresh_fruits.jpg') ?>" 
                                  alt="Marka 3" style="width: 80px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1;">
                             <div style="flex: 1;">
@@ -557,7 +557,7 @@ if (!function_exists('renderLinkSelector')) {
                     <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 18px;">
                         <span style="font-weight: 800; font-size: 13px; color: #ea580c; text-transform: uppercase;">4. Marka</span>
                         
-                        <div style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
+                        <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 14px; margin-top: 10px; margin-bottom: 12px;">
                             <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand4_image'] ?? 'citrus_showcase.jpg') ?>" 
                                  alt="Marka 4" style="width: 80px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1;">
                             <div style="flex: 1;">
@@ -788,7 +788,7 @@ if (!function_exists('renderLinkSelector')) {
 
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 18px;">
                     <label class="form-label" style="font-weight: 700; color: #0f172a;">Giriş Ekranı Arka Plan Görseli</label>
-                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
+                    <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
                         <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($aboutHeroExtra['bg_image'] ?? 'facility_automation.jpg') ?>" 
                              alt="Kurumsal Arka Plan" style="width: 160px; height: 90px; object-fit: cover; border-radius: 8px; border: 2px solid #cbd5e1;">
                         <div>
@@ -1070,7 +1070,7 @@ if (!function_exists('renderLinkSelector')) {
 
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 18px;">
                     <label class="form-label" style="font-weight: 700; color: #0f172a;">İletişim Sayfası Arka Plan Görseli</label>
-                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
+                    <div class="panel-image-upload-row" style="display: flex; align-items: center; gap: 20px; margin-top: 10px;">
                         <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($contactExtra['bg_image'] ?? 'citrus_showcase.jpg') ?>" 
                              alt="İletişim Arka Plan" style="width: 160px; height: 90px; object-fit: cover; border-radius: 8px; border: 2px solid #cbd5e1;">
                         <div>

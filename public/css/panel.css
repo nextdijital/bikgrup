@@ -565,6 +565,23 @@ body.panel-body {
     white-space: nowrap;
 }
 
+/* ==========================================================================
+   GLOBAL MOBİL TAŞMA & KAYMA ENGELLEYİCİ
+   ========================================================================== */
+html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+body.panel-body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+    box-sizing: border-box;
+}
+
 /* 992px ve Altı Ekranlar (Tablet & Mobil Cihazlar) */
 @media (max-width: 992px) {
     .panel-mobile-toggle {
@@ -587,16 +604,21 @@ body.panel-body {
         transform: translateX(0);
     }
 
-    /* Ana içeriğin sol marjinini sıfırla */
+    /* Ana içeriğin sol marjinini sıfırla & taşmayı kesin engelle */
     .panel-main {
         margin-left: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
         min-width: 0 !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
     }
 
     .panel-topbar {
         padding: 0 16px;
         height: 62px;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .panel-topbar-title {
@@ -605,7 +627,12 @@ body.panel-body {
     }
 
     .panel-container {
-        padding: 16px 14px;
+        padding: 16px 12px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
     }
 
     /* Tüm Çok Sütunlu Gridleri Mobil Uyumlu Tek Sütuna İndir */
@@ -619,9 +646,17 @@ body.panel-body {
     div[style*="grid-template-columns: 1fr auto"],
     div[style*="grid-template-columns: repeat(2, 1fr)"],
     div[style*="grid-template-columns: repeat(3, 1fr)"],
-    div[style*="grid-template-columns: repeat(4, 1fr)"] {
+    div[style*="grid-template-columns: repeat(4, 1fr)"],
+    div[style*="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))"],
+    div[style*="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))"],
+    div[style*="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr))"],
+    div[style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"],
+    div[style*="grid-template-columns: repeat(auto-fill, minmax(210px, 1fr))"],
+    div[style*="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))"] {
         grid-template-columns: 1fr !important;
         gap: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     /* Kutu Ambalaj Düzenlemesi Grid (80px 1.5fr 1fr 1.5fr) */
@@ -630,20 +665,99 @@ body.panel-body {
         gap: 12px !important;
     }
 
-    /* Kartlar & Tablolar İçin Yatay Kaydırma Desteği */
-    .panel-card {
-        padding: 16px;
+    /* 1. KULLANICI TALEBİ: Link Seçici Alanlarını Mobilde Sıkışmadan Eşit Alt Alta Konumlandır */
+    .panel-link-selector-row,
+    div[style*="display: flex; gap: 6px; align-items: center"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .panel-link-selector-row select,
+    .panel-link-selector-row input,
+    div[style*="display: flex; gap: 6px; align-items: center"] select,
+    div[style*="display: flex; gap: 6px; align-items: center"] input {
+        width: 100% !important;
+        flex: none !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. KULLANICI TALEBİ: Görsel Önizleme ve Dosya Yükleme Alanlarını Eşit Alt Alta Konumlandır */
+    .panel-image-upload-row,
+    div[style*="display: flex; align-items: center; gap: 20px"],
+    div[style*="display: flex; align-items: center; gap: 14px"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .panel-image-upload-row img,
+    div[style*="display: flex; align-items: center; gap: 20px"] img,
+    div[style*="display: flex; align-items: center; gap: 14px"] img {
+        width: 100% !important;
+        max-width: 200px !important;
+        height: auto !important;
+        max-height: 120px !important;
+        object-fit: cover !important;
+    }
+    .panel-image-upload-row > div,
+    div[style*="display: flex; align-items: center; gap: 20px"] > div,
+    div[style*="display: flex; align-items: center; gap: 14px"] > div {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. Kartlar ve Bölüm İçi Alanlar */
+    .panel-card,
+    div[style*="background: #ffffff; border: 1.5px solid var(--panel-border)"],
+    div[style*="background: #ffffff"][style*="border-radius: 16px; padding: 24px"],
+    div[style*="background: #f8fafc; border: 1px solid #e2e8f0"] {
+        padding: 16px 14px !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
+    /* Kart Başlıkları Metin Kırılması ve Taşma Önleme */
+    .panel-card-title,
+    h3, h4 {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+    }
+
     .panel-table {
-        min-width: 580px;
+        min-width: 540px;
     }
 
     .panel-card-header {
         flex-wrap: wrap;
         gap: 12px;
+    }
+
+    /* Sayfa Sekmeleri (Tabs) Eşit ve Düzenli */
+    div[style*="border-bottom: 2px solid #e2e8f0; padding-bottom: 12px"] {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    div[style*="border-bottom: 2px solid #e2e8f0; padding-bottom: 12px"] > a {
+        flex: 1 1 calc(50% - 6px) !important;
+        font-size: 12px !important;
+        padding: 8px 8px !important;
+        justify-content: center !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
     }
 
     /* Buton ve Başlık Düzenleri */
@@ -654,20 +768,28 @@ body.panel-body {
         gap: 8px;
     }
 
-    .panel-card-header > div:last-child .btn {
-        flex: 1 1 auto;
-        justify-content: center;
-        text-align: center;
+    .panel-card-header > div:last-child .btn,
+    div[style*="text-align: right"] button[type="submit"],
+    div[style*="text-align: right"] .btn {
+        width: 100% !important;
+        display: block !important;
+        padding: 12px 18px !important;
+        font-size: 14px !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
     }
 
     /* Form Grupları */
     .form-group {
         margin-bottom: 14px;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .form-control {
-        width: 100%;
-        box-sizing: border-box;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
     }
 }
 
@@ -678,17 +800,17 @@ body.panel-body {
     }
 
     .panel-topbar-title {
-        font-size: 15.5px;
-        max-width: 180px;
+        font-size: 15px;
+        max-width: 190px;
     }
 
     .panel-card {
-        padding: 14px;
+        padding: 14px 10px !important;
         border-radius: 12px;
     }
 
     .panel-card-title {
-        font-size: 16.5px;
+        font-size: 16px;
     }
 
     .panel-filter-bar {
@@ -702,16 +824,8 @@ body.panel-body {
     }
 
     .btn {
-        padding: 9px 16px;
+        padding: 9px 14px;
         font-size: 13px;
-    }
-
-    /* Küçük ekranlarda form satırları */
-    div[style*="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr))"],
-    div[style*="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))"],
-    div[style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
     }
 
     /* Modal Tam Ekran Desteği */

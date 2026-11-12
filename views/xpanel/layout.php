@@ -13,7 +13,7 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= htmlspecialchars($pageTitle ?? 'BİK GRUP | Yönetim Paneli') ?></title>
     
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/panel.css?v=<?= file_exists(PUBLIC_PATH . '/css/panel.css') ? filemtime(PUBLIC_PATH . '/css/panel.css') : time() ?>">
