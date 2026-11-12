@@ -141,6 +141,8 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=narenciye"><?= __('cat_citrus') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=meyveler"><?= __('cat_fruits') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=sebzeler"><?= __('cat_vegetables') ?></a></li>
+                        <li><a href="<?= BASE_URL ?>/urunler?kategori=sivi-gubre"><?= $currentLang === 'en' ? 'Liquid Fertilizers' : 'Sıvı Gübre' ?></a></li>
+                        <li><a href="<?= BASE_URL ?>/urunler?kategori=kati-gubre"><?= $currentLang === 'en' ? 'Solid Fertilizers' : 'Katı Gübre' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/kurumsal#sertifikalar"><?= $currentLang === 'en' ? 'Quality Certificates' : 'Kalite Belgeleri' ?></a></li>
                     </ul>
                 </div>
@@ -238,11 +240,13 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                                     $modalCategories = Category::all(true);
                                     $modalProducts = Product::all(true);
                                     $catIconMap = [
-                                        'narenciye' => '🍊',
-                                        'hububat'   => '🌾',
-                                        'meyveler'  => '🍉',
-                                        'sebzeler'  => '🍅',
-                                        'bakliyat'  => '🌱'
+                                        'narenciye'  => '🍊',
+                                        'hububat'    => '🌾',
+                                        'meyveler'   => '🍉',
+                                        'sebzeler'   => '🍅',
+                                        'sivi-gubre' => '💧',
+                                        'kati-gubre' => '🌱',
+                                        'bakliyat'   => '🌱'
                                     ];
                                     ?>
                                     <?php foreach ($modalCategories as $mCat): ?>
