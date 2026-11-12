@@ -42,8 +42,14 @@ $postContent = $post['content_' . $currentLang] ?? $post['content_tr'];
         </p>
 
         <!-- Kapak Görseli -->
+        <?php
+        $detailImg = $post['image'] ?: 'blog_cold_chain.png';
+        $detailImgSrc = (str_starts_with($detailImg, 'http://') || str_starts_with($detailImg, 'https://'))
+            ? $detailImg
+            : BASE_URL . '/public/images/' . $detailImg;
+        ?>
         <div style="border-radius: 28px; overflow: hidden; margin-bottom: 40px; box-shadow: var(--shadow-md); height: 440px;">
-            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'blog_cold_chain.png') ?>" alt="<?= htmlspecialchars($postTitle) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="<?= htmlspecialchars($detailImgSrc) ?>" alt="<?= htmlspecialchars($postTitle) ?>" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
 
         <!-- Gövde İçeriği -->

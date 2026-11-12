@@ -987,6 +987,29 @@ class PanelController
     }
 
     /**
+     * Otomatik Tarım Haberleri Senkronizasyonu & Doğrulama Botu
+     */
+    public function syncAgriNews(): void
+    {
+        $this->requireAuth();
+        require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+
+        $max = isset($_POST['max']) ? (int)$_POST['max'] : 5;
+        $result = AgriNewsService::sync($max);
+
+        if (!empty($result['success']) && ($result['imported'] ?? 0) > 0) {
+            $_SESSION['panel_success'] = $result['message'];
+        } elseif (!empty($result['success'])) {
+            $_SESSION['panel_info'] = $result['message'];
+        } else {
+            $_SESSION['panel_error'] = $result['message'] ?? 'Tarım haberleri taranırken bir sorun oluştu.';
+        }
+
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/blog");
+        exit;
+    }
+
+    /**
      * Gelen Mesajlar
      */
     public function messages(): void

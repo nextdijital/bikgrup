@@ -12,6 +12,16 @@ class BlogController
 {
     public function index(): void
     {
+        // Otomatik Güncel Tarım Haberleri Taraması (Günde 1 kez arka planda sessizce kontrol eder)
+        try {
+            require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+            $syncInfo = AgriNewsService::getLastSyncInfo();
+            $lastTime = !empty($syncInfo['last_sync']) ? strtotime($syncInfo['last_sync']) : 0;
+            if ($lastTime < (time() - 43200)) { // 12 saat
+                AgriNewsService::sync(3);
+            }
+        } catch (\Throwable $e) {}
+
         $posts = BlogPost::all(true);
 
         View::render('blog', [

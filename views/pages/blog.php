@@ -100,7 +100,13 @@ $GLOBALS['hasHero'] = true;
             <?php foreach ($posts as $index => $post): ?>
                 <article class="blog-card reveal reveal-delay-<?= ($index % 3) + 1 ?>">
                     <div class="blog-card-img">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'blog_cold_chain.png') ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" loading="lazy">
+                        <?php
+                        $cardImg = $post['image'] ?: 'blog_cold_chain.png';
+                        $imgSrc = (str_starts_with($cardImg, 'http://') || str_starts_with($cardImg, 'https://'))
+                            ? $cardImg
+                            : BASE_URL . '/public/images/' . $cardImg;
+                        ?>
+                        <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" loading="lazy">
                     </div>
                     <div class="blog-card-body">
                         <div class="blog-meta">

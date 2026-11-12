@@ -279,6 +279,9 @@ switch ($route) {
             case 'delete-blog':
                 $panel->deleteBlog();
                 break;
+            case 'sync-agri-news':
+                $panel->syncAgriNews();
+                break;
             // Medya & Galeri Yönetimi
             case 'gallery':
                 $panel->gallery();

@@ -7,6 +7,9 @@ declare(strict_types=1);
 
 $blogHero = PageSection::get('blog_page_hero') ?? [];
 $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_decode($blogHero['extra_json'], true) : []);
+
+require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+$syncInfo = AgriNewsService::getLastSyncInfo();
 ?>
 
 <!-- Blog Sayfası Hero Afiş & Başlık Alanı -->
@@ -68,6 +71,47 @@ $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_d
     </div>
 </div>
 
+<!-- ========================================================================
+     BİK GRUP AKILLI TARIM HABERLERİ BOTU & DOĞRULAMA MOTORU (KULLANICI TALEBİ)
+     ======================================================================== -->
+<div class="panel-card" style="margin-bottom: 24px; border: 1.5px solid #86efac; background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(22, 163, 74, 0.08);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div style="max-width: 680px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <span style="background: #16a34a; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                    ⚡ Otomatik Bot
+                </span>
+                <span style="color: #15803d; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>✓</span> Doğrulanmış Tarım Akışı Aktif
+                </span>
+            </div>
+            <h2 style="font-size: 19px; font-weight: 800; margin: 0 0 6px 0; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                <span>🌾</span> BİK GRUP Otomatik Tarım Haberleri ve Doğrulama Sistemi
+            </h2>
+            <p style="color: #475569; font-size: 13.5px; margin: 0 0 10px 0; line-height: 1.55;">
+                <strong>Tarımdan Haber (tarimdanhaber.com)</strong> ve akredite tarım portallarından güncel sektörel gelişmeleri tarar; <strong>narenciye, hububat, tahıl, gübre, meyve-sebze ve tarımsal ihracat</strong> alanlarına uygunluğunu ve doğruluğunu inceleyerek blog sayfasına otomatik ekler.
+            </p>
+            <div style="display: flex; gap: 14px; font-size: 12.5px; color: #64748b; flex-wrap: wrap; align-items: center;">
+                <span>📡 Kaynak: <strong style="color: #0f172a;">Tarımdan Haber (RSS)</strong></span>
+                <span>•</span>
+                <span>🕒 Son Tarama: <strong style="color: #166534;"><?= htmlspecialchars($syncInfo['last_sync'] ?? 'Henüz yapılmadı') ?></strong></span>
+                <span>•</span>
+                <span>🛡️ Filtre: <strong style="color: #0f172a;">Spam / Magazin Koruması Aktif</strong></span>
+            </div>
+        </div>
+
+        <div>
+            <form action="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/sync-agri-news" method="POST" onsubmit="const btn = this.querySelector('button'); btn.disabled = true; btn.innerHTML = '⏳ Taranıyor & Doğrulanıyor...';">
+                <?= Security::csrfField() ?>
+                <input type="hidden" name="max" value="5">
+                <button type="submit" class="btn btn-primary" style="padding: 12px 24px; font-weight: 800; font-size: 13.5px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25); border-radius: 10px; cursor: pointer;">
+                    <span>⚡</span> <span>Tarım Haberlerini Tara & Ekle</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="panel-card">
     <div class="panel-card-header">
         <div>
@@ -98,7 +142,13 @@ $blogHeroExtra = $blogHero['extra'] ?? (!empty($blogHero['extra_json']) ? json_d
             <?php foreach ($posts as $post): ?>
                 <tr>
                     <td style="width: 60px;">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'facility_automation.jpg') ?>" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid #e2e8f0; background: #ffffff;">
+                        <?php
+                        $rowImg = $post['image'] ?: 'facility_automation.jpg';
+                        $rowImgSrc = (str_starts_with($rowImg, 'http://') || str_starts_with($rowImg, 'https://'))
+                            ? $rowImg
+                            : BASE_URL . '/public/images/' . $rowImg;
+                        ?>
+                        <img src="<?= htmlspecialchars($rowImgSrc) ?>" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid #e2e8f0; background: #ffffff;">
                     </td>
                     <td style="font-weight: 700; font-size: 14.5px;">
                         <?= htmlspecialchars($post['title_tr']) ?>
