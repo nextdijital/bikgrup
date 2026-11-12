@@ -106,13 +106,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ESC tuşuna basıldığında açık mobil menüyü kapat
+    // ESC tuşuna basıldığında açık mobil menüyü veya alt sayfayı kapat
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             togglePanelSidebar(false);
+            toggleBottomSheet(false);
         }
     });
+
+    // Alt menü çekmecesindeki linklere tıklandığında menüyü kapat
+    document.querySelectorAll('.pb-sheet-link').forEach(link => {
+        link.addEventListener('click', () => {
+            toggleBottomSheet(false);
+        });
+    });
 });
+
+/**
+ * Aşağıdan Açılır Menü (Bottom Sheet Drawer - Kullanıcı Talebi)
+ */
+function toggleBottomSheet(forceState) {
+    const sheet = document.getElementById('bottomSheet');
+    const backdrop = document.getElementById('bottomSheetBackdrop');
+    if (!sheet) return;
+
+    const isOpen = sheet.classList.contains('open');
+    const newState = typeof forceState === 'boolean' ? forceState : !isOpen;
+
+    if (newState) {
+        sheet.classList.add('open');
+        if (backdrop) backdrop.classList.add('active');
+        document.body.classList.add('sheet-open');
+    } else {
+        sheet.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+        document.body.classList.remove('sheet-open');
+    }
+}
 
 /**
  * Mobil Menü Aç / Kapat

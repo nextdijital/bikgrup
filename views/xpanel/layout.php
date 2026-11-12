@@ -132,23 +132,20 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
         
         <!-- Topbar -->
         <header class="panel-topbar">
-            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-                <button class="panel-mobile-toggle" id="panelSidebarToggle" onclick="togglePanelSidebar()" aria-label="Menüyü Aç/Kapat" type="button">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="panel-topbar-title">
-                    <?= htmlspecialchars($pageTitle ?? 'Yönetim Paneli') ?>
-                </div>
+            <!-- Masaüstü Başlık & Kullanıcı -->
+            <div class="panel-topbar-desktop-title">
+                <?= htmlspecialchars($pageTitle ?? 'Yönetim Paneli') ?>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+            <div class="panel-topbar-desktop-user">
                 <span class="panel-topbar-username">
                     <?= htmlspecialchars($user['name'] ?? 'Yönetici') ?>
                 </span>
+            </div>
+
+            <!-- Mobilde Yalnızca BİKGRUP (Kullanıcı Talebi) -->
+            <div class="panel-topbar-mobile-brand">
+                BİKGRUP
             </div>
         </header>
 
@@ -177,6 +174,122 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
             <?= $panelContent ?? '' ?>
 
         </main>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- MOBİL ALT MENÜ (4 SEÇENEKLİ DOCK / BOTTOM NAV - KULLANICI TALEBİ)   -->
+    <!-- ==================================================================== -->
+    <nav class="panel-bottom-nav">
+        <!-- 1. Seçenek: Genel Bakış -->
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>" class="panel-bottom-nav-item <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>">
+            <span class="pbn-icon">📊</span>
+            <span class="pbn-label">Genel Bakış</span>
+        </a>
+
+        <!-- 2. Seçenek: Ürünler -->
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="panel-bottom-nav-item <?= ($activeMenu ?? '') === 'products' ? 'active' : '' ?>">
+            <span class="pbn-icon">🍊</span>
+            <span class="pbn-label">Ürünler</span>
+        </a>
+
+        <!-- 3. Seçenek: Hızlı Teklifler -->
+        <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quotes" class="panel-bottom-nav-item <?= ($activeMenu ?? '') === 'quotes' ? 'active' : '' ?>">
+            <span class="pbn-icon" style="position: relative;">
+                ⚡
+                <?php if ($pendingQuoteCount > 0): ?>
+                    <span class="pbn-badge"><?= $pendingQuoteCount ?></span>
+                <?php endif; ?>
+            </span>
+            <span class="pbn-label">Teklifler</span>
+        </a>
+
+        <!-- 4. Seçenek (En Sağdaki): Aşağıdan Açılır Menü Butonu -->
+        <button type="button" class="panel-bottom-nav-item" id="btnOpenBottomSheet" onclick="toggleBottomSheet(true)">
+            <span class="pbn-icon">☰</span>
+            <span class="pbn-label">Menü</span>
+        </button>
+    </nav>
+
+    <!-- AŞAĞIDAN AÇILIR MENÜ (BOTTOM SHEET DRAWER) -->
+    <div class="panel-bottom-sheet-backdrop" id="bottomSheetBackdrop" onclick="toggleBottomSheet(false)"></div>
+    <div class="panel-bottom-sheet" id="bottomSheet">
+        <div class="panel-bottom-sheet-handle-bar" onclick="toggleBottomSheet(false)">
+            <div class="panel-bottom-sheet-handle"></div>
+        </div>
+        <div class="panel-bottom-sheet-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #0f172a;">BİKGRUP Panel Menü</span>
+            </div>
+            <button type="button" class="panel-bottom-sheet-close" onclick="toggleBottomSheet(false)" aria-label="Kapat">✕</button>
+        </div>
+        <div class="panel-bottom-sheet-content">
+            <div class="panel-bottom-sheet-grid">
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>" class="pb-sheet-link <?= ($activeMenu ?? '') === 'dashboard' ? 'active' : '' ?>">
+                    <span class="ps-icon">📊</span>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/products" class="pb-sheet-link <?= ($activeMenu ?? '') === 'products' ? 'active' : '' ?>">
+                    <span class="ps-icon">🍊</span>
+                    <span>Ürünler & Hasat</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/quotes" class="pb-sheet-link <?= ($activeMenu ?? '') === 'quotes' ? 'active' : '' ?>">
+                    <span class="ps-icon">⚡</span>
+                    <span>Hızlı Teklifler <?= $pendingQuoteCount > 0 ? "({$pendingQuoteCount})" : '' ?></span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/theme" class="pb-sheet-link <?= ($activeMenu ?? '') === 'theme' ? 'active' : '' ?>">
+                    <span class="ps-icon">🎨</span>
+                    <span>Dinamik Tema & Renkler</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/settings" class="pb-sheet-link <?= ($activeMenu ?? '') === 'settings' ? 'active' : '' ?>">
+                    <span class="ps-icon">⚙️</span>
+                    <span>Genel Ayarlar & Logo</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/pages" class="pb-sheet-link <?= ($activeMenu ?? '') === 'pages' ? 'active' : '' ?>">
+                    <span class="ps-icon">📄</span>
+                    <span>Sayfa ve Alan Yönetimi</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/footer" class="pb-sheet-link <?= ($activeMenu ?? '') === 'footer' ? 'active' : '' ?>">
+                    <span class="ps-icon">📑</span>
+                    <span>Footer Yönetimi</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/blog" class="pb-sheet-link <?= ($activeMenu ?? '') === 'blog' ? 'active' : '' ?>">
+                    <span class="ps-icon">📰</span>
+                    <span>Blog & Haberler</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/gallery" class="pb-sheet-link <?= ($activeMenu ?? '') === 'gallery' ? 'active' : '' ?>">
+                    <span class="ps-icon">🖼️</span>
+                    <span>Medya & Galeri</span>
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/users" class="pb-sheet-link <?= ($activeMenu ?? '') === 'users' ? 'active' : '' ?>">
+                    <span class="ps-icon">👥</span>
+                    <span>Yöneticiler & Yetki</span>
+                </a>
+            </div>
+
+            <div style="border-top: 1px solid #f1f5f9; margin: 14px 0 10px; padding-top: 10px; display: flex; gap: 10px;">
+                <a href="<?= BASE_URL ?>/index.php" target="_blank" class="btn btn-outline" style="flex: 1; justify-content: center; font-size: 13px; padding: 10px;">
+                    🌐 Siteyi Gör ↗
+                </a>
+                <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/logout" class="btn btn-danger" style="flex: 1; justify-content: center; font-size: 13px; padding: 10px;">
+                    🚪 Çıkış Yap
+                </a>
+            </div>
+
+            <!-- Yönetici Kartı -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                <div class="panel-user-avatar" style="width: 32px; height: 32px; font-size: 13px;">
+                    <?= strtoupper(substr($user['name'] ?? 'A', 0, 1)) ?>
+                </div>
+                <div style="overflow: hidden; flex: 1;">
+                    <div style="font-weight: 700; font-size: 13px; color: #0f172a; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                        <?= htmlspecialchars($user['name'] ?? 'Yönetici') ?>
+                    </div>
+                    <div style="font-size: 11px; color: #64748b; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                        <?= htmlspecialchars($user['email'] ?? '') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Panel JavaScript -->

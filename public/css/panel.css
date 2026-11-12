@@ -548,14 +548,17 @@ body.panel-body {
     opacity: 1;
 }
 
-.panel-topbar-title {
+.panel-topbar-desktop-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--panel-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+.panel-topbar-desktop-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .panel-topbar-username {
@@ -563,6 +566,18 @@ body.panel-body {
     font-weight: 700;
     color: #334155;
     white-space: nowrap;
+}
+
+/* Mobilde Yalnızca BİKGRUP Gösteren Marka Logosu (Masaüstünde Gizli) */
+.panel-topbar-mobile-brand {
+    display: none;
+}
+
+/* Masaüstünde Alt Menü & Çekmece Gizli */
+.panel-bottom-nav,
+.panel-bottom-sheet,
+.panel-bottom-sheet-backdrop {
+    display: none;
 }
 
 /* ==========================================================================
@@ -614,25 +629,243 @@ body.panel-body {
         box-sizing: border-box !important;
     }
 
+    /* Üst Header: Mobilde Sadece BİKGRUP Yazacak (Kullanıcı Talebi) */
     .panel-topbar {
-        padding: 0 16px;
-        height: 62px;
+        padding: 0 16px !important;
+        height: 52px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    .panel-topbar-title {
-        font-size: 17px;
-        max-width: 220px;
+    .panel-topbar-desktop-title,
+    .panel-topbar-desktop-user,
+    .panel-mobile-toggle {
+        display: none !important;
     }
 
+    .panel-topbar-mobile-brand {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 21px !important;
+        font-weight: 800 !important;
+        color: #15803d !important;
+        letter-spacing: -0.5px !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* 4 Seçenekli Mobil Alt Menü (Kullanıcı Talebi) */
+    .panel-bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 60px !important;
+        background: #ffffff !important;
+        border-top: 1px solid #e2e8f0 !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+        z-index: 1040 !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        padding: 0 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    .panel-bottom-nav-item {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        flex: 1 !important;
+        height: 100% !important;
+        text-decoration: none !important;
+        color: #64748b !important;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        transition: all 0.15s ease !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .panel-bottom-nav-item:active {
+        transform: scale(0.92) !important;
+    }
+
+    .panel-bottom-nav-item.active {
+        color: #15803d !important;
+        font-weight: 700 !important;
+    }
+
+    .panel-bottom-nav-item.active .pbn-icon {
+        transform: translateY(-1px) !important;
+    }
+
+    .pbn-icon {
+        font-size: 19px !important;
+        line-height: 1 !important;
+        position: relative !important;
+    }
+
+    .pbn-label {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.2px !important;
+    }
+
+    .pbn-badge {
+        position: absolute !important;
+        top: -5px !important;
+        right: -10px !important;
+        background: #ea580c !important;
+        color: #ffffff !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
+        padding: 1px 5px !important;
+        border-radius: 10px !important;
+        line-height: 1.1 !important;
+    }
+
+    /* Alt Menünün İçeriği Kapatmaması İçin Alt Boşluk */
     .panel-container {
-        padding: 16px 12px;
+        padding: 16px 12px 84px !important;
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
         overflow-x: hidden !important;
         box-sizing: border-box !important;
+    }
+
+    /* Aşağıdan Açılır Menü (Bottom Sheet Drawer - Kullanıcı Talebi) */
+    .panel-bottom-sheet-backdrop {
+        display: none;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(15, 23, 42, 0.65) !important;
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
+        z-index: 1050 !important;
+        opacity: 0 !important;
+        transition: opacity 0.3s ease !important;
+    }
+    .panel-bottom-sheet-backdrop.active {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    .panel-bottom-sheet {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: #ffffff !important;
+        border-top-left-radius: 24px !important;
+        border-top-right-radius: 24px !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.28) !important;
+        z-index: 1060 !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        max-height: 84vh !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+    }
+    .panel-bottom-sheet.open {
+        transform: translateY(0) !important;
+    }
+
+    .panel-bottom-sheet-handle-bar {
+        padding: 10px 0 4px !important;
+        display: flex !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+    }
+    .panel-bottom-sheet-handle {
+        width: 42px !important;
+        height: 4px !important;
+        background: #cbd5e1 !important;
+        border-radius: 99px !important;
+    }
+
+    .panel-bottom-sheet-header {
+        padding: 4px 18px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    .panel-bottom-sheet-close {
+        width: 32px !important;
+        height: 32px !important;
+        background: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 50% !important;
+        color: #475569 !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+    }
+    .panel-bottom-sheet-close:active {
+        background: #e2e8f0 !important;
+    }
+
+    .panel-bottom-sheet-content {
+        padding: 14px 16px 28px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-grow: 1 !important;
+    }
+
+    .panel-bottom-sheet-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .pb-sheet-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        padding: 11px 12px !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        color: #1e293b !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        transition: all 0.15s ease !important;
+        box-sizing: border-box !important;
+    }
+    .pb-sheet-link:active {
+        background: #e2e8f0 !important;
+        transform: scale(0.97) !important;
+    }
+    .pb-sheet-link.active {
+        background: #15803d !important;
+        color: #ffffff !important;
+        border-color: #15803d !important;
+    }
+    .pb-sheet-link .ps-icon {
+        font-size: 16px !important;
+        flex-shrink: 0 !important;
     }
 
     /* Tüm Çok Sütunlu Gridleri Mobil Uyumlu Tek Sütuna İndir */
