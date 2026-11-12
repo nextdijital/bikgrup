@@ -96,7 +96,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Mobil menü bağlantısına tıklandığında menüyü otomatik kapat
+    document.querySelectorAll('.panel-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 992) {
+                togglePanelSidebar(false);
+            }
+        });
+    });
+
+    // ESC tuşuna basıldığında açık mobil menüyü kapat
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            togglePanelSidebar(false);
+        }
+    });
 });
+
+/**
+ * Mobil Menü Aç / Kapat
+ */
+function togglePanelSidebar(forceState) {
+    const sidebar = document.querySelector('.panel-sidebar');
+    const backdrop = document.getElementById('panelBackdrop');
+    if (!sidebar) return;
+
+    const isOpen = sidebar.classList.contains('open');
+    const newState = typeof forceState === 'boolean' ? forceState : !isOpen;
+
+    if (newState) {
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('active');
+        document.body.classList.add('sidebar-open');
+    } else {
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+    }
+}
 
 /**
  * Modal Açma / Kapatma

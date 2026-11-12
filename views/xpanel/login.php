@@ -208,7 +208,7 @@ declare(strict_types=1);
 
             <button type="submit" class="login-btn">
                 <span style="font-size: 15px;">➜</span>
-                <span>Güvenli Giriş Yap</span>
+                <span>Giriş Yap</span>
             </button>
         </form>
 

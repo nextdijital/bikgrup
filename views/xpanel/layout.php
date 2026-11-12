@@ -25,6 +25,7 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
     <aside class="panel-sidebar">
         <div class="panel-brand">
             <span class="logo-text">BİKGRUP</span>
+            <button class="panel-sidebar-close" onclick="togglePanelSidebar(false)" aria-label="Menüyü Kapat" type="button">✕</button>
         </div>
 
         <nav class="panel-nav">
@@ -123,17 +124,29 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
         </div>
     </aside>
 
+    <!-- Mobil Karartma Perdesi (Backdrop) -->
+    <div class="panel-sidebar-backdrop" id="panelBackdrop" onclick="togglePanelSidebar(false)"></div>
+
     <!-- Ana Panel İçeriği -->
     <div class="panel-main">
         
         <!-- Topbar -->
         <header class="panel-topbar">
-            <div style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700;">
-                <?= htmlspecialchars($pageTitle ?? 'Yönetim Paneli') ?>
+            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                <button class="panel-mobile-toggle" id="panelSidebarToggle" onclick="togglePanelSidebar()" aria-label="Menüyü Aç/Kapat" type="button">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="panel-topbar-title">
+                    <?= htmlspecialchars($pageTitle ?? 'Yönetim Paneli') ?>
+                </div>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 13.5px; font-weight: 700; color: #334155;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <span class="panel-topbar-username">
                     <?= htmlspecialchars($user['name'] ?? 'Yönetici') ?>
                 </span>
             </div>
