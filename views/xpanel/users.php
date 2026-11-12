@@ -42,17 +42,12 @@ $currentUserId = Auth::id();
                 ?>
                 <tr style="<?= $isImmutable ? 'background: #fffdf5;' : '' ?>">
                     <td>
-                        <div style="display:flex; align-items:center; gap: 10px;">
-                            <div style="width:36px; height:36px; border-radius:50%; background: <?= $isImmutable ? 'linear-gradient(135deg, #f59e0b, #ea580c)' : '#e2e8f0' ?>; color: <?= $isImmutable ? '#ffffff' : '#334155' ?>; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;">
-                                <?= strtoupper(substr($u['name'], 0, 1)) ?>
+                        <div>
+                            <div style="font-weight: 700; font-size: 15px; color: var(--panel-text);">
+                                <?= htmlspecialchars($u['name']) ?>
                             </div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 15px; color: var(--panel-text);">
-                                    <?= htmlspecialchars($u['name']) ?>
-                                </div>
-                                <div style="font-size: 12px; color: #64748b;">
-                                    ID: #<?= $u['id'] ?>
-                                </div>
+                            <div style="font-size: 12px; color: #64748b;">
+                                ID: #<?= $u['id'] ?>
                             </div>
                         </div>
                     </td>

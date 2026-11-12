@@ -65,7 +65,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
                 <li><a href="<?= BASE_URL ?>/kurumsal" class="nav-link <?= ($activeNav ?? '') === 'about' ? 'active' : '' ?>"><?= __('nav_about') ?></a></li>
                 <li class="nav-item-dropdown">
                     <a href="<?= BASE_URL ?>/markalar" class="nav-link nav-link-dropdown <?= in_array($activeNav ?? '', ['brands', 'references'], true) ? 'active' : '' ?>">
-                        <?= $currentLang === 'en' ? 'Brands & References' : 'Markalarımız & Referanslarımız' ?> <span style="font-size: 11px; margin-left: 2px;">▾</span>
+                        <?= $currentLang === 'en' ? 'Brands & References' : 'Marka ve Referanslar' ?> <span style="font-size: 11px; margin-left: 2px;">▾</span>
                     </a>
                     <div class="nav-dropdown-content">
                         <a href="<?= BASE_URL ?>/markalar" class="<?= ($activeNav ?? '') === 'brands' ? 'active' : '' ?>">

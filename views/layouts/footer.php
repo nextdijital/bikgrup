@@ -124,9 +124,9 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                     </ul>
                 </div>
 
-                <!-- 3. KULLANICI TALEBİ: Markalarımız ve Referanslarımız (Ayrı Menü) -->
+                <!-- 3. KULLANICI TALEBİ: Marka ve Referanslar (Ayrı Menü) -->
                 <div>
-                    <h4 class="footer-heading"><?= $currentLang === 'en' ? 'Brands & References' : 'Markalarımız & Referanslarımız' ?></h4>
+                    <h4 class="footer-heading"><?= $currentLang === 'en' ? 'Brands & References' : 'Marka ve Referanslar' ?></h4>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/markalar"><?= $currentLang === 'en' ? 'Our Brands' : 'Markalarımız' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/referanslar"><?= $currentLang === 'en' ? 'Our References' : 'Referanslarımız' ?></a></li>
@@ -143,7 +143,6 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=sebzeler"><?= __('cat_vegetables') ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=sivi-gubre"><?= $currentLang === 'en' ? 'Liquid Fertilizers' : 'Sıvı Gübre' ?></a></li>
                         <li><a href="<?= BASE_URL ?>/urunler?kategori=kati-gubre"><?= $currentLang === 'en' ? 'Solid Fertilizers' : 'Katı Gübre' ?></a></li>
-                        <li><a href="<?= BASE_URL ?>/kurumsal#sertifikalar"><?= $currentLang === 'en' ? 'Quality Certificates' : 'Kalite Belgeleri' ?></a></li>
                     </ul>
                 </div>
 

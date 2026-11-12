@@ -104,15 +104,12 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
             <!-- Çıkış -->
             <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/logout" class="panel-nav-link" style="color: #f87171;">
                 <span class="nav-icon">🚪</span>
-                <span>Güvenli Çıkış</span>
+                <span>Çıkış Yap</span>
             </a>
         </nav>
 
         <!-- Oturum Açmış Yönetici Bilgisi -->
         <div class="panel-user-card">
-            <div class="panel-user-avatar">
-                <?= strtoupper(substr($user['name'] ?? 'A', 0, 1)) ?>
-            </div>
             <div style="overflow: hidden;">
                 <div style="font-weight: 700; font-size: 14px; color: #ffffff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
                     <?= htmlspecialchars($user['name'] ?? 'Yönetici') ?>
@@ -277,9 +274,6 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
 
             <!-- Yönetici Kartı -->
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; margin-top: 6px;">
-                <div class="panel-user-avatar" style="width: 32px; height: 32px; font-size: 13px;">
-                    <?= strtoupper(substr($user['name'] ?? 'A', 0, 1)) ?>
-                </div>
                 <div style="overflow: hidden; flex: 1;">
                     <div style="font-weight: 700; font-size: 13px; color: #0f172a; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
                         <?= htmlspecialchars($user['name'] ?? 'Yönetici') ?>
