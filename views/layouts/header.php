@@ -24,7 +24,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
 <html lang="<?= htmlspecialchars($currentLang) ?>">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= htmlspecialchars($pageTitle ?? $siteName) ?></title>
     <meta name="description" content="<?= htmlspecialchars(Settings::getLocalized('site_description', 'BİKGRUP Taze Narenciye, Meyve ve Tarımsal İhracat')) ?>">
     

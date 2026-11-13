@@ -10,6 +10,12 @@ ServerSignature Off
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # 0. Canlıda HTTPS Zorunluluğu (SSL Yönlendirmesi)
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # 1. Gizli dosya ve dizinlere (.env, .git, .vscode vb.) erişimi engelle
     RewriteRule (^|/)\.(?!well-known/) - [F,L]
 
@@ -26,7 +32,7 @@ ServerSignature Off
 </IfModule>
 
 # Güvenlik: Hassas dosya uzantılarını dışarıya tamamen kilitle
-<FilesMatch "\.(sql|log|ini|env.*|sh|bak|git.*|md|json)$">
+<FilesMatch "\.(sql|log|ini|env.*|sh|bak|git.*|md|json|yml|yaml|dist)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -43,6 +49,7 @@ ServerSignature Off
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
 </IfModule>
 
 # GZIP / Deflate Sıkıştırma (Canlı Yükleme Hızı & PageSpeed Optimizasyonu)
