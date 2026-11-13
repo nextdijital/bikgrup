@@ -257,11 +257,13 @@ if (!function_exists('resolveUrl')) {
             }
 
             foreach ($topFeatured as $index => $prod): 
+                $prodUrl = BASE_URL . '/urunler/' . urlencode($prod['slug']);
             ?>
                 <div class="popout-product-card home-featured-card card-color-<?= ($index % 4) + 1 ?> reveal reveal-delay-<?= ($index % 4) + 1 ?>" 
-                     style="display: flex;">
+                     onclick="window.location.href='<?= $prodUrl ?>';"
+                     style="display: flex; cursor: pointer;">
                     <!-- Karttan Dışarı Taşan 3 Boyutlu Ürün Görseli (Orantılı Büyütülmüş) -->
-                    <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-img-wrapper">
+                    <a href="<?= $prodUrl ?>" class="popout-img-wrapper" onclick="event.stopPropagation();">
                         <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($prod['image'] ?: 'product_orange.png') ?>" 
                              alt="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?>" 
                              class="popout-floating-img" 
@@ -278,14 +280,14 @@ if (!function_exists('resolveUrl')) {
                             ?>
                             <span class="popout-card-prefix"><?= htmlspecialchars($customPrefix ?: $defaultPrefix) ?></span>
                             <h3 class="popout-card-title">
-                                <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>">
+                                <a href="<?= $prodUrl ?>">
                                     <?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?>
                                 </a>
                             </h3>
                         </div>
 
                         <!-- Sayı yerine çapraz ok işareti olan dairesel buton -->
-                        <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) . ' ' . ($currentLang === 'en' ? 'Inspect' : 'İncele') ?>">
+                        <a href="<?= $prodUrl ?>" class="popout-circle-btn" aria-label="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) . ' ' . ($currentLang === 'en' ? 'Inspect' : 'İncele') ?>">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>
