@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 require_once ROOT_PATH . '/config/database.php';
-require_once ROOT_PATH . '/app/models/BlogPost.php';
+require_once ROOT_PATH . '/app/Models/BlogPost.php';
 require_once ROOT_PATH . '/core/Settings.php';
 
 class AgriNewsService

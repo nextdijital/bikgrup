@@ -9,7 +9,7 @@ declare(strict_types=1);
 $galleryHero = PageSection::get('gallery_page_hero') ?? [];
 $galleryHeroExtra = $galleryHero['extra'] ?? (!empty($galleryHero['extra_json']) ? json_decode($galleryHero['extra_json'], true) : []);
 
-require_once ROOT_PATH . '/app/models/GalleryItem.php';
+require_once ROOT_PATH . '/app/Models/GalleryItem.php';
 $categoryLabelsTr = GalleryItem::getCategories();
 $customCategories = GalleryItem::getCustomCategories();
 

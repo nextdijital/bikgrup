@@ -13,6 +13,13 @@ class View
      */
     public static function render(string $viewName, array $data = [], string $layout = 'main'): void
     {
+        // Temel model bağımlılıklarını garantile (Linux sunucularda autoloader eksikliği kaynaklı 500 hatalarını önler)
+        require_once ROOT_PATH . '/app/Models/PageSection.php';
+        require_once ROOT_PATH . '/app/Models/Category.php';
+        require_once ROOT_PATH . '/app/Models/Product.php';
+        require_once ROOT_PATH . '/app/Models/GalleryItem.php';
+        require_once ROOT_PATH . '/app/Models/BlogPost.php';
+
         $data['currentView'] = $viewName;
         $GLOBALS['currentView'] = $viewName;
 

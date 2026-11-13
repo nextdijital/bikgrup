@@ -984,7 +984,7 @@ class PanelController
         $this->requireAuth();
         $id = (int)($_GET['id'] ?? 0);
         if ($id > 0) {
-            require_once ROOT_PATH . '/app/models/BlogPost.php';
+            require_once ROOT_PATH . '/app/Models/BlogPost.php';
             require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
 
             $post = BlogPost::find($id);
@@ -1587,7 +1587,7 @@ class PanelController
     public function saveGalleryCategory(): void
     {
         $this->requireAuth();
-        require_once ROOT_PATH . '/app/models/GalleryItem.php';
+        require_once ROOT_PATH . '/app/Models/GalleryItem.php';
 
         $title = trim($_POST['category_title'] ?? '');
         $slug = trim($_POST['category_slug'] ?? '');
@@ -1614,7 +1614,7 @@ class PanelController
     public function deleteGalleryCategory(): void
     {
         $this->requireAuth();
-        require_once ROOT_PATH . '/app/models/GalleryItem.php';
+        require_once ROOT_PATH . '/app/Models/GalleryItem.php';
 
         $slug = trim($_GET['slug'] ?? '');
         if (!empty($slug)) {

@@ -42,8 +42,8 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <?= Settings::renderCssVariables() ?>
     
     <!-- CSS Dosyaları -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/style.css?v=<?= filemtime(PUBLIC_PATH . '/css/style.css') ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/animations.css?v=<?= filemtime(PUBLIC_PATH . '/css/animations.css') ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/style.css?v=<?= file_exists(PUBLIC_PATH . '/css/style.css') ? filemtime(PUBLIC_PATH . '/css/style.css') : time() ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/animations.css?v=<?= file_exists(PUBLIC_PATH . '/css/animations.css') ? filemtime(PUBLIC_PATH . '/css/animations.css') : time() ?>">
 </head>
 <body>
 

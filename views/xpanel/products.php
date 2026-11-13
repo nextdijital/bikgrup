@@ -61,7 +61,7 @@ $charLblTat = $prodExtra['char_lbl_tadi'] ?? '';
 $charTat = $prodExtra['char_tadi'] ?? '';
 
 // Galeri Entegrasyonu (Kullanıcı Talebi: Galeri Kategorisini Ürüne Bağlama)
-require_once ROOT_PATH . '/app/models/GalleryItem.php';
+require_once ROOT_PATH . '/app/Models/GalleryItem.php';
 $allGalleryCategories = GalleryItem::getCategories();
 $galleryCategory = $prodExtra['gallery_category'] ?? 'all';
 $showProductGallery = isset($prodExtra['show_product_gallery']) ? ((int)$prodExtra['show_product_gallery'] === 1) : true;

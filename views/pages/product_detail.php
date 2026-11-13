@@ -936,7 +936,7 @@ $badge2 = !empty($prodExtra['badge2']) ? $prodExtra['badge2'] : ($currentLang ==
 $badge3 = !empty($prodExtra['badge3']) ? $prodExtra['badge3'] : ($currentLang === 'en' ? 'Rich Antioxidants' : 'Zengin Antioksidan');
 
 // Galeri Entegrasyonu (Kullanıcı Talebi: Ürün detayının en altında kayan galeri)
-require_once ROOT_PATH . '/app/models/GalleryItem.php';
+require_once ROOT_PATH . '/app/Models/GalleryItem.php';
 $showProductGallery = isset($prodExtra['show_product_gallery']) ? ((int)$prodExtra['show_product_gallery'] === 1) : true;
 $productGalleryCategory = $prodExtra['gallery_category'] ?? 'all';
 $productGalleryCustomTitle = $prodExtra['gallery_custom_title'] ?? '';
