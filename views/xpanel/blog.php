@@ -96,7 +96,13 @@ $syncInfo = AgriNewsService::getLastSyncInfo();
                 <span>•</span>
                 <span>🕒 Son Tarama: <strong style="color: #166534;"><?= htmlspecialchars($syncInfo['last_sync'] ?? 'Henüz yapılmadı') ?></strong></span>
                 <span>•</span>
-                <span>🛡️ Filtre: <strong style="color: #0f172a;">Spam / Magazin Koruması Aktif</strong></span>
+                <span>📅 Günlük Otomatik Tarama: <strong style="color: #15803d;">Aktif (Her Gün)</strong></span>
+                <span>•</span>
+                <span>🛡️ Arşiv Hafızası: <strong style="color: #0284c7;"><?= count($archivedList ?? []) ?> adet silinen haber hafızada</strong> (tekrar yayınlanmaz)</span>
+                <?php if (!empty($archivedList)): ?>
+                    <span>•</span>
+                    <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/clear-agri-archive" onclick="return confirm('Silinen haber arşiv hafızasını temizlemek istediğinize emin misiniz?')" style="color: #ef4444; text-decoration: underline; font-weight: 600; font-size: 11.5px;">Hafızayı Sıfırla</a>
+                <?php endif; ?>
             </div>
         </div>
 

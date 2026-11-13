@@ -282,6 +282,9 @@ switch ($route) {
             case 'sync-agri-news':
                 $panel->syncAgriNews();
                 break;
+            case 'clear-agri-archive':
+                $panel->clearAgriArchive();
+                break;
             // Medya & Galeri Yönetimi
             case 'gallery':
                 $panel->gallery();

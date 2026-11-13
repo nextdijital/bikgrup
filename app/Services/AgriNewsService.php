@@ -326,10 +326,162 @@ class AgriNewsService
     }
 
     /**
-     * Slug veya başlık zaten veritabanında var mı kontrol eder
+     * Günlük otomatik tarama motoru: Günde 1 kez otomatik olarak yeni haberleri tarar ve ekler
+     */
+    public static function autoDailySyncIfNeeded(): ?array
+    {
+        $today = date('Y-m-d');
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'last_agri_news_scan_date' LIMIT 1");
+            $stmt->execute();
+            $lastDate = (string)$stmt->fetchColumn();
+
+            if ($lastDate !== $today) {
+                // Bugün henüz taranmadı, önce bugünün tarihini kaydet
+                $upStmt = $db->prepare("
+                    INSERT INTO settings (setting_key, setting_value, group_name, label_tr, input_type)
+                    VALUES ('last_agri_news_scan_date', ?, 'blog', 'Son Günlük Tarama Tarihi', 'text')
+                    ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)
+                ");
+                $upStmt->execute([$today]);
+
+                // Yeni haberleri tara ve ekle
+                return self::sync(4);
+            }
+        } catch (\Throwable $e) {}
+
+        return null;
+    }
+
+    /**
+     * Silinen bir haberi arşive ekler (böylece sonraki taramalarda tekrar eklenmez)
+     */
+    public static function archivePost(string $slug, string $title): bool
+    {
+        $slug = trim($slug);
+        $title = trim($title);
+        if (empty($slug) && empty($title)) {
+            return false;
+        }
+
+        $archive = self::getArchivedList();
+        $normTitle = self::normalizeForComparison($title);
+
+        // Zaten arşivde var mı kontrol et
+        foreach ($archive as $item) {
+            if ((!empty($slug) && ($item['slug'] ?? '') === $slug) || 
+                (!empty($normTitle) && ($item['norm_title'] ?? '') === $normTitle)) {
+                return true; // Zaten arşivde kayıtlı
+            }
+        }
+
+        $archive[] = [
+            'slug'        => $slug,
+            'title'       => $title,
+            'norm_title'  => $normTitle,
+            'archived_at' => date('Y-m-d H:i:s')
+        ];
+
+        return self::saveArchivedList($archive);
+    }
+
+    /**
+     * Bir haberin arşivde olup olmadığını kontrol eder
+     */
+    public static function isArchived(string $slug, string $title): bool
+    {
+        $slug = trim($slug);
+        $normTitle = self::normalizeForComparison($title);
+        $archive = self::getArchivedList();
+
+        foreach ($archive as $item) {
+            if (!empty($slug) && ($item['slug'] ?? '') === $slug) {
+                return true;
+            }
+            if (!empty($normTitle) && !empty($item['norm_title']) && $item['norm_title'] === $normTitle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Arşivlenen silinmiş haberlerin listesini getirir
+     */
+    public static function getArchivedList(): array
+    {
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'archived_agri_news' LIMIT 1");
+            $stmt->execute();
+            $val = $stmt->fetchColumn();
+            if ($val) {
+                $decoded = json_decode((string)$val, true);
+                if (is_array($decoded)) {
+                    return $decoded;
+                }
+            }
+        } catch (\Throwable $e) {}
+        return [];
+    }
+
+    /**
+     * Arşiv listesini tamamen temizler
+     */
+    public static function clearArchive(): bool
+    {
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->prepare("DELETE FROM settings WHERE setting_key = 'archived_agri_news'");
+            return $stmt->execute();
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Arşiv listesini kaydeder
+     */
+    private static function saveArchivedList(array $list): bool
+    {
+        try {
+            $json = json_encode($list, JSON_UNESCAPED_UNICODE);
+            $db = Database::getConnection();
+            $stmt = $db->prepare("
+                INSERT INTO settings (setting_key, setting_value, group_name, label_tr, input_type)
+                VALUES ('archived_agri_news', ?, 'blog', 'Arşivlenen Tarım Haberleri (Yayınlanmayacaklar)', 'textarea')
+                ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)
+            ");
+            return $stmt->execute([$json]);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Başlık karşılaştırmaları için Türkçe normalizasyon
+     */
+    public static function normalizeForComparison(string $text): string
+    {
+        $text = mb_strtolower(trim($text), 'UTF-8');
+        $trChars = ['ı', 'ğ', 'ü', 'ş', 'ö', 'ç', 'İ', 'Ğ', 'Ü', 'Ş', 'Ö', 'Ç'];
+        $enChars = ['i', 'g', 'u', 's', 'o', 'c', 'i', 'g', 'u', 's', 'o', 'c'];
+        $text = str_replace($trChars, $enChars, $text);
+        return preg_replace('/[^a-z0-9]+/i', '', $text);
+    }
+
+    /**
+     * Slug veya başlık zaten veritabanında veya arşivde var mı kontrol eder
      */
     private static function isDuplicate(string $slug, string $title): bool
     {
+        // 1. Kullanıcının sildiği / arşivlediği haberler listesinde var mı? (Asla tekrar yayınlanmaz!)
+        if (self::isArchived($slug, $title)) {
+            return true;
+        }
+
+        // 2. Halihazırda sitede yayında veya taslakta var mı?
         try {
             $db = Database::getConnection();
             $stmt = $db->prepare("SELECT id FROM blog_posts WHERE slug = ? OR title_tr = ? LIMIT 1");

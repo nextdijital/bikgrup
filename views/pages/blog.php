@@ -128,3 +128,39 @@ $GLOBALS['hasHero'] = true;
 
     </div>
 </section>
+
+<style>
+@media (max-width: 768px) {
+    #yazilar {
+        padding-top: 24px !important;
+    }
+    .blog-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .blog-card {
+        border-radius: 16px !important;
+    }
+    .blog-card-img {
+        height: 200px !important;
+    }
+    .blog-card-body {
+        padding: 18px !important;
+    }
+    .blog-card-title {
+        font-size: 17.5px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 8px !important;
+    }
+    .blog-card-excerpt {
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+        margin-bottom: 16px !important;
+    }
+    .blog-meta {
+        font-size: 11.5px !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+    }
+}
+</style>

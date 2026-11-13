@@ -897,13 +897,19 @@ class PanelController
     public function blog(): void
     {
         $this->requireAuth();
+        require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+        AgriNewsService::autoDailySyncIfNeeded();
 
         $posts = BlogPost::all(false);
+        $syncInfo = AgriNewsService::getLastSyncInfo();
+        $archivedList = AgriNewsService::getArchivedList();
 
         View::renderPanel('blog', [
-            'pageTitle'  => 'BİK GRUP | Blog & Haber Yönetimi',
-            'activeMenu' => 'blog',
-            'posts'      => $posts
+            'pageTitle'    => 'BİK GRUP | Blog & Haber Yönetimi',
+            'activeMenu'   => 'blog',
+            'posts'        => $posts,
+            'syncInfo'     => $syncInfo,
+            'archivedList' => $archivedList
         ]);
     }
 
@@ -978,8 +984,17 @@ class PanelController
         $this->requireAuth();
         $id = (int)($_GET['id'] ?? 0);
         if ($id > 0) {
+            require_once ROOT_PATH . '/app/models/BlogPost.php';
+            require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+
+            $post = BlogPost::find($id);
+            if ($post) {
+                // Sildiklerimi arşivde tut: Bir daha ki taramada onun arşivde olduğunu görüp ASLA yayınlamaz!
+                AgriNewsService::archivePost($post['slug'] ?? '', $post['title_tr'] ?? '');
+            }
+
             BlogPost::delete($id);
-            $_SESSION['panel_success'] = 'Blog yazısı silindi.';
+            $_SESSION['panel_success'] = 'Haber silindi ve bot hafızasına (arşive) kaydedildi. Otomatik taramalarda bir daha asla tekrar eklenmeyecektir.';
         }
         $redirect = !empty($_GET['redirect_to']) ? trim($_GET['redirect_to']) : PANEL_SLUG . "/blog";
         header("Location: " . BASE_URL . "/" . ltrim($redirect, "/"));
@@ -1005,6 +1020,20 @@ class PanelController
             $_SESSION['panel_error'] = $result['message'] ?? 'Tarım haberleri taranırken bir sorun oluştu.';
         }
 
+        header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/blog");
+        exit;
+    }
+
+    /**
+     * Arşivlenen Haber Hafızasını Sıfırlama
+     */
+    public function clearAgriArchive(): void
+    {
+        $this->requireAuth();
+        require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
+
+        AgriNewsService::clearArchive();
+        $_SESSION['panel_success'] = 'Arşivlenmiş silinmiş haber hafızası temizlendi.';
         header("Location: " . BASE_URL . "/" . PANEL_SLUG . "/blog");
         exit;
     }
