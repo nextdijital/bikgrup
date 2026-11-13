@@ -138,7 +138,12 @@ $GLOBALS['hasHero'] = true;
                             <!-- Kart Alt İçeriği: Ürün İsimleri & Sağ Altta Çapraz Ok Butonu -->
                             <div class="popout-card-bottom">
                                 <div class="popout-card-text">
-                                    <span class="popout-card-prefix"><?= $currentLang === 'en' ? 'Fresh & Premium' : 'Taze & Doğal' ?></span>
+                                    <?php 
+                                    $prodExtra = !empty($prod['extra_json']) ? json_decode($prod['extra_json'], true) : [];
+                                    $customPrefix = $prodExtra['badge_prefix'] ?? null;
+                                    $defaultPrefix = $currentLang === 'en' ? 'Fresh & Premium' : 'Taze & Doğal';
+                                    ?>
+                                    <span class="popout-card-prefix"><?= htmlspecialchars($customPrefix ?: $defaultPrefix) ?></span>
                                     <h3 class="popout-card-title">
                                         <a href="<?= BASE_URL ?>/urunler/<?= urlencode($prod['slug']) ?>">
                                             <?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?>
