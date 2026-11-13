@@ -64,10 +64,10 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
                 <span>Ürünler & Hasat</span>
             </a>
 
-            <!-- Blog -->
+            <!-- Blog / Haberler -->
             <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/blog" class="panel-nav-link <?= ($activeMenu ?? '') === 'blog' ? 'active' : '' ?>">
                 <span class="nav-icon">📰</span>
-                <span>Blog & Haberler</span>
+                <span>Haberler</span>
             </a>
 
             <!-- Medya & Galeri -->
@@ -251,7 +251,7 @@ $pendingQuoteCount = class_exists('QuoteRequest') ? QuoteRequest::pendingCount()
                 </a>
                 <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/blog" class="pb-sheet-link <?= ($activeMenu ?? '') === 'blog' ? 'active' : '' ?>">
                     <span class="ps-icon">📰</span>
-                    <span>Blog & Haberler</span>
+                    <span>Haberler</span>
                 </a>
                 <a href="<?= BASE_URL ?>/<?= PANEL_SLUG ?>/gallery" class="pb-sheet-link <?= ($activeMenu ?? '') === 'gallery' ? 'active' : '' ?>">
                     <span class="ps-icon">🖼️</span>

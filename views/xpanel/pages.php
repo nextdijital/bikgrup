@@ -42,7 +42,7 @@ if (!function_exists('renderLinkSelector')) {
                 '/kurumsal#misyon'       => '↳ Misyonumuz & Vizyonumuz',
                 '/kurumsal#sertifikalar' => '↳ Kalite & Gıda Güvenliği Sertifikalarımız',
                 '/markalar'              => 'Markalarımız (Genel Vitrin)',
-                '/blog'                  => 'Blog & Haberler',
+                '/blog'                  => 'Haberler',
                 '/iletisim'              => 'İletişim & Lokasyon',
             ],
             '🏷️ Grup Markalarımız' => [
@@ -635,11 +635,11 @@ if (!function_exists('renderLinkSelector')) {
         $secBlog = getSec('home_blog', $sectionsBySection);
         $blogExtra = $secBlog['extra'] ?? [];
         ?>
-        <!-- BÖLÜM 6: BLOG & HABERLER BÖLÜM BAŞLIKLARI -->
+        <!-- BÖLÜM 6: HABERLER BÖLÜM BAŞLIKLARI -->
         <div style="background: #ffffff; border: 1.5px solid var(--panel-border); border-radius: 16px; padding: 24px;">
             <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 20px;">
                 <h3 style="font-size: 17px; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px;">
-                    <span>📰</span> 6. Blog & Haberler Alanı Başlıkları
+                    <span>📰</span> 6. Haberler Alanı Başlıkları
                 </h3>
             </div>
 
@@ -655,14 +655,14 @@ if (!function_exists('renderLinkSelector')) {
                     </div>
                     <div class="form-group">
                         <label class="form-label">Bölüm Başlığı</label>
-                        <input type="text" name="title_tr" value="<?= htmlspecialchars($secBlog['title_tr'] ?? 'Blog & Haberler') ?>" class="form-control">
+                        <input type="text" name="title_tr" value="<?= htmlspecialchars($secBlog['title_tr'] ?? 'Haberler') ?>" class="form-control">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 20px;">
                     <div class="form-group">
                         <label class="form-label">Buton Yazısı</label>
-                        <input type="text" name="extra[btn_text]" value="<?= htmlspecialchars($blogExtra['btn_text'] ?? 'Tüm Makaleler') ?>" class="form-control">
+                        <input type="text" name="extra[btn_text]" value="<?= htmlspecialchars($blogExtra['btn_text'] ?? 'Tüm Haberler') ?>" class="form-control">
                     </div>
                     <div class="form-group">
                         <?php renderLinkSelector('extra[btn_link]', $blogExtra['btn_link'] ?? '/blog', $categories, 'Buton Linki (Kategori / Sayfa)'); ?>
@@ -670,7 +670,7 @@ if (!function_exists('renderLinkSelector')) {
                 </div>
 
                 <div style="text-align: right; margin-top: 16px;">
-                    <button type="submit" class="btn btn-primary">💾 Blog Başlık Alanını Kaydet</button>
+                    <button type="submit" class="btn btn-primary">💾 Haberler Başlık Alanını Kaydet</button>
                 </div>
             </form>
         </div>

@@ -905,7 +905,7 @@ class PanelController
         $archivedList = AgriNewsService::getArchivedList();
 
         View::renderPanel('blog', [
-            'pageTitle'    => 'BİK GRUP | Blog & Haber Yönetimi',
+            'pageTitle'    => 'BİK GRUP | Haber Yönetimi',
             'activeMenu'   => 'blog',
             'posts'        => $posts,
             'syncInfo'     => $syncInfo,

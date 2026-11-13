@@ -13,7 +13,7 @@ return [
     'nav_facilities' => 'Tesislerimiz',
     'nav_quality' => 'Kalite & Tesis',
     'nav_products' => 'Ürünler',
-    'nav_blog' => 'Blog & Haberler',
+    'nav_blog' => 'Haberler',
     'nav_contact' => 'İletişim',
     'nav_explore' => 'Keşfet',
     'nav_contact_us' => 'Bize Ulaşın',

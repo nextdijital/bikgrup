@@ -12,15 +12,15 @@ require_once ROOT_PATH . '/app/Services/AgriNewsService.php';
 $syncInfo = AgriNewsService::getLastSyncInfo();
 ?>
 
-<!-- Blog Sayfası Hero Afiş & Başlık Alanı -->
+<!-- Haber Sayfası Hero Afiş & Başlık Alanı -->
 <div class="panel-card" style="margin-bottom: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const b = document.getElementById('blogHeroCardBody'); b.style.display = (b.style.display === 'none' ? 'block' : 'none');">
         <div>
             <h2 class="panel-card-title" style="display: flex; align-items: center; gap: 8px;">
-                <span>🌄</span> Blog Sayfası Hero Giriş Afişi & Başlık Alanı
+                <span>🌄</span> Haberler Sayfası Hero Giriş Afişi & Başlık Alanı
             </h2>
             <p style="color: var(--panel-text-muted); font-size: 13.5px; margin-top: 4px;">
-                Sitedeki /blog sayfasının en üstündeki afiş görselini, başlığını ve açıklama metnini buradan yönetin. (Açıp/kapatmak için tıklayın)
+                Sitedeki /blog (Haberler) sayfasının en üstündeki afiş görselini, başlığını ve açıklama metnini buradan yönetin. (Açıp/kapatmak için tıklayın)
             </p>
         </div>
         <button type="button" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12.5px; font-weight: 700; border-radius: 8px;">
@@ -121,14 +121,14 @@ $syncInfo = AgriNewsService::getLastSyncInfo();
 <div class="panel-card">
     <div class="panel-card-header">
         <div>
-            <h2 class="panel-card-title">📰 Blog ve Haber Yönetimi</h2>
+            <h2 class="panel-card-title">📰 Haber Yönetimi</h2>
             <p style="color: var(--panel-text-muted); font-size: 14px; margin-top: 4px;">
-                Sektörel analizler, soğuk zincir rehberleri ve şirket duyurularını yönetin.
+                Tarımsal gelişmeler, sektörel analizler ve güncel haber bültenlerini yönetin.
             </p>
         </div>
         <div>
             <button onclick="openNewBlogModal()" class="btn btn-primary" style="padding: 10px 22px;">
-                + Yeni Yazı Ekle
+                + Yeni Haber Ekle
             </button>
         </div>
     </div>
@@ -187,13 +187,13 @@ $syncInfo = AgriNewsService::getLastSyncInfo();
     </table>
 </div>
 
-<!-- Blog Ekleme & Düzenleme Modalı -->
+<!-- Haber Ekleme & Düzenleme Modalı -->
 <div id="blogModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: #ffffff; border-radius: 20px; width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: 0 25px 60px rgba(0,0,0,0.25);">
         
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
             <h3 id="blogModalTitle" style="font-family:'Outfit', sans-serif; font-size: 21px; font-weight: 800; color:#0f172a; margin:0;">
-                + Yeni Blog Yazısı
+                + Yeni Haber Ekle
             </h3>
             <button type="button" onclick="closeModal('blogModal')" style="background:none; border:none; font-size: 22px; cursor: pointer; color:#94a3b8;">✕</button>
         </div>
@@ -292,8 +292,8 @@ function openNewBlogModal() {
     document.getElementById('blog_excerpt_tr').value = '';
     document.getElementById('blog_content_tr').value = '';
     document.getElementById('blog_is_published').checked = true;
-    document.getElementById('blogModalTitle').textContent = '+ Yeni Blog Yazısı';
-    document.getElementById('blogSubmitBtn').textContent = '📝 Yazıyı Yayınla';
+    document.getElementById('blogModalTitle').textContent = '+ Yeni Haber Ekle';
+    document.getElementById('blogSubmitBtn').textContent = '📝 Haberi Yayınla';
     openModal('blogModal');
 }
 
@@ -314,7 +314,7 @@ function openEditBlogModal(p) {
     document.getElementById('blog_excerpt_tr').value = p.excerpt_tr || '';
     document.getElementById('blog_content_tr').value = p.content_tr || '';
     document.getElementById('blog_is_published').checked = parseInt(p.is_published) === 1;
-    document.getElementById('blogModalTitle').textContent = '✏️ Blog Yazısını Düzenle: ' + p.title_tr;
+    document.getElementById('blogModalTitle').textContent = '✏️ Haberi Düzenle: ' + p.title_tr;
     document.getElementById('blogSubmitBtn').textContent = '💾 Değişiklikleri Güncelle';
     openModal('blogModal');
 }

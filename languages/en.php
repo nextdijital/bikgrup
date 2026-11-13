@@ -13,7 +13,7 @@ return [
     'nav_facilities' => 'Facilities',
     'nav_quality' => 'Quality & Facility',
     'nav_products' => 'Products',
-    'nav_blog' => 'Blog & Insights',
+    'nav_blog' => 'News',
     'nav_contact' => 'Contact',
     'nav_explore' => 'Explore',
     'nav_contact_us' => 'Contact Us',
