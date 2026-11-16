@@ -103,7 +103,7 @@ if (!function_exists('resolveUrl')) {
         <div class="adler-top-header">
             <a href="<?= BASE_URL ?>/" class="adler-logo">
                 <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="258" height="64" style="max-height: 64px; width: auto; object-fit: contain;">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="84" style="max-height: 64px; width: auto; object-fit: contain;">
                 <?php else: ?>
                     <span><?= htmlspecialchars($siteLogoText) ?></span>
                 <?php endif; ?>

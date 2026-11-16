@@ -69,6 +69,47 @@ $route = strtolower($parts[0] ?? '');
 $subRoute = strtolower($parts[1] ?? '');
 $param = $parts[2] ?? '';
 
+// AI & LLM Ajan Dosyaları ve Site Haritası Doğrudan Servis (SyntaxError / HTML Dönüşü Kesin Çözümü)
+if ($route === 'ai-catalog.json' || $url === 'ai-catalog.json') {
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Access-Control-Allow-Origin: *');
+    $f = file_exists(__DIR__ . '/ai-catalog.json') ? __DIR__ . '/ai-catalog.json' : __DIR__ . '/public/ai-catalog.json';
+    if (file_exists($f)) {
+        readfile($f);
+    } else {
+        echo '{}';
+    }
+    exit;
+}
+
+if ($route === 'llms.txt' || $url === 'llms.txt') {
+    header('Content-Type: text/plain; charset=UTF-8');
+    header('Access-Control-Allow-Origin: *');
+    $f = file_exists(__DIR__ . '/llms.txt') ? __DIR__ . '/llms.txt' : __DIR__ . '/public/llms.txt';
+    if (file_exists($f)) {
+        readfile($f);
+    }
+    exit;
+}
+
+if ($route === 'sitemap.xml' || $url === 'sitemap.xml') {
+    header('Content-Type: application/xml; charset=UTF-8');
+    $f = file_exists(__DIR__ . '/sitemap.xml') ? __DIR__ . '/sitemap.xml' : __DIR__ . '/public/sitemap.xml';
+    if (file_exists($f)) {
+        readfile($f);
+    }
+    exit;
+}
+
+if ($route === 'robots.txt' || $url === 'robots.txt') {
+    header('Content-Type: text/plain; charset=UTF-8');
+    $f = file_exists(__DIR__ . '/robots.txt') ? __DIR__ . '/robots.txt' : __DIR__ . '/public/robots.txt';
+    if (file_exists($f)) {
+        readfile($f);
+    }
+    exit;
+}
+
 // SEO Dostu Türkçe ve Uluslararası Rotaların Eşleştirilmesi
 switch ($route) {
     case '':

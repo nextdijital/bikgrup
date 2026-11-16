@@ -71,7 +71,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                 <div class="footer-col-brand">
                     <a href="<?= BASE_URL ?>/" class="bik-logo" style="margin-bottom: 20px;">
                         <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="234" height="58" style="max-height: 58px; width: auto; object-fit: contain;">
+                            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="58" style="max-height: 58px; width: auto; object-fit: contain;">
                         <?php else: ?>
                             <span class="logo-leaf-icon">🌿</span>
                             <span class="logo-brand"><span class="bold">BİK</span><span class="accent">GRUP</span></span>

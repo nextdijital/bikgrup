@@ -60,13 +60,10 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <!-- Dinamik Tema Değişkenleri (Arka Panelden Anında Değişen Canlı CSS) -->
     <?= Settings::renderCssVariables() ?>
     
-    <!-- Optimize & Minify CSS Dosyaları -->
-    <?php
-    $styleCss = file_exists(PUBLIC_PATH . '/css/style.min.css') ? 'style.min.css' : 'style.css';
-    $animCss  = file_exists(PUBLIC_PATH . '/css/animations.min.css') ? 'animations.min.css' : 'animations.css';
-    ?>
+    <!-- Optimize & Minify Tekil CSS (0 Ek İstek / Render-blocking Optimize) -->
+    <?php $styleCss = file_exists(PUBLIC_PATH . '/css/style.min.css') ? 'style.min.css' : 'style.css'; ?>
+    <link rel="preload" as="style" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $animCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $animCss) ? filemtime(PUBLIC_PATH . '/css/' . $animCss) : time() ?>">
 </head>
 <body>
 
