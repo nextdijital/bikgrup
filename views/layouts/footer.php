@@ -20,6 +20,8 @@ $twitter   = trim(Settings::get('social_x', ''));
 $footerSec = PageSection::get('footer_main') ?? [];
 $footerExtra = $footerSec['extra'] ?? [];
 $siteLogo = Settings::get('site_logo', '');
+$optLogoFile = 'bikgrup_logo_optimized.webp';
+$activeLogo = file_exists(PUBLIC_PATH . '/images/' . $optLogoFile) ? $optLogoFile : (!empty($siteLogo) ? $siteLogo : '');
 $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
 ?>
 
@@ -70,8 +72,8 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                 <!-- 1. Marka ve Tanıtım -->
                 <div class="footer-col-brand">
                     <a href="<?= BASE_URL ?>/" class="bik-logo" style="margin-bottom: 20px;">
-                        <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="58" style="max-height: 58px; width: auto; object-fit: contain;">
+                        <?php if (!empty($activeLogo) && file_exists(UPLOADS_PATH . '/' . $activeLogo)): ?>
+                            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($activeLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="58" style="max-height: 58px; width: auto; object-fit: contain;">
                         <?php else: ?>
                             <span class="logo-leaf-icon">🌿</span>
                             <span class="logo-brand"><span class="bold">BİK</span><span class="accent">GRUP</span></span>

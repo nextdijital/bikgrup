@@ -9,6 +9,8 @@ declare(strict_types=1);
 $currentLang = Lang::current();
 $siteName = Settings::get('site_name', 'BİKGRUP');
 $siteLogo = Settings::get('site_logo', '');
+$optLogoFile = 'bikgrup_logo_optimized.webp';
+$activeLogo = file_exists(PUBLIC_PATH . '/images/' . $optLogoFile) ? $optLogoFile : (!empty($siteLogo) ? $siteLogo : '');
 $siteFavicon = Settings::get('site_favicon', '');
 $categoriesMenu = Category::all(true);
 $isHome = ($activeNav ?? '') === 'home';
@@ -49,8 +51,9 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     </noscript>
 
     <?php if ($isHome): ?>
-    <!-- LCP Keşif Hızlandırıcısı: Hero Arka Plan Görselini Önceden Yükle (LCP İstek Keşfi 100%) -->
-    <link rel="preload" as="image" href="<?= BASE_URL ?>/public/images/nature_hero_bg.webp" type="image/webp" fetchpriority="high">
+    <!-- LCP Keşif Hızlandırıcısı: Mobil 71 KB, Masaüstü 258 KB -->
+    <link rel="preload" as="image" href="<?= BASE_URL ?>/public/images/nature_hero_bg_mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="<?= BASE_URL ?>/public/images/nature_hero_bg.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
     <?php endif; ?>
 
     <?php if (!empty($siteFavicon) && file_exists(UPLOADS_PATH . '/' . $siteFavicon)): ?>
@@ -60,10 +63,21 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <!-- Dinamik Tema Değişkenleri (Arka Panelden Anında Değişen Canlı CSS) -->
     <?= Settings::renderCssVariables() ?>
     
-    <!-- Optimize & Minify Tekil CSS (0 Ek İstek / Render-blocking Optimize) -->
+    <!-- Optimize & Minify Tekil CSS (0 Ek İstek / Render-blocking 0 ms) -->
     <?php $styleCss = file_exists(PUBLIC_PATH . '/css/style.min.css') ? 'style.min.css' : 'style.css'; ?>
     <link rel="preload" as="style" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>">
+    </noscript>
+
+    <style>
+        :root { --theme-primary: #15803d; --theme-bg: #ffffff; --theme-text: #0f172a; }
+        body { margin: 0; padding: 0; background: #ffffff; color: #0f172a; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+        .adler-hero-viewport { position: relative; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #ffffff; }
+        .adler-bg-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .header-wrapper { position: fixed; top: 16px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; pointer-events: none; }
+    </style>
 </head>
 <body>
 
@@ -72,8 +86,8 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
         <nav class="navbar-pill">
             
             <a href="<?= BASE_URL ?>/" class="bik-logo">
-                <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="193" height="48" style="max-height: 48px; width: auto; object-fit: contain;">
+                <?php if (!empty($activeLogo) && file_exists(UPLOADS_PATH . '/' . $activeLogo)): ?>
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($activeLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="182" height="84" style="max-height: 48px; width: auto; object-fit: contain;">
                 <?php else: ?>
                     <span class="logo-leaf-icon" style="width:24px; height:24px; font-size:12px;">🌿</span>
                     <span>BİK<span class="accent">GRUP</span></span>
@@ -130,8 +144,8 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
             <!-- Üst Bar: Logo ve Kapat Butonu -->
             <div class="mobile-menu-header">
                 <a href="<?= BASE_URL ?>/" class="bik-logo" onclick="closeMobileMenu();" style="display: inline-flex; align-items: center; gap: 8px;">
-                    <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="193" height="48" style="max-height: 48px; width: auto; object-fit: contain;">
+                    <?php if (!empty($activeLogo) && file_exists(UPLOADS_PATH . '/' . $activeLogo)): ?>
+                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($activeLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="182" height="84" style="max-height: 48px; width: auto; object-fit: contain;">
                     <?php else: ?>
                         <span class="logo-leaf-icon" style="width:28px; height:28px; font-size:14px;">🌿</span>
                         <span style="font-size: 20px;">BİK<span class="accent">GRUP</span></span>

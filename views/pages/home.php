@@ -83,8 +83,14 @@ if (!function_exists('resolveUrl')) {
         $heroBg = $heroExtra['bg_image'] ?? 'nature_hero_bg.webp';
         $heroBgWebp = pathinfo($heroBg, PATHINFO_FILENAME) . '.webp';
         $hasWebp = file_exists(PUBLIC_PATH . '/images/' . $heroBgWebp);
+        $hasMobileWebp = file_exists(PUBLIC_PATH . '/images/nature_hero_bg_mobile.webp');
+        $optLogoFile = 'bikgrup_logo_optimized.webp';
+        $activeLogo = file_exists(PUBLIC_PATH . '/images/' . $optLogoFile) ? $optLogoFile : (!empty($siteLogo) ? $siteLogo : '');
         ?>
         <picture>
+            <?php if ($hasMobileWebp): ?>
+                <source media="(max-width: 768px)" srcset="<?= BASE_URL ?>/public/images/nature_hero_bg_mobile.webp" type="image/webp">
+            <?php endif; ?>
             <?php if ($hasWebp): ?>
                 <source srcset="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($heroBgWebp) ?>" type="image/webp">
             <?php endif; ?>
@@ -102,8 +108,8 @@ if (!function_exists('resolveUrl')) {
         <!-- Çerçevenin Üst Sınırı: Entegre Minimal Header -->
         <div class="adler-top-header">
             <a href="<?= BASE_URL ?>/" class="adler-logo">
-                <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="84" style="max-height: 64px; width: auto; object-fit: contain;">
+                <?php if (!empty($activeLogo) && file_exists(UPLOADS_PATH . '/' . $activeLogo)): ?>
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($activeLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="182" height="84" style="max-height: 64px; width: auto; object-fit: contain;">
                 <?php else: ?>
                     <span><?= htmlspecialchars($siteLogoText) ?></span>
                 <?php endif; ?>
