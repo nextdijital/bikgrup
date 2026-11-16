@@ -1,74 +1,49 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "BİK GRUP",
-  "legalName": "Bik Tarım Ürünleri İthalat İhracat Sanayi ve Ticaret Limited Şirketi",
-  "description": "BİK GRUP, Türkiye'nin lider tarımsal üretim, taze narenciye, hububat, gübre ve global tarım ihracatı şirketidir.",
-  "url": "https://bikgrup.com",
-  "logo": "https://bikgrup.com/public/images/logo_1793781347_9b892f.webp",
-  "telephone": "+905337989901",
-  "email": "destek@bikgrup.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "TR",
-    "addressLocality": "Antalya",
-    "streetAddress": "Organize Sanayi Bölgesi 4. Cadde No: 18"
+  "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ai-catalog.schema.json",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "BİK GRUP",
+    "documentationUrl": "https://bikgrup.com/kurumsal",
+    "logoUrl": "https://bikgrup.com/public/images/bikgrup_logo_optimized.webp"
   },
-  "contactPoint": [
+  "entries": [
     {
-      "@type": "ContactPoint",
-      "telephone": "+905337989901",
-      "contactType": "sales",
-      "availableLanguage": ["Turkish", "English"]
+      "identifier": "urn:air:bikgrup.com:catalog:products",
+      "displayName": "BİK GRUP Tarım ve İhracat Kataloğu",
+      "type": "application/json",
+      "url": "https://bikgrup.com/urunler",
+      "description": "BİK GRUP taze narenciye, kaliteli hububat, bitki besleme ve hayvan yemi üretim ve global ihracat kataloğu.",
+      "tags": [
+        "tarım",
+        "narenciye",
+        "hububat",
+        "gübre",
+        "hayvan yemi",
+        "ihracat"
+      ],
+      "representativeQueries": [
+        "BİK GRUP taze narenciye ve meyve ihracatı",
+        "Toptan buğday mısır hububat tedariği",
+        "Katı ve sıvı gübre ile hayvan yemi çeşitleri",
+        "Tarım ürünleri ihracat teklifi al"
+      ]
+    },
+    {
+      "identifier": "urn:air:bikgrup.com:manifest:llm",
+      "displayName": "BİK GRUP LLM ve Ajan Manifestosu",
+      "type": "text/plain",
+      "url": "https://bikgrup.com/llms.txt",
+      "description": "Yapay zeka modelleri ve otonom arama ajanları için yapılandırılmış kurumsal BİK GRUP navigasyon ve özet içerik dokümanı.",
+      "tags": [
+        "llm",
+        "manifest",
+        "ai-agents",
+        "kurumsal"
+      ],
+      "representativeQueries": [
+        "BİK GRUP kurumsal profili ve kalite sertifikaları",
+        "BİK GRUP iletişim bilgileri ve fabrika lokasyonları"
+      ]
     }
-  ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "BİK GRUP Tarım ve İhracat Ürün Kataloğu",
-    "itemListElement": [
-      {
-        "@type": "OfferCatalog",
-        "name": "Hububat & Bakliyat",
-        "url": "https://bikgrup.com/urunler/kategori/hububat",
-        "itemListElement": [
-          {"@type": "Product", "name": "Buğday", "description": "Yüksek proteinli birinci sınıf ekmeklik ve makarnalık buğday."},
-          {"@type": "Product", "name": "Mısır", "description": "Özenle kurutulmuş, yemlik ve sanayi tipi sarı mısır."},
-          {"@type": "Product", "name": "Ayçekirdeği", "description": "Yağlık ve çerezlik yüksek kaliteli ayçiçeği tohumu."},
-          {"@type": "Product", "name": "Soya Fasulyesi", "description": "Yüksek yağ ve protein oranına sahip soya taneleri."}
-        ]
-      },
-      {
-        "@type": "OfferCatalog",
-        "name": "Narenciye",
-        "url": "https://bikgrup.com/urunler/kategori/narenciye",
-        "itemListElement": [
-          {"@type": "Product", "name": "Limon", "description": "Akdeniz'in taze, sulu ve aromatik Mayer ve Enterdonat limonları."},
-          {"@type": "Product", "name": "Portakal", "description": "Valencia ve Washington cinsi tatlı, sulu sofralık portakallar."},
-          {"@type": "Product", "name": "Mandalina", "description": "İnce kabuklu, çekirdeksiz satsuma ve clementine mandalinalar."},
-          {"@type": "Product", "name": "Greyfurt", "description": "Star Ruby ve Rio Red cinsi taze pembe ve kırmızı greyfurtlar."}
-        ]
-      },
-      {
-        "@type": "OfferCatalog",
-        "name": "Meyveler & Sebzeler",
-        "url": "https://bikgrup.com/urunler/kategori/meyveler",
-        "itemListElement": [
-          {"@type": "Product", "name": "Karpuz & Kavun", "description": "Doğal güneş altında olgunlaşmış sulu ve tatlı tarla karpuzları."},
-          {"@type": "Product", "name": "Nar", "description": "Hicaz narı, yoğun renk ve yüksek antioksidan değerine sahip ihracatlık kalite."}
-        ]
-      },
-      {
-        "@type": "OfferCatalog",
-        "name": "Hayvan Yemi & Katı-Sıvı Gübre",
-        "url": "https://bikgrup.com/urunler/kategori/yem",
-        "itemListElement": [
-          {"@type": "Product", "name": "Küçükbaş & Büyükbaş Yemleri", "description": "Sunar ve BİK GRUP güvencesiyle yüksek besin değerli besi ve süt yemleri."},
-          {"@type": "Product", "name": "Mısır Flake", "description": "Buharla pişirilip preslenmiş yüksek sindirilebilirliğe sahip mısır flake."},
-          {"@type": "Product", "name": "Bitki Besleme ve Sıvı Gübre", "description": "Toprak verimini artıran zengin mineralli organomineral gübreler."}
-        ]
-      }
-    ]
-  }
+  ]
 }
-

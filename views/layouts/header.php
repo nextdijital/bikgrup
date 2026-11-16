@@ -38,6 +38,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
 
     <!-- AI & LLM Ajan Tarayıcı Standartları (llms.txt, ai-catalog.json & sitemap.xml) -->
     <link rel="alternate" type="text/plain" href="<?= BASE_URL ?>/llms.txt" title="LLM Agent Manifest">
+    <link rel="alternate" type="application/json" href="<?= BASE_URL ?>/.well-known/ai-catalog.json" title="AI Capability Catalog">
     <link rel="alternate" type="application/json" href="<?= BASE_URL ?>/ai-catalog.json" title="AI Product Catalog">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="<?= BASE_URL ?>/sitemap.xml">
 

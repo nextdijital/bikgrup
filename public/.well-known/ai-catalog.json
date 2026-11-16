@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ai-catalog.schema.json",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "BİK GRUP",
+    "documentationUrl": "https://bikgrup.com/kurumsal",
+    "logoUrl": "https://bikgrup.com/public/images/bikgrup_logo_optimized.webp"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:bikgrup.com:catalog:products",
+      "displayName": "BİK GRUP Tarım ve İhracat Kataloğu",
+      "type": "application/json",
+      "url": "https://bikgrup.com/urunler",
+      "description": "BİK GRUP taze narenciye, kaliteli hububat, bitki besleme ve hayvan yemi üretim ve global ihracat kataloğu.",
+      "tags": [
+        "tarım",
+        "narenciye",
+        "hububat",
+        "gübre",
+        "hayvan yemi",
+        "ihracat"
+      ],
+      "representativeQueries": [
+        "BİK GRUP taze narenciye ve meyve ihracatı",
+        "Toptan buğday mısır hububat tedariği",
+        "Katı ve sıvı gübre ile hayvan yemi çeşitleri",
+        "Tarım ürünleri ihracat teklifi al"
+      ]
+    },
+    {
+      "identifier": "urn:air:bikgrup.com:manifest:llm",
+      "displayName": "BİK GRUP LLM ve Ajan Manifestosu",
+      "type": "text/plain",
+      "url": "https://bikgrup.com/llms.txt",
+      "description": "Yapay zeka modelleri ve otonom arama ajanları için yapılandırılmış kurumsal BİK GRUP navigasyon ve özet içerik dokümanı.",
+      "tags": [
+        "llm",
+        "manifest",
+        "ai-agents",
+        "kurumsal"
+      ],
+      "representativeQueries": [
+        "BİK GRUP kurumsal profili ve kalite sertifikaları",
+        "BİK GRUP iletişim bilgileri ve fabrika lokasyonları"
+      ]
+    }
+  ]
+}

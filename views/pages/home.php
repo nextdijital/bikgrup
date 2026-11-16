@@ -68,6 +68,16 @@ if (!function_exists('resolveUrl')) {
         return BASE_URL . '/' . ltrim($u, '/');
     }
 }
+if (!function_exists('imageWebpSafe')) {
+    function imageWebpSafe(?string $imageFile): string {
+        if (empty($imageFile)) return '';
+        $webp = pathinfo($imageFile, PATHINFO_FILENAME) . '.webp';
+        if (file_exists(PUBLIC_PATH . '/images/' . $webp)) {
+            return $webp;
+        }
+        return $imageFile;
+    }
+}
 ?>
 
 <!-- ========================================================================
@@ -287,12 +297,13 @@ if (!function_exists('resolveUrl')) {
                      style="display: flex; cursor: pointer;">
                     <!-- Karttan Dışarı Taşan 3 Boyutlu Ürün Görseli (Orantılı Büyütülmüş) -->
                     <a href="<?= $prodUrl ?>" class="popout-img-wrapper" onclick="event.stopPropagation();">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($prod['image'] ?: 'product_orange.png') ?>" 
+                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($prod['image'] ?: 'product_orange.png')) ?>" 
                              alt="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?>" 
                              class="popout-floating-img" 
                              width="220" 
                              height="220" 
-                             loading="lazy">
+                             loading="lazy"
+                             decoding="async">
                     </a>
 
                     <!-- Kart Alt İçeriği: Ürün İsimleri & Sağ Altta Çapraz Ok Butonu -->
@@ -448,28 +459,28 @@ if (!function_exists('resolveUrl')) {
             <div class="brands-dark-row">
                 <!-- 1. Köylü Tarım -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand1_link'] ?? '/markalar/koylu-tarim')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand1_image'] ?? 'fresh_vegetables.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'Köylü Tarım') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($brandsExtra['brand1_image'] ?? 'fresh_vegetables.jpg')) ?>" alt="<?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'Köylü Tarım') ?>" class="home-brand-bg" width="600" height="400" loading="lazy" decoding="async">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'KÖYLÜ TARIM') ?></span>
                 </a>
 
                 <!-- 2. Zeliha Sultan Çiftliği -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand2_link'] ?? '/markalar/zeliha-sultan')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand2_image'] ?? 'blog_agriculture_hero.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'Zeliha Sultan') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($brandsExtra['brand2_image'] ?? 'blog_agriculture_hero.jpg')) ?>" alt="<?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'Zeliha Sultan') ?>" class="home-brand-bg" width="600" height="400" loading="lazy" decoding="async">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'ZELİHA SULTAN') ?></span>
                 </a>
 
                 <!-- 3. İnci Fresh -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand3_link'] ?? '/markalar/inci-fresh')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand3_image'] ?? 'fresh_fruits.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İnci Fresh') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($brandsExtra['brand3_image'] ?? 'fresh_fruits.jpg')) ?>" alt="<?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İnci Fresh') ?>" class="home-brand-bg" width="600" height="400" loading="lazy" decoding="async">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İNCİ FRESH') ?></span>
                 </a>
 
                 <!-- 4. Lara Citrus -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand4_link'] ?? '/markalar/lara-citrus')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand4_image'] ?? 'citrus_showcase.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'Lara Citrus') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($brandsExtra['brand4_image'] ?? 'citrus_showcase.jpg')) ?>" alt="<?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'Lara Citrus') ?>" class="home-brand-bg" width="600" height="400" loading="lazy" decoding="async">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'LARA CITRUS') ?></span>
                 </a>
@@ -573,7 +584,7 @@ if (!function_exists('resolveUrl')) {
             <?php foreach ($recentPosts as $index => $post): ?>
                 <article class="blog-card reveal reveal-delay-<?= $index + 1 ?>">
                     <div class="blog-card-img">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'blog_cold_chain.png') ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" width="400" height="260" loading="lazy">
+                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars(imageWebpSafe($post['image'] ?: 'blog_cold_chain.png')) ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" width="400" height="260" loading="lazy" decoding="async">
                     </div>
                     <div class="blog-card-body">
                         <div class="blog-meta">

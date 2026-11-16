@@ -70,24 +70,53 @@ $subRoute = strtolower($parts[1] ?? '');
 $param = $parts[2] ?? '';
 
 // AI & LLM Ajan Dosyaları ve Site Haritası Doğrudan Servis (SyntaxError / HTML Dönüşü Kesin Çözümü)
-if ($route === 'ai-catalog.json' || $url === 'ai-catalog.json') {
+if (
+    $url === 'ai-catalog.json' || 
+    $url === 'ard.json' || 
+    $url === '.well-known/ai-catalog.json' || 
+    $url === '.well-known/ard.json' ||
+    $route === 'ai-catalog.json' || 
+    $route === 'ard.json' ||
+    ($route === '.well-known' && in_array($subRoute, ['ai-catalog.json', 'ard.json'], true))
+) {
     header('Content-Type: application/json; charset=UTF-8');
     header('Access-Control-Allow-Origin: *');
-    $f = file_exists(__DIR__ . '/ai-catalog.json') ? __DIR__ . '/ai-catalog.json' : __DIR__ . '/public/ai-catalog.json';
-    if (file_exists($f)) {
-        readfile($f);
-    } else {
+    header('Cache-Control: public, max-age=86400');
+    $candidates = [
+        __DIR__ . '/.well-known/ai-catalog.json',
+        __DIR__ . '/.well-known/ard.json',
+        __DIR__ . '/ai-catalog.json',
+        __DIR__ . '/public/.well-known/ai-catalog.json',
+        __DIR__ . '/public/ai-catalog.json'
+    ];
+    $found = false;
+    foreach ($candidates as $cand) {
+        if (file_exists($cand)) {
+            readfile($cand);
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
         echo '{}';
     }
     exit;
 }
 
-if ($route === 'llms.txt' || $url === 'llms.txt') {
+if ($route === 'llms.txt' || $url === 'llms.txt' || $url === '.well-known/llms.txt' || ($route === '.well-known' && $subRoute === 'llms.txt')) {
     header('Content-Type: text/plain; charset=UTF-8');
     header('Access-Control-Allow-Origin: *');
-    $f = file_exists(__DIR__ . '/llms.txt') ? __DIR__ . '/llms.txt' : __DIR__ . '/public/llms.txt';
-    if (file_exists($f)) {
-        readfile($f);
+    header('Cache-Control: public, max-age=86400');
+    $candidates = [
+        __DIR__ . '/llms.txt',
+        __DIR__ . '/public/llms.txt',
+        __DIR__ . '/.well-known/llms.txt'
+    ];
+    foreach ($candidates as $cand) {
+        if (file_exists($cand)) {
+            readfile($cand);
+            break;
+        }
     }
     exit;
 }

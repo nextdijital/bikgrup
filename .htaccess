@@ -22,8 +22,8 @@ ServerSignature Off
     # 2. Dahili Çekirdek Sistem Dizinlerini Doğrudan Web Erişimine Kapat
     RewriteRule ^(app|config|core|views|storage|logs|languages)(/|$) - [F,L]
 
-    # 2.5. AI & LLM Ajan Tarayıcı Dosyalarına İzin Ver (llms.txt, ai-catalog.json, robots.txt, sitemap.xml)
-    RewriteCond %{REQUEST_URI} ^/(llms\.txt|ai-catalog\.json|robots\.txt|sitemap\.xml)$ [NC]
+    # 2.5. AI & LLM Ajan Tarayıcı Dosyalarına İzin Ver (llms.txt, ai-catalog.json, ard.json, robots.txt, sitemap.xml)
+    RewriteCond %{REQUEST_URI} ^/(\.well-known/.*|llms\.txt|ai-catalog\.json|ard\.json|robots\.txt|sitemap\.xml)$ [NC]
     RewriteRule ^ - [L]
 
     # 3. Eğer istenen dosya veya klasör public/ içinde veya gerçekte varsa aç
