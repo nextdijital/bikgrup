@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.openQuoteModal = function(productName) {
     const modal = document.getElementById('quoteModal');
     if (modal) {
+        modal.style.display = 'flex';
         // Eğer ürün adı gönderildiyse seçim alanını otomatik doldur
         if (productName && typeof productName === 'string') {
             const catInput = document.getElementById('quoteCategory');
@@ -98,7 +99,7 @@ window.openQuoteModal = function(productName) {
             }
         }
 
-        modal.classList.add('active');
+        setTimeout(() => modal.classList.add('active'), 10);
     }
 };
 
@@ -106,6 +107,11 @@ window.closeQuoteModal = function() {
     const modal = document.getElementById('quoteModal');
     if (modal) {
         modal.classList.remove('active');
+        setTimeout(() => {
+            if (!modal.classList.contains('active')) {
+                modal.style.display = 'none';
+            }
+        }, 300);
     }
 };
 

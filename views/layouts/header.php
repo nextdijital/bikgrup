@@ -63,21 +63,9 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <!-- Dinamik Tema Değişkenleri (Arka Panelden Anında Değişen Canlı CSS) -->
     <?= Settings::renderCssVariables() ?>
     
-    <!-- Optimize & Minify Tekil CSS (0 Ek İstek / Render-blocking 0 ms) -->
+    <!-- CSS Dosyası (Senkron Yükleme - FOUC & Kayma Önleyici) -->
     <?php $styleCss = file_exists(PUBLIC_PATH . '/css/style.min.css') ? 'style.min.css' : 'style.css'; ?>
-    <link rel="preload" as="style" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>">
-    </noscript>
-
-    <style>
-        :root { --theme-primary: #15803d; --theme-bg: #ffffff; --theme-text: #0f172a; }
-        body { margin: 0; padding: 0; background: #ffffff; color: #0f172a; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
-        .adler-hero-viewport { position: relative; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #ffffff; }
-        .adler-bg-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .header-wrapper { position: fixed; top: 16px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; pointer-events: none; }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
 </head>
 <body>
 

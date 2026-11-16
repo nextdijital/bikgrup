@@ -211,7 +211,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     </footer>
 
     <!-- TEKLİF AL MODAL (KULLANICI TALEBİ: ÜRÜN KATEGORİSİ, MİKTAR, AD SOYAD, TEL, MAİL) -->
-    <div id="quoteModal" class="quote-modal-backdrop" onclick="if(event.target === this) closeQuoteModal();" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+    <div id="quoteModal" class="quote-modal-backdrop" style="display: none;" onclick="if(event.target === this) closeQuoteModal();" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
         <div class="quote-modal-card" style="max-width: 600px;">
             <div class="quote-modal-header">
                 <h3 class="quote-modal-title" id="quoteModalTitle">
