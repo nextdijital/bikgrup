@@ -24,7 +24,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
 <html lang="<?= htmlspecialchars($currentLang) ?>">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle ?? $siteName) ?></title>
     <meta name="description" content="<?= htmlspecialchars(Settings::getLocalized('site_description', 'BİKGRUP Taze Narenciye, Meyve ve Tarımsal İhracat')) ?>">
     
@@ -32,7 +32,25 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? $siteName) ?>">
     <meta property="og:description" content="<?= htmlspecialchars(Settings::getLocalized('site_description', 'Akdeniz ve Egenin en verimli topraklarında yetişen taze ürünler.')) ?>">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="<?= BASE_URL ?>/public/images/nature_hero_bg.jpg">
+    <meta property="og:image" content="<?= BASE_URL ?>/public/images/nature_hero_bg.webp">
+
+    <!-- AI & LLM Ajan Tarayıcı Standartları (llms.txt & ai-catalog.json) -->
+    <link rel="alternate" type="text/plain" href="<?= BASE_URL ?>/llms.txt" title="LLM Agent Manifest">
+    <link rel="alternate" type="application/json" href="<?= BASE_URL ?>/ai-catalog.json" title="AI Product Catalog">
+
+    <!-- Google Fonts: Asenkron & Preload (Render-blocking 0 ms / Lighthouse 100%) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+    </noscript>
+
+    <?php if ($isHome): ?>
+    <!-- LCP Keşif Hızlandırıcısı: Hero Arka Plan Görselini Önceden Yükle (LCP İstek Keşfi 100%) -->
+    <link rel="preload" as="image" href="<?= BASE_URL ?>/public/images/nature_hero_bg.webp" type="image/webp" fetchpriority="high">
+    <?php endif; ?>
 
     <?php if (!empty($siteFavicon) && file_exists(UPLOADS_PATH . '/' . $siteFavicon)): ?>
         <link rel="icon" href="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteFavicon) ?>">
@@ -41,9 +59,13 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <!-- Dinamik Tema Değişkenleri (Arka Panelden Anında Değişen Canlı CSS) -->
     <?= Settings::renderCssVariables() ?>
     
-    <!-- CSS Dosyaları -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/style.css?v=<?= file_exists(PUBLIC_PATH . '/css/style.css') ? filemtime(PUBLIC_PATH . '/css/style.css') : time() ?>">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/animations.css?v=<?= file_exists(PUBLIC_PATH . '/css/animations.css') ? filemtime(PUBLIC_PATH . '/css/animations.css') : time() ?>">
+    <!-- Optimize & Minify CSS Dosyaları -->
+    <?php
+    $styleCss = file_exists(PUBLIC_PATH . '/css/style.min.css') ? 'style.min.css' : 'style.css';
+    $animCss  = file_exists(PUBLIC_PATH . '/css/animations.min.css') ? 'animations.min.css' : 'animations.css';
+    ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $styleCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $styleCss) ? filemtime(PUBLIC_PATH . '/css/' . $styleCss) : time() ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/<?= $animCss ?>?v=<?= file_exists(PUBLIC_PATH . '/css/' . $animCss) ? filemtime(PUBLIC_PATH . '/css/' . $animCss) : time() ?>">
 </head>
 <body>
 
@@ -53,7 +75,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
             
             <a href="<?= BASE_URL ?>/" class="bik-logo">
                 <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" style="max-height: 48px; width: auto; object-fit: contain;">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="193" height="48" style="max-height: 48px; width: auto; object-fit: contain;">
                 <?php else: ?>
                     <span class="logo-leaf-icon" style="width:24px; height:24px; font-size:12px;">🌿</span>
                     <span>BİK<span class="accent">GRUP</span></span>
@@ -111,7 +133,7 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
             <div class="mobile-menu-header">
                 <a href="<?= BASE_URL ?>/" class="bik-logo" onclick="closeMobileMenu();" style="display: inline-flex; align-items: center; gap: 8px;">
                     <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" style="max-height: 48px; width: auto; object-fit: contain;">
+                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteName) ?>" width="193" height="48" style="max-height: 48px; width: auto; object-fit: contain;">
                     <?php else: ?>
                         <span class="logo-leaf-icon" style="width:28px; height:28px; font-size:14px;">🌿</span>
                         <span style="font-size: 20px;">BİK<span class="accent">GRUP</span></span>
@@ -172,3 +194,6 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
             </div>
         </div>
     </div>
+
+    <!-- Ana İçerik Taşıyıcısı (Accessibility Landmark: main) -->
+    <main id="main-content" role="main">

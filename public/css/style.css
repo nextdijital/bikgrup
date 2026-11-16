@@ -1,9 +1,8 @@
 /* ==========================================================================
    BİKGRUP - Ultra Modern Kurumsal & Çizgisel Mimari Stil Kütüphanesi
    Plus Jakarta Sans & Outfit Tipografisi, Çizgisel Çerçeve (Adler Tarzı)
+   Google Fonts header.php içinden asenkron/preload olarak yüklenir (Render-blocking engellendi)
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 :root {
     --theme-primary: #15803d;

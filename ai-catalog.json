@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "BİK GRUP",
+  "legalName": "Bik Tarım Ürünleri İthalat İhracat Sanayi ve Ticaret Limited Şirketi",
+  "description": "BİK GRUP, Türkiye'nin lider tarımsal üretim, taze narenciye, hububat, gübre ve global tarım ihracatı şirketidir.",
+  "url": "https://bikgrup.com",
+  "logo": "https://bikgrup.com/public/images/logo_1793781347_9b892f.webp",
+  "telephone": "+905337989901",
+  "email": "destek@bikgrup.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "TR",
+    "addressLocality": "Antalya",
+    "streetAddress": "Organize Sanayi Bölgesi 4. Cadde No: 18"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+905337989901",
+      "contactType": "sales",
+      "availableLanguage": ["Turkish", "English"]
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "BİK GRUP Tarım ve İhracat Ürün Kataloğu",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Hububat & Bakliyat",
+        "url": "https://bikgrup.com/urunler/kategori/hububat",
+        "itemListElement": [
+          {"@type": "Product", "name": "Buğday", "description": "Yüksek proteinli birinci sınıf ekmeklik ve makarnalık buğday."},
+          {"@type": "Product", "name": "Mısır", "description": "Özenle kurutulmuş, yemlik ve sanayi tipi sarı mısır."},
+          {"@type": "Product", "name": "Ayçekirdeği", "description": "Yağlık ve çerezlik yüksek kaliteli ayçiçeği tohumu."},
+          {"@type": "Product", "name": "Soya Fasulyesi", "description": "Yüksek yağ ve protein oranına sahip soya taneleri."}
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Narenciye",
+        "url": "https://bikgrup.com/urunler/kategori/narenciye",
+        "itemListElement": [
+          {"@type": "Product", "name": "Limon", "description": "Akdeniz'in taze, sulu ve aromatik Mayer ve Enterdonat limonları."},
+          {"@type": "Product", "name": "Portakal", "description": "Valencia ve Washington cinsi tatlı, sulu sofralık portakallar."},
+          {"@type": "Product", "name": "Mandalina", "description": "İnce kabuklu, çekirdeksiz satsuma ve clementine mandalinalar."},
+          {"@type": "Product", "name": "Greyfurt", "description": "Star Ruby ve Rio Red cinsi taze pembe ve kırmızı greyfurtlar."}
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Meyveler & Sebzeler",
+        "url": "https://bikgrup.com/urunler/kategori/meyveler",
+        "itemListElement": [
+          {"@type": "Product", "name": "Karpuz & Kavun", "description": "Doğal güneş altında olgunlaşmış sulu ve tatlı tarla karpuzları."},
+          {"@type": "Product", "name": "Nar", "description": "Hicaz narı, yoğun renk ve yüksek antioksidan değerine sahip ihracatlık kalite."}
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Hayvan Yemi & Katı-Sıvı Gübre",
+        "url": "https://bikgrup.com/urunler/kategori/yem",
+        "itemListElement": [
+          {"@type": "Product", "name": "Küçükbaş & Büyükbaş Yemleri", "description": "Sunar ve BİK GRUP güvencesiyle yüksek besin değerli besi ve süt yemleri."},
+          {"@type": "Product", "name": "Mısır Flake", "description": "Buharla pişirilip preslenmiş yüksek sindirilebilirliğe sahip mısır flake."},
+          {"@type": "Product", "name": "Bitki Besleme ve Sıvı Gübre", "description": "Toprak verimini artıran zengin mineralli organomineral gübreler."}
+        ]
+      }
+    ]
+  }
+}

@@ -79,14 +79,31 @@ if (!function_exists('resolveUrl')) {
     <div class="adler-contour-frame">
         
         <!-- Çerçevenin İçiyle Sınırlandırılmış Doğa & Teras Manzarası Afişi -->
-        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($heroExtra['bg_image'] ?? 'nature_hero_bg.jpg') ?>" alt="BİKGRUP Doğa ve Tarım Arazileri" class="adler-bg-poster" loading="eager">
+        <?php
+        $heroBg = $heroExtra['bg_image'] ?? 'nature_hero_bg.webp';
+        $heroBgWebp = pathinfo($heroBg, PATHINFO_FILENAME) . '.webp';
+        $hasWebp = file_exists(PUBLIC_PATH . '/images/' . $heroBgWebp);
+        ?>
+        <picture>
+            <?php if ($hasWebp): ?>
+                <source srcset="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($heroBgWebp) ?>" type="image/webp">
+            <?php endif; ?>
+            <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($hasWebp ? $heroBgWebp : $heroBg) ?>" 
+                 alt="BİKGRUP Doğa ve Tarım Arazileri" 
+                 class="adler-bg-poster" 
+                 width="1376" 
+                 height="768" 
+                 fetchpriority="high" 
+                 loading="eager" 
+                 decoding="async">
+        </picture>
         <div class="adler-vignette"></div>
         
         <!-- Çerçevenin Üst Sınırı: Entegre Minimal Header -->
         <div class="adler-top-header">
             <a href="<?= BASE_URL ?>/" class="adler-logo">
                 <?php if (!empty($siteLogo) && file_exists(UPLOADS_PATH . '/' . $siteLogo)): ?>
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" style="max-height: 64px; width: auto; object-fit: contain;">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($siteLogo) ?>" alt="<?= htmlspecialchars($siteLogoText) ?>" width="258" height="64" style="max-height: 64px; width: auto; object-fit: contain;">
                 <?php else: ?>
                     <span><?= htmlspecialchars($siteLogoText) ?></span>
                 <?php endif; ?>
@@ -267,6 +284,8 @@ if (!function_exists('resolveUrl')) {
                         <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($prod['image'] ?: 'product_orange.png') ?>" 
                              alt="<?= htmlspecialchars($prod['name_' . $currentLang] ?? $prod['name_tr']) ?>" 
                              class="popout-floating-img" 
+                             width="220" 
+                             height="220" 
                              loading="lazy">
                     </a>
 
@@ -423,28 +442,28 @@ if (!function_exists('resolveUrl')) {
             <div class="brands-dark-row">
                 <!-- 1. Köylü Tarım -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand1_link'] ?? '/markalar/koylu-tarim')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand1_image'] ?? 'fresh_vegetables.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'Köylü Tarım') ?>" class="home-brand-bg" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand1_image'] ?? 'fresh_vegetables.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'Köylü Tarım') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand1_name'] ?? 'KÖYLÜ TARIM') ?></span>
                 </a>
 
                 <!-- 2. Zeliha Sultan Çiftliği -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand2_link'] ?? '/markalar/zeliha-sultan')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand2_image'] ?? 'blog_agriculture_hero.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'Zeliha Sultan') ?>" class="home-brand-bg" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand2_image'] ?? 'blog_agriculture_hero.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'Zeliha Sultan') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand2_name'] ?? 'ZELİHA SULTAN') ?></span>
                 </a>
 
                 <!-- 3. İnci Fresh -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand3_link'] ?? '/markalar/inci-fresh')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand3_image'] ?? 'fresh_fruits.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İnci Fresh') ?>" class="home-brand-bg" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand3_image'] ?? 'fresh_fruits.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İnci Fresh') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand3_name'] ?? 'İNCİ FRESH') ?></span>
                 </a>
 
                 <!-- 4. Lara Citrus -->
                 <a href="<?= htmlspecialchars(resolveUrl($brandsExtra['brand4_link'] ?? '/markalar/lara-citrus')) ?>" class="home-brand-full-card">
-                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand4_image'] ?? 'citrus_showcase.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'Lara Citrus') ?>" class="home-brand-bg" loading="lazy">
+                    <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($brandsExtra['brand4_image'] ?? 'citrus_showcase.jpg') ?>" alt="<?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'Lara Citrus') ?>" class="home-brand-bg" width="600" height="400" loading="lazy">
                     <div class="home-brand-overlay"></div>
                     <span class="home-brand-name"><?= htmlspecialchars($brandsExtra['brand4_name'] ?? 'LARA CITRUS') ?></span>
                 </a>
@@ -548,7 +567,7 @@ if (!function_exists('resolveUrl')) {
             <?php foreach ($recentPosts as $index => $post): ?>
                 <article class="blog-card reveal reveal-delay-<?= $index + 1 ?>">
                     <div class="blog-card-img">
-                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'blog_cold_chain.png') ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" loading="lazy">
+                        <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($post['image'] ?: 'blog_cold_chain.png') ?>" alt="<?= htmlspecialchars($post['title_' . $currentLang] ?? $post['title_tr']) ?>" width="400" height="260" loading="lazy">
                     </div>
                     <div class="blog-card-body">
                         <div class="blog-meta">
@@ -598,6 +617,8 @@ if (!function_exists('resolveUrl')) {
                     <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($ref['image']) ?>" 
                          alt="<?= htmlspecialchars($ref['name'] ?? 'Referans') ?>" 
                          class="marquee-logo-img"
+                         width="160"
+                         height="70"
                          loading="lazy">
                 </div>
             <?php endforeach; ?>
@@ -608,6 +629,8 @@ if (!function_exists('resolveUrl')) {
                     <img src="<?= BASE_URL ?>/public/images/<?= htmlspecialchars($ref['image']) ?>" 
                          alt="<?= htmlspecialchars($ref['name'] ?? 'Referans') ?>" 
                          class="marquee-logo-img"
+                         width="160"
+                         height="70"
                          loading="lazy">
                 </div>
             <?php endforeach; ?>
