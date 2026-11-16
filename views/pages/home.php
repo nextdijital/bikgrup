@@ -97,7 +97,7 @@ if (!function_exists('imageWebpSafe')) {
         $optLogoFile = 'bikgrup_logo_optimized.webp';
         $activeLogo = file_exists(PUBLIC_PATH . '/images/' . $optLogoFile) ? $optLogoFile : (!empty($siteLogo) ? $siteLogo : '');
         ?>
-        <picture>
+        <picture class="adler-bg-picture">
             <?php if ($hasMobileWebp): ?>
                 <source media="(max-width: 768px)" srcset="<?= BASE_URL ?>/public/images/nature_hero_bg_mobile.webp" type="image/webp">
             <?php endif; ?>
