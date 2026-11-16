@@ -34,9 +34,10 @@ if (in_array($activeView, ['product_detail', 'blog_detail'], true)) {
     <meta property="og:type" content="website">
     <meta property="og:image" content="<?= BASE_URL ?>/public/images/nature_hero_bg.webp">
 
-    <!-- AI & LLM Ajan Tarayıcı Standartları (llms.txt & ai-catalog.json) -->
+    <!-- AI & LLM Ajan Tarayıcı Standartları (llms.txt, ai-catalog.json & sitemap.xml) -->
     <link rel="alternate" type="text/plain" href="<?= BASE_URL ?>/llms.txt" title="LLM Agent Manifest">
     <link rel="alternate" type="application/json" href="<?= BASE_URL ?>/ai-catalog.json" title="AI Product Catalog">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="<?= BASE_URL ?>/sitemap.xml">
 
     <!-- Google Fonts: Asenkron & Preload (Render-blocking 0 ms / Lighthouse 100%) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

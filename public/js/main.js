@@ -9,11 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const adlerHero = document.querySelector('.adler-hero-viewport');
 
     if (headerWrapper && adlerHero) {
+        let ticking = false;
         const updateNavbar = () => {
-            if (window.scrollY > 300) {
-                headerWrapper.classList.add('header-visible');
-            } else {
-                headerWrapper.classList.remove('header-visible');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > 300) {
+                        headerWrapper.classList.add('header-visible');
+                    } else {
+                        headerWrapper.classList.remove('header-visible');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         };
         window.addEventListener('scroll', updateNavbar, { passive: true });

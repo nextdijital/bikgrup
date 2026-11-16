@@ -594,14 +594,14 @@ if (!function_exists('resolveUrl')) {
      ======================================================================== -->
 <section class="section home-marquee-section" style="padding: 48px 0 80px 0; background: #ffffff !important; border-top: none !important; overflow: hidden;">
     <div class="container" style="margin-bottom: 28px; text-align: center;">
-        <span style="font-size: 13px; font-weight: 800; color: #15803d; letter-spacing: 2px; text-transform: uppercase;">
+        <span style="font-size: 13px; font-weight: 800; color: #166534; letter-spacing: 2px; text-transform: uppercase;">
             <?= htmlspecialchars($refSec['subtitle_' . $currentLang] ?? ($refSec['subtitle_tr'] ?? ($currentLang === 'en' ? 'GLOBAL TRADE NETWORK & REFERENCES' : 'KÜRESEL İŞ ORTAKLARI & GÜVENİLİR REFERANSLAR'))) ?>
         </span>
         <h3 style="font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 8px; letter-spacing: -0.3px;">
             <?= htmlspecialchars($refSec['title_' . $currentLang] ?? ($refSec['title_tr'] ?? ($currentLang === 'en' ? 'Export Assured by BİK GRUP' : 'BİK GRUP Güvencesiyle Dünya Standartlarında Ticaret'))) ?>
         </h3>
         <?php if (!empty($refSec['body_tr'])): ?>
-            <p style="max-width: 740px; margin: 10px auto 0; font-size: 14.5px; color: #64748b; line-height: 1.5;">
+            <p style="max-width: 740px; margin: 10px auto 0; font-size: 14.5px; color: #334155; line-height: 1.5;">
                 <?= htmlspecialchars($refSec['body_' . $currentLang] ?? $refSec['body_tr']) ?>
             </p>
         <?php endif; ?>

@@ -13,7 +13,7 @@
     --theme-bg: #fcfdfd;
     --theme-card-bg: #ffffff;
     --theme-text: #0f172a;
-    --theme-text-muted: #64748b;
+    --theme-text-muted: #475569;
     --theme-navbar-bg: rgba(255, 255, 255, 0.94);
     --theme-radius: 20px;
     --theme-primary-rgb: 21, 128, 61;
@@ -310,7 +310,7 @@ ul, ol {
 .adler-card-desc {
     font-size: 13.5px;
     line-height: 1.55;
-    color: #475569;
+    color: #334155;
     margin: 0 0 18px 0;
     flex: 1;
 }
@@ -371,7 +371,8 @@ ul, ol {
 }
 
 .adler-glass-col .adler-card-desc {
-    color: rgba(255, 255, 255, 0.88);
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .adler-glass-col .adler-card-divider {
@@ -987,9 +988,9 @@ ul, ol {
 }
 
 .footer-links a {
-    color: #64748b;
+    color: #334155;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.8;
     text-decoration: none;
     transition: all 0.2s ease;
@@ -1005,7 +1006,7 @@ ul, ol {
     align-items: center;
     gap: 12px;
     margin-bottom: 16px;
-    color: #475569;
+    color: #334155;
     font-size: 14.5px;
     line-height: 1.6;
 }
@@ -1959,21 +1960,21 @@ ul, ol {
     box-shadow: 0 26px 50px -12px rgba(15, 23, 42, 0.20);
 }
 
-/* Referans Görseldeki Pastel Degrade Kart Renkleri */
+/* Referans Görseldeki Pastel & Yüksek Kontrastlı Degrade Kart Renkleri (WCAG AA %100) */
 .card-color-1 {
-    background: linear-gradient(145deg, #a4947f 0%, #c9bca9 100%);
+    background: linear-gradient(145deg, #786854 0%, #9e8e7a 100%);
 }
 
 .card-color-2 {
-    background: linear-gradient(145deg, #b56c80 0%, #db96a6 100%);
+    background: linear-gradient(145deg, #8a4056 0%, #ab566e 100%);
 }
 
 .card-color-3 {
-    background: linear-gradient(145deg, #748d38 0%, #9cb85b 100%);
+    background: linear-gradient(145deg, #577028 0%, #76933c 100%);
 }
 
 .card-color-4 {
-    background: linear-gradient(145deg, #756a7d 0%, #9b8ea1 100%);
+    background: linear-gradient(145deg, #594d62 0%, #7c6d86 100%);
 }
 
 /* Karttan Yukarı ve Yanlara Taşan Dairesel Ürün Görseli (Buğday Rozeti / Daire Formatı) */
@@ -2027,11 +2028,12 @@ ul, ol {
     font-family: var(--font-heading);
     font-style: italic;
     font-size: 15px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.90);
+    font-weight: 600;
+    color: #ffffff;
     display: block;
     margin-bottom: 2px;
     letter-spacing: -0.01em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
 .popout-card-title {
@@ -2042,6 +2044,7 @@ ul, ol {
     line-height: 1.2;
     margin: 0;
     letter-spacing: -0.02em;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
 }
 
 .popout-card-title a {

@@ -77,7 +77,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
                             <span class="logo-brand"><span class="bold">BİK</span><span class="accent">GRUP</span></span>
                         <?php endif; ?>
                     </a>
-                    <p style="color: #64748b; font-size: 15px; line-height: 1.8; margin-bottom: 26px; max-width: 360px;">
+                    <p style="color: #334155; font-size: 15px; line-height: 1.8; margin-bottom: 26px; max-width: 360px;">
                         <?= !empty($footerSec['body_' . $currentLang]) ? nl2br(htmlspecialchars($footerSec['body_' . $currentLang])) : ($currentLang === 'en' ? __('footer_about_text') : (!empty($footerSec['body_tr']) ? nl2br(htmlspecialchars($footerSec['body_tr'])) : __('footer_about_text'))) ?>
                     </p>
                     
@@ -451,18 +451,18 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     .cookie-consent-desc {
         font-size: 13px;
         line-height: 1.45;
-        color: #475569;
+        color: #334155;
         margin: 0;
     }
     .cookie-consent-desc a {
-        color: #15803d;
-        font-weight: 700;
+        color: #166534;
+        font-weight: 800;
         text-decoration: underline;
         text-underline-offset: 2px;
         transition: color 0.15s ease;
     }
     .cookie-consent-desc a:hover {
-        color: #166534;
+        color: #14532d;
     }
     .cookie-consent-actions {
         display: flex;
@@ -473,7 +473,7 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     .cookie-btn {
         padding: 9px 18px;
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 800;
         border-radius: 9999px;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -483,23 +483,24 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
         white-space: nowrap;
     }
     .cookie-btn-accept {
-        background: #15803d;
+        background: #166534;
         color: #ffffff;
-        box-shadow: 0 4px 14px rgba(21, 128, 61, 0.3);
+        box-shadow: 0 4px 14px rgba(22, 101, 52, 0.35);
     }
     .cookie-btn-accept:hover {
-        background: #166534;
+        background: #14532d;
         transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(21, 128, 61, 0.4);
+        box-shadow: 0 6px 18px rgba(22, 101, 52, 0.45);
     }
     .cookie-btn-reject {
         background: #f1f5f9;
-        color: #475569;
-        border: 1px solid #e2e8f0;
+        color: #0f172a;
+        font-weight: 800;
+        border: 1.5px solid #cbd5e1;
     }
     .cookie-btn-reject:hover {
         background: #e2e8f0;
-        color: #0f172a;
+        color: #000000;
     }
     @media (max-width: 768px) {
         .cookie-consent-bar {
@@ -567,7 +568,8 @@ $siteLogoText = Settings::get('site_logo_text', 'BİK GRUP');
     })();
     </script>
 
-    <!-- Ana JavaScript Motoru -->
-    <script src="<?= BASE_URL ?>/public/js/main.js?v=<?= file_exists(PUBLIC_PATH . '/js/main.js') ? filemtime(PUBLIC_PATH . '/js/main.js') : time() ?>"></script>
+    <!-- Ana JavaScript Motoru (Defer & Minified) -->
+    <?php $mainJs = file_exists(PUBLIC_PATH . '/js/main.min.js') ? 'main.min.js' : 'main.js'; ?>
+    <script defer src="<?= BASE_URL ?>/public/js/<?= $mainJs ?>?v=<?= file_exists(PUBLIC_PATH . '/js/' . $mainJs) ? filemtime(PUBLIC_PATH . '/js/' . $mainJs) : time() ?>"></script>
 </body>
 </html>
